@@ -3,22 +3,23 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class tags extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class Tag extends Model {
+    
     static associate(models) {
-      // define association here
+      Tag.belongsToMany(models.Memory, {
+         through: 'tags_memories',
+         foreignKey: 'tag_id',
+         as: 'memories',
+      })
     }
   };
-  tags.init({
+  Tag.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'tags',
+    modelName: 'Tag',
+    tableName: 'tags'
   });
-  return tags;
+  return Tag;
 };

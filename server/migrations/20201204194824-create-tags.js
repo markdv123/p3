@@ -9,19 +9,25 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+         field: 'created_at',
+         allowNull: false,
+         type: Sequelize.DATE,
+         defaultValue: new Date(),
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+         field: 'updated_at',
+         allowNull: false,
+         type: Sequelize.DATE,
+         defaultValue: new Date(),
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {

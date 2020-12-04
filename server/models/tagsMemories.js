@@ -1,20 +1,26 @@
 'use strict'
-const { Model, INTEGER } = require('sequelize')
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-   class Location extends Model {
+   class TagMemory extends Model {
       /**
        * Helper method for defining associations.
        * This method is not a part of Sequelize lifecycle.
        * The `models/index` file will call this method automatically.
        */
       static associate(models) {
-         Location.belongsTo( models.Memory, {
-            foreignKey: 'memory_id'
-         })
+         // define association here
       }
    }
-   Location.init(
+   TagMemory.init(
       {
+         tagId: {
+            field: 'tag_id',
+            type: DataTypes.INTEGER,
+            references: {
+               model: 'tags',
+               key: 'id',
+            },
+         },
          memoryId: {
             field: 'memory_id',
             type: DataTypes.INTEGER,
@@ -23,14 +29,12 @@ module.exports = (sequelize, DataTypes) => {
                key: 'id',
             },
          },
-         lat: DataTypes.FLOAT,
-         long: DataTypes.FLOAT,
       },
       {
          sequelize,
-         modelName: 'Location',
-         tableName: 'locations',
+         modelName: 'TagMemory',
+         tableName: 'tags_memories',
       }
    )
-   return Location
+   return TagMemory
 }

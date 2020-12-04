@@ -1,30 +1,29 @@
 'use strict'
 module.exports = {
    up: async (queryInterface, Sequelize) => {
-      await queryInterface.createTable('tags_memories', {
+      await queryInterface.createTable('locations', {
          id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         tag_id: {
+         memoryId: {
+            field: 'memory_id',
             type: Sequelize.INTEGER,
-            allowNull: false,
-            references: {
-               model: 'tags',
-               key: 'id'
-            },
-            onDelete: 'cascade'
-         },
-         memory_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
             references: {
                model: 'memories',
                key: 'id',
             },
-            onDelete: 'cascade'
+            allowNull: false,
+         },
+         lat: {
+            type: Sequelize.FLOAT,
+            allowNull: false,
+         },
+         long: {
+            type: Sequelize.FLOAT,
+            allowNull: false,
          },
          createdAt: {
             field: 'created_at',
@@ -41,6 +40,6 @@ module.exports = {
       })
    },
    down: async (queryInterface, Sequelize) => {
-      await queryInterface.dropTable('tags_memories')
+      await queryInterface.dropTable('locations')
    },
 }
