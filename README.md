@@ -4,7 +4,7 @@
 
 ### Collaborators:
 
-Aaron Walker: [Github](https://github.com/ItinerantMonolith) | [LinkedIn]()
+Aaron Walker: [Github](https://github.com/ItinerantMonolith) | [LinkedIn](https://www.linkedin.com/in/walker-aaron/)
 
 Andrew Cruz: [Github](https://github.com/ajdat10) | [LinkedIn](https://www.linkedin.com/in/andrew-j-cruz/)
 
