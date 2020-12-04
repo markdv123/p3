@@ -29,6 +29,14 @@ Mark DeVito: [Github](https://github.com/markdv123) | [LinkedIn](https://www.lin
 * MapBox API
 ***
 
+### ERD
+![erd](./assets/p3-erd.png)
+***
+
+### Component Diagram
+![Component Diagram](./assets/p3-cd.png)
+***
+
 ### :memo: Planned Improvements :memo:
 - [ ] Custom styles for maps
 - [ ] Global/Public map
