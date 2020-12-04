@@ -6,3 +6,5 @@ controllers/ControllerTemplate.js
 routes/RouteTemplate.js
 
 .eslintcache
+
+server/models/modelCreate.txt
