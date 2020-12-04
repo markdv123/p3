@@ -6,7 +6,7 @@
 
 Aaron Walker: [Github](https://github.com/ItinerantMonolith) | [LinkedIn]()
 
-Andrew Cruz: [Github](https://github.com/ajdat10) | [LinkedIn]()
+Andrew Cruz: [Github](https://github.com/ajdat10) | [LinkedIn](https://www.linkedin.com/in/andrew-j-cruz/)
 
 Mark DeVito: [Github](https://github.com/markdv123) | [LinkedIn](https://www.linkedin.com/in/markdv123/)
 
