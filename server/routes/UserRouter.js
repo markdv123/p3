@@ -4,5 +4,6 @@ const controller = require('../controllers/UserController')
 
 Router.post('/login', controller.Login, createToken)
 Router.post('/create', controller.CreateUser, createToken)
+Router.get('/refresh/session', getToken, verifyToken, controller.RefreshSession)
 
 module.exports = Router

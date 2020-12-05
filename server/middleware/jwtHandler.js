@@ -13,7 +13,7 @@ const verifyToken = (req, resp, next) => {
    let token = resp.locals.token
    jwt.verify(token, secretKey, (err, t) => {
       if (err) {
-         return resp.status(401).json({ msg: 'Invalid Token]' })
+         return resp.status(401).json({ msg: 'Invalid Token' })
       }
       resp.locals.payload = t
       return next()

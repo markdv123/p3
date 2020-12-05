@@ -31,6 +31,7 @@ const Login = async (req, resp, next) => {
       }
       return resp.status(401).send({ msg: 'Unauthorized' })
     } catch (err) {
+       console.log ( "Error in UserController.Login", err)
       throw err
     }
 }
@@ -38,6 +39,15 @@ const Login = async (req, resp, next) => {
 // body { name: , email: , password: }
 const CreateUser = async (req, resp, next) => {
    try {
+      // first check to see if the user already exists, if so, return a graceful error...
+      const checkUser = await User.findOne( { where: { email: req.body.email } } )
+      if ( checkUser ) {
+         return resp.send( {
+            id: -1,
+            name: 'Error creating account',
+         })
+      }
+
       const password_digest = await generatePassword (req.body.password)
       const userBody = { name: req.body.name, email: req.body.email, password: password_digest }
       const user = await User.create( userBody )
@@ -51,11 +61,18 @@ const CreateUser = async (req, resp, next) => {
       return next()
    }
    catch (err) {
+      console.log ( "Error in UserController.CreateUser", err)
       throw err
    }
 }
 
+const RefreshSession = (req, resp) => {
+   const payload = resp.locals.payload
+   resp.send( payload )
+}
+
 module.exports = {
    Login,
-   CreateUser
+   CreateUser,
+   RefreshSession
 }
