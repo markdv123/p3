@@ -107,7 +107,7 @@ const DeleteMemory = async (req, resp) => {
       await Memory.destroy({
          where: { id: parseInt(req.params.memory_id) },
       })
-      resp.sent({ msg: 'Memory destroyed' })
+      resp.send({ msg: 'Memory destroyed' })
    } catch (err) {
       console.log('Error in MemoryController.DeleteMemory', err)
       throw err

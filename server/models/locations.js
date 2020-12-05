@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                model: 'memories',
                key: 'id',
             },
+            onDelete: 'cascade'
          },
          lat: DataTypes.FLOAT,
          long: DataTypes.FLOAT,
