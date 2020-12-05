@@ -53,8 +53,7 @@ const CreateUser = async (req, resp, next) => {
       const user = await User.create( userBody )
       const payload = {
          id: user.id,
-         name: user.name,
-         memories: []
+         msg: 'User created'
        }
        resp.locals.payload = payload
 

@@ -2,9 +2,6 @@ node_modules/
 package-lock.json
 .env
 
-controllers/ControllerTemplate.js
-routes/RouteTemplate.js
-
 .eslintcache
 
 server/models/modelCreate.txt
