@@ -37,7 +37,10 @@ const CreateMemory = async (req, resp) => {
             lat: req.body.location.lat,
          })
 
-         resp.send({ id: memory.id, msg: 'Memory created' })
+         resp.send({
+            id: memory.id,
+            msg: 'Memory created',
+         })
       })
    } catch (err) {
       console.log('Error in MemoryController.CreateMemory', err)

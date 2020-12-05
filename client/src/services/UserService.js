@@ -3,9 +3,21 @@ import ApiClient from './ApiClient'
 /*
    __LoginUser(email,password) returns a user object
    { 
-      id: <userId> , 
+      id: <userId>, 
       name:  <displayName>, 
-      memories: [ { <memory> }, ... ] 
+      memories: [ 
+         { 
+            id: <memoryId>,
+            name: <memoryName>,
+            description: <memoryDescription>,
+            location: {
+               long: <longitude>,
+               lat: <latitude>
+            },
+            tags: [ <tagId>, <tagId>, ... ]
+         }, 
+         ... 
+      ] 
    }
 
    on failure (401), it will return 
@@ -21,7 +33,6 @@ export const __LoginUser = async (email, password) => {
       throw err
    }
 }
-
 
 /* 
    __RegisterUser(name, email, password) returns an object
@@ -48,7 +59,6 @@ export const __RegisterUser = async (name, email, password) => {
       throw err
    }
 }
-
 
 // check that we have a valid token and refresh it
 export const __CheckSession = async () => {

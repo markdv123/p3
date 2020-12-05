@@ -1,4 +1,4 @@
-const { User, Memory } = require ('../models')
+const { User, Memory, Location, Tag, TagMemory } = require ('../models')
 const bcrypt = require('bcrypt')
 
 require('dotenv').config()
@@ -8,6 +8,8 @@ const {
    checkPassword,
    generatePassword
  } = require('../middleware/passwordHandler')
+const TagController = require('./TagController')
+const memories = require('../models/memories')
 
  // req.body is { email: <email>, password: <password> }
 const Login = async (req, resp, next) => {
@@ -16,15 +18,41 @@ const Login = async (req, resp, next) => {
       const password = req.body.password
       const user = await User.findOne( { where: { email: email }, include: {
          model: Memory,
-         as: 'memories'
+         as: 'memories',
+         include: [
+            { 
+               model: Location,
+               as: 'locations',
+               attributes: [ 'lat','long' ]
+            },
+            {
+               model: Tag,
+               as: 'tags',
+               attributes: [ 'id', 'name' ],
+               through: { attributes: [] }
+            }
+         ],
+         attributes: [ 'id', 'name', 'description' ],
       }} )
-       // +== should this pre-load tags?  would we do that by iterating the memories and calling getTags? or is it a findAll/include
-      // User.findAll({ include: { all: true, nested: true }});
+       
+
       if ( user && (await checkPassword( password, user.password) ) ) {
+         // clean up the tags in memories
+         const memories = user.memories.map( e => {
+            const tags = [...e.dataValues.tags ]
+            tags.sort( (a,b) => a.dataValues.name < b.dataValues.name ? -1 : 1 )
+            return {
+               id: e.dataValues.id,
+               name: e.dataValues.name,
+               description: e.dataValues.description,
+               location: e.dataValues.locations.dataValues,
+               tags: tags.map ( tag => tag.dataValues.id )
+            }
+         })
          const payload = {
             name: user.name,
             id: user.id,
-            memories: user.memories            
+            memories: memories
           }
           resp.locals.payload = payload
           return next()
