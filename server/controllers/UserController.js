@@ -8,8 +8,6 @@ const {
    checkPassword,
    generatePassword
  } = require('../middleware/passwordHandler')
-const TagController = require('./TagController')
-const memories = require('../models/memories')
 
  // req.body is { email: <email>, password: <password> }
 const Login = async (req, resp, next) => {
@@ -98,8 +96,41 @@ const RefreshSession = (req, resp) => {
    resp.send( payload )
 }
 
+const UpdatePassword = async (req, resp) => {
+   try {
+      const email = req.body.email
+      const user = await User.findOne( { where: { email: email } } )       
+
+      if ( user && (await checkPassword( req.body.oldPassword, user.password) ) ) {
+         const password_digest = await generatePassword (req.body.newPassword)
+         await User.update( { password: password_digest }, { where: { email: email } } )
+
+         return resp.send( { msg: 'Password updated' } )
+      }
+
+      return resp.status(401).send({ msg: 'Unauthorized' })
+   }
+   catch (err) {
+      console.log('Error in UserController.UpdatePassword', err)
+      throw err
+   }
+}
+
+const UpdateName = async ( req, resp ) => {
+   try {
+      const user = await User.update( { name: req.body.name }, { where: { email: req.body.email } } )
+      resp.send( { msg: 'User updated' })
+   }
+   catch ( err ) {
+      console.log ( 'Error in UserController.UpdateName', err)
+      throw err
+   }
+}
+
 module.exports = {
    Login,
    CreateUser,
-   RefreshSession
+   RefreshSession,
+   UpdatePassword,
+   UpdateName
 }
