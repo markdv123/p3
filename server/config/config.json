@@ -2,7 +2,10 @@
   "development": {
     "database": "map_dev",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "define": {
+      "underscored": true
+    }
   },
   "test": {
     "database": "map_test",
