@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import TextInput from '../components/TextInput'
-import { __RegisterUser } from '../services/UserServices'
+import { __RegisterUser } from '../services/UserService'
 import Nav from '../components/Nav'
 
 function SignUp(props) {
@@ -67,3 +67,5 @@ function SignUp(props) {
         </div>
     )
 }
+
+export default SignUp

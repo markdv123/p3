@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
+import {__LoginUser} from '../services/UserService'
 
 function SignIn(props) {
     const [email, setEmail] = useState('')
@@ -20,7 +21,7 @@ function SignIn(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const loginData = await __LoginUser(emial, password)
+            const loginData = await __LoginUser(email, password)
             console.log(loginData)
             props.toggleAuthenticated(true, loginData.user)
         } catch (error) {
@@ -55,3 +56,5 @@ function SignIn(props) {
         </div>
     )
 }
+
+export default SignIn
