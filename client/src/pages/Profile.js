@@ -1,23 +1,30 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {withRouter} from 'react-router-dom'
+import {Grid, Container} from '@material-ui/core'
 import Map from '../components/Map'
 import Nav from '../components/Nav'
-import mapboxgl from 'mapbox-gl'
+import Memory from '../components/Memory'
 
 
 function Profile (props) {
-    console.log(props)
 
     return(
         <div>
             <Nav
                 authenticated={props.authenticated}
-                currentUser={props.currentUser}
-                />
-                <div className='map center'>
+                currentUser={props.currentUser}/>
+            <Container style={{display: 'flex'}}>
+                <Grid xs={12} sm={6}>
+               <div className='map center'>
                     <h1>Hello</h1>
                     <Map {...props}/>
-                </div>
+                </div> 
+            </Grid>
+            <Grid xs={12} sm={6}>
+                <Memory />
+            </Grid>
+            </Container>
+            
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FormControl, Button, Icon } from '@material-ui/core'
+import {withRouter} from 'react-router-dom'
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
 import {__LoginUser} from '../services/UserService'
@@ -25,7 +26,7 @@ function SignIn(props) {
             const loginData = await __LoginUser(email, password)
             console.log(loginData)
             props.toggleAuthenticated(true, loginData.user)
-            // props.history.push('/profile')
+            props.history.push('/profile')
         } catch (error) {
             setError(true)
         }
@@ -58,4 +59,4 @@ function SignIn(props) {
     )
 }
 
-export default SignIn
+export default withRouter(SignIn)

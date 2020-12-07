@@ -21,6 +21,14 @@ function App(props) {
     verifyTokenValid()
   }, [])
 
+  const addMemory = (memory) => {
+    console.log('memory', memory)
+    const user = currentUser
+    user.memories.push(memory)
+    console.log('user', user)
+    updateUser(user)
+  }
+
   const toggleAuthenticated = (value, user) => {
     updateAuthenticated(value)
     updateUser(user)
@@ -109,6 +117,7 @@ function App(props) {
             path="/createmem/:user_id"
             component={()=> (
               <CreateMemory
+                addMemory={(memory)=>addMemory(memory)}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}
