@@ -28,7 +28,7 @@ export default ({ authenticated, currentUser }) => {
                     <IconButton edge="start"  color="inherit" aria-label="menu">
                         {/* <MenuIcon /> */}
                     </IconButton>
-                    <Typography variant="h6" >
+                    <Typography variant="h6" style={{flexGrow : 1}}>
                         Title
                     </Typography>
                     <Button color="inherit" href='/profile' >Profile</Button>
