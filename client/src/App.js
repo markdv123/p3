@@ -94,9 +94,9 @@ function App(props) {
                 authenticated={authenticated}/>
             )}
           />
-          <ProtectedRoute
+          <Route
             authenticated={authenticated}
-            path="/createmem"
+            path="/createmem/:user_id"
             component={()=> (
               <CreateMemory
                 currentUser={currentUser}
