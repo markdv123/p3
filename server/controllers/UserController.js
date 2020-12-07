@@ -26,7 +26,7 @@ const Login = async (req, resp, next) => {
             {
                model: Tag,
                as: 'tags',
-               attributes: [ 'id' ],
+               attributes: [ 'id', 'name' ],
                through: { attributes: [] }
             }
          ],
