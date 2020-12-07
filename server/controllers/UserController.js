@@ -43,7 +43,7 @@ const Login = async (req, resp, next) => {
                id: e.dataValues.id,
                name: e.dataValues.name,
                description: e.dataValues.description,
-               location: e.dataValues.locations.dataValues,
+               location: e.dataValues.location.dataValues,
                tags: tags.map ( tag => tag.dataValues.id )
             }
          })
