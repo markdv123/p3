@@ -5,7 +5,7 @@ const controller = require('../controllers/MemoryController')
 
 Router.post('/create/:user_id', controller.CreateMemory)
 Router.put('/update/:memory_id', controller.UpdateMemory)
-// Router.put('/tags/:memory_id', controller.UpdateTags)
 Router.delete('/:memory_id', controller.DeleteMemory)
+Router.get('/:user_id', controller.GetMemories)
 
 module.exports = Router

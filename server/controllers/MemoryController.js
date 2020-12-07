@@ -41,7 +41,7 @@ const CreateMemory = async (req, resp) => {
 
          resp.send({
             id: memory.id,
-            ...req.body
+            ...req.body,
          })
       })
    } catch (err) {
@@ -84,15 +84,15 @@ const UpdateMemory = async (req, resp) => {
                model: Location,
                as: 'location',
                attributes: ['lat', 'long'],
-            }
+            },
          ],
          attributes: ['id', 'name', 'description', 'public'],
       })
 
-      resp.send( {
+      resp.send({
          id: memoryId,
          location: updMemory.location,
-         ...req.body
+         ...req.body,
       })
    } catch (err) {
       console.log('Error in MemoryController.UpdateMemory', err)
@@ -140,9 +140,56 @@ const DeleteMemory = async (req, resp) => {
    }
 }
 
+/* 
+   get all memories for a user
+*/
+const GetMemories = async (req, resp) => {
+   try {
+      const userId = parseInt(req.params.user_id)
+      const memories = await Memory.findAll({
+         where: { user_id: userId },
+
+         include: [
+            {
+               model: Location,
+               as: 'location',
+               attributes: ['lat', 'long'],
+            },
+            {
+               model: Tag,
+               as: 'tags',
+               attributes: ['id', 'name'],
+               through: { attributes: [] },
+            },
+         ],
+         attributes: ['id', 'name', 'description', 'public'],
+      })
+
+      console.log('memories', memories)
+      // clean up the tags in memories
+      const finalMemories = memories.map((e) => {
+         const tags = [...e.dataValues.tags]
+         tags.sort((a, b) => (a.dataValues.name < b.dataValues.name ? -1 : 1))
+         return {
+            id: e.dataValues.id,
+            name: e.dataValues.name,
+            description: e.dataValues.description,
+            location: e.dataValues.location.dataValues,
+            tags: tags.map((tag) => tag.dataValues.id),
+         }
+      })
+
+      resp.send(finalMemories)
+   } catch (err) {
+      console.log('Error in MemoryController.GetMemories', err)
+      throw err
+   }
+}
+
 module.exports = {
    CreateMemory,
    UpdateMemory,
    UpdateTags,
    DeleteMemory,
+   GetMemories,
 }
