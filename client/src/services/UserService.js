@@ -41,12 +41,6 @@ export const __LoginUser = async (email, password) => {
       id: <userId>,
       msg: 'User created'
    }
-
-   if the account creation fails (duplicate email), it will return
-   {
-      id: -1,
-      name: 'Error creating account',
-   }
 */
 export const __RegisterUser = async (name, email, password) => {
    try {
@@ -65,8 +59,6 @@ export const __RegisterUser = async (name, email, password) => {
 /*
    __UpdatePassword returns an object
    { msg: 'Password updated' }
-   or on failure
-   { msg: 'unauthorized' }
 */
 export const __UpdatePasword = async ( email, oldPassword, newPassword ) => {
    try {

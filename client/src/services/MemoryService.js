@@ -17,7 +17,15 @@ import ApiClient from './ApiClient'
    this will return an object
    {
       id: <newMemoryId>,
-      msg: "Memory created"
+
+      name: <memoryName>,
+      description: <memoryDescription>,
+      location: { 
+         long: <longitude>, 
+         lat: <latitude>
+      }
+      tags: [ <tagId>, <tagId>, ... ]
+
    }
 */
 
@@ -32,15 +40,22 @@ export const __CreateMemory = async ( userId, memory ) => {
 }
 
 /* 
-   __UpdateMemory ( memoryId, name, description ) 
+   __UpdateMemory ( memoryId, memory ) 
+   where memory is 
+   {      
+      name: <memoryName>,
+      description: <memoryDescription>,
+      public: boolean,
+      tags: [ <tagId>, <tagId>, ... ]
+   }
 
-   and returns 
-   { msg: "Memory updated" }
+   and returns the memory object
+   
 */
 
-export const __UpdateMemory = async ( memoryId, name, description ) => {
+export const __UpdateMemory = async ( memoryId, memory ) => {
    try { 
-      const res = await ApiClient.put(`/memory/update/${memoryId}`, { name, description })
+      const res = await ApiClient.put(`/memory/update/${memoryId}`, { memory })
       return res.data
    }
    catch (err) {

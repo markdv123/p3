@@ -20,17 +20,17 @@ const Login = async (req, resp, next) => {
          include: [
             { 
                model: Location,
-               as: 'locations',
+               as: 'location',
                attributes: [ 'lat','long' ]
             },
             {
                model: Tag,
                as: 'tags',
-               attributes: [ 'id', 'name' ],
+               attributes: [ 'id' ],
                through: { attributes: [] }
             }
          ],
-         attributes: [ 'id', 'name', 'description' ],
+         attributes: [ 'id', 'name', 'description', 'public' ],
       }} )
        
 
