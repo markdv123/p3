@@ -7,6 +7,7 @@ import SignIn from './pages/SignIn'
 import CreateMemory from './pages/CreateMemory'
 import EditMemory from './pages/EditMemory'
 import Profile from './pages/Profile'
+import Map from './components/Map'
 import {__CheckSession} from './services/UserService'
 
 function App(props) {
@@ -72,6 +73,14 @@ function App(props) {
             component={()=> (
               <SignIn 
                 toggleAuthenticated={toggleAuthenticated}
+                currentUser={currentUser}
+                authenticated={authenticated}/>
+            )}
+          />
+          <Route
+            path="/map"
+            component={()=> (
+              <Map 
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}

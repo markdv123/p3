@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import mapboxgl from 'mapbox-gl'
+import Nav from './Nav'
 
 function Map(props) {
     const mapContainer = useRef(null)
@@ -43,6 +44,7 @@ function Map(props) {
 
     return (
         <div>
+            <Nav />
             <div ref={el => mapContainer.current = el} style={styles}/>
         </div>
     )
