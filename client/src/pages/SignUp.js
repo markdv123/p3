@@ -8,6 +8,7 @@ function SignUp(props) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [formError, setError] = useState(false)
 
     useEffect(() => {
         console.log(props)
@@ -29,9 +30,10 @@ function SignUp(props) {
         try {
             const register = await __RegisterUser(name, email, password)
             console.log(register)
-            props.history.push('/')
+            props.toggleAuthenticated(true, register.user)
+            props.history.push('/')    
         } catch (error) {
-            console.log(error)
+            setError(true)
         }
     }
     return (
@@ -65,6 +67,7 @@ function SignUp(props) {
                     <button onClick={handleSubmit} className="btn waves-effect waves-light" type="submit" name="action">Sign Up
                          <i className="material-icons left">person_add</i>
                     </button>
+                    {formError ? <p>Account Error</p> : <p></p>}
 
                 </form>
             </div>
