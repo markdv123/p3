@@ -1,19 +1,21 @@
 import React, {useState} from 'react'
+import {withRouter} from 'react-router-dom'
 import Map from '../components/Map'
 import Nav from '../components/Nav'
 import mapboxgl from 'mapbox-gl'
 
 
 function Profile (props) {
+    console.log(props)
 
     return(
         <div>
             <Nav/>
                 <div className='map center'>
                     <h1>Hello</h1>
-                    <Map />
+                    <Map {...props}/>
                 </div>
         </div>
     )
 }
-export default Profile
+export default withRouter(Profile)
