@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
+import ViewMemory from './pages/ViewMemory'
 import CreateMemory from './pages/CreateMemory'
 import EditMemory from './pages/EditMemory'
 import Profile from './pages/Profile'
@@ -94,7 +95,16 @@ function App(props) {
                 authenticated={authenticated}/>
             )}
           />
-          <Route
+          <ProtectedRoute
+            authenticated={authenticated}
+            path="/viewmem/:memory_id"
+            component={()=> (
+              <ViewMemory 
+                currentUser={currentUser}
+                authenticated={authenticated}/>
+            )}
+          />
+          <ProtectedRoute
             authenticated={authenticated}
             path="/createmem/:user_id"
             component={()=> (
