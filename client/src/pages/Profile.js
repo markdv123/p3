@@ -10,7 +10,10 @@ function Profile (props) {
 
     return(
         <div>
-            <Nav/>
+            <Nav
+                authenticated={props.authenticated}
+                currentUser={props.currentUser}
+                />
                 <div className='map center'>
                     <h1>Hello</h1>
                     <Map {...props}/>
