@@ -152,7 +152,7 @@ const CreateMemory = (props) => {
                         renderValue={(selected) => (
                             <div className={classes.chips}>
                                 {selected.map((value) => (
-                                    <Chip key={value} label={value} className={classes.chip} />
+                                    <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
                                 ))}
                             </div>
                         )}
