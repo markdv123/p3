@@ -20,7 +20,7 @@ const Login = async (req, resp, next) => {
          include: [
             { 
                model: Location,
-               as: 'locations',
+               as: 'location',
                attributes: [ 'lat','long' ]
             },
             {
@@ -30,7 +30,7 @@ const Login = async (req, resp, next) => {
                through: { attributes: [] }
             }
          ],
-         attributes: [ 'id', 'name', 'description' ],
+         attributes: [ 'id', 'name', 'description', 'public' ],
       }} )
        
 
@@ -43,7 +43,7 @@ const Login = async (req, resp, next) => {
                id: e.dataValues.id,
                name: e.dataValues.name,
                description: e.dataValues.description,
-               location: e.dataValues.locations.dataValues,
+               location: e.dataValues.location.dataValues,
                tags: tags.map ( tag => tag.dataValues.id )
             }
          })

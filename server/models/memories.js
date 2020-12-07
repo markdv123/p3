@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
          })
          Memory.hasOne(models.Location, {
             foreignKey: 'memory_id',
-            as: 'locations'
+            as: 'location'
          })
          Memory.belongsToMany(models.Tag, {
             through: 'tags_memories',

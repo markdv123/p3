@@ -107,6 +107,7 @@ const CreateMemory = (props) => {
                 },
                 tags: tags
             })
+            
             props.history.push('/profile')
         } catch (error) {
             throw error

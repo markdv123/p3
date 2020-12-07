@@ -23,12 +23,14 @@ const CreateMemory = async (req, resp) => {
             public: req.body.public ? req.body.public : false,
          })
 
+         const tagList = []
          const newTags = req.body.tags
          newTags.forEach(async (e, i) => {
             const tag = await TagMemory.create({
                memoryId: memory.id,
                tagId: e,
             })
+            tagList.push(tag.tagId)
          })
 
          const location = await Location.create({
@@ -39,7 +41,7 @@ const CreateMemory = async (req, resp) => {
 
          resp.send({
             id: memory.id,
-            msg: 'Memory created',
+            ...req.body
          })
       })
    } catch (err) {
@@ -49,25 +51,49 @@ const CreateMemory = async (req, resp) => {
 }
 
 /* 
-   updates an existing memory. takes a memory_id param and a req.body of 
-   {
-      name: <name>,
-      description: <description>,
-   }
-
+   updates an existing memory. takes a memory_id param and a req.body of a memory (same as for create but no location)
 */
 const UpdateMemory = async (req, resp) => {
    try {
-      const memory = await Memory.update(
-         {
-            name: req.body.name,
-            description: req.body.description,
-         },
-         {
-            where: { id: parseInt(req.params.memory_id) },
-         }
-      )
-      resp.send({ msg: 'Memory updated' })
+      const memoryId = parseInt(req.params.memory_id)
+      const result = await sequelize.transaction(async (t) => {
+         const memory = await Memory.update(
+            {
+               name: req.body.name,
+               description: req.body.description,
+               public: req.body.public,
+            },
+            {
+               where: { id: memoryId },
+            }
+         )
+
+         // first delete the tags for this memory
+         await TagMemory.destroy({ where: { memory_id: memoryId } })
+         await TagMemory.bulkCreate(
+            req.body.tags.map((e) => ({
+               memoryId: memoryId,
+               tagId: e,
+            }))
+         )
+      })
+
+      const updMemory = await Memory.findByPk(memoryId, {
+         include: [
+            {
+               model: Location,
+               as: 'location',
+               attributes: ['lat', 'long'],
+            }
+         ],
+         attributes: ['id', 'name', 'description', 'public'],
+      })
+
+      resp.send( {
+         id: memoryId,
+         location: updMemory.location,
+         ...req.body
+      })
    } catch (err) {
       console.log('Error in MemoryController.UpdateMemory', err)
       throw err
