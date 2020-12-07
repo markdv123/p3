@@ -37,7 +37,7 @@ function Map(props) {
             console.log(e.lngLat)
             const yesButton = document.querySelector('#newYes')
             yesButton.addEventListener('click', () => {
-                console.log('YES')
+                props.history.push(`/createmem/${props.currentUser.id}`)
             })
             const noButton = document.querySelector('#newNo')
             noButton.addEventListener('click', () => {

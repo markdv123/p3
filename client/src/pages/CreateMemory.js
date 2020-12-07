@@ -3,6 +3,7 @@ import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, use
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
 import Icon from '@material-ui/core/Icon'
+import {withRouter} from 'react-router-dom'
 import { __CreateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
@@ -56,7 +57,7 @@ function getStyles(tag, tags, theme) {
 const CreateMemory = (props) => {
     const classes = useStyles()
     const theme = useTheme()
-    const [userId, setUserId] = useState('')
+    const [userId, setUserId] = useState(props.currentUser.id)
     const [name, setName] = useState('')
     const [description, setDesc] = useState('')
     const [location, setLocation] = useState({ long: 0, lat: 0 })
@@ -66,6 +67,7 @@ const CreateMemory = (props) => {
 
     useEffect(() => {
         getTheTags()
+        console.log(props)
     }, [])
 
     const getTheTags = async () => {
@@ -183,4 +185,4 @@ const CreateMemory = (props) => {
     )
 }
 
-export default CreateMemory
+export default withRouter(CreateMemory)
