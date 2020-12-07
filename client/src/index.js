@@ -8,7 +8,7 @@ import Nav from './components/Nav'
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App /> 
+      <Map /> 
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
