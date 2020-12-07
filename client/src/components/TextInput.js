@@ -1,5 +1,5 @@
 import React from 'react'
-import {TextField} from '@material-ui/core'
+import {TextField, Input} from '@material-ui/core'
 
 export default (props) =>
   props.fieldType === 'textfield' ? (
@@ -11,7 +11,7 @@ export default (props) =>
       placeholder={props.placeholder}
     />
   ) : (
-    <input
+    <Input
       type={props.type}
       name={props.name}
       value={props.value}
