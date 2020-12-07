@@ -6,7 +6,7 @@ function Map(props) {
     const mapContainer = useRef(null)
 
     const styles = {
-        width: "50%",
+        width: "90%",
         height: "calc(80vh - 80px)",  
         position: "relative",
         padding: '10px',

@@ -97,7 +97,7 @@ const CreateMemory = (props) => {
 
     const handleSubmit = async () => {
         try {
-            await __CreateMemory( userId, {
+            const res = await __CreateMemory( userId, {
                 name: name,
                 description: description,
                 public: isPublic,
@@ -107,7 +107,8 @@ const CreateMemory = (props) => {
                 },
                 tags: tags
             })
-            
+            console.log('res', res)
+            props.addMemory(res)
             props.history.push('/profile')
         } catch (error) {
             throw error
