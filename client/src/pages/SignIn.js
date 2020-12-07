@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FormControl, Button } from '@material-ui/core'
+import { FormControl, Button, Icon } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
 import {__LoginUser} from '../services/UserService'
@@ -48,8 +48,9 @@ function SignIn(props) {
                         value={password}
                         onChange={handlePassword}
                     />
-                    <Button onClick={handleSubmit} className="btn waves-effect waves-light" name="action">Sign In
-                        <i className="material-icons left">person</i>
+                    <br/>
+                    <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
+                        Sign In
                     </Button>
                     {formError ? <p>Error While Logging In</p> : <p></p>}
                 </FormControl>
