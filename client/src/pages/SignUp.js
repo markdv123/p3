@@ -17,11 +17,11 @@ function SignUp(props) {
     }
 
     const handleEmail = ({ target }) => {
-        handleEmail(target.value)
+        setEmail(target.value)
     }
 
     const handlePassword = ({ target }) => {
-        handlePassword(target.value)
+        setPassword(target.value)
     }
 
     const handleSubmit = async (e) => {
@@ -62,6 +62,10 @@ function SignUp(props) {
                         value={password}
                         onChange={handlePassword}
                     />
+                    <button onClick={handleSubmit} className="btn waves-effect waves-light" type="submit" name="action">Sign Up
+                         <i className="material-icons left">person_add</i>
+                    </button>
+
                 </form>
             </div>
         </div>
