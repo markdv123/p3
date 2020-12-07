@@ -10,7 +10,9 @@ function Profile (props) {
 
     return(
         <div>
-            <Nav/>
+            <Nav
+                authenticated={props.authenticated}
+                currentUser={props.currentUser}/>
             <Container style={{display: 'flex'}}>
                 <Grid xs={12} sm={6}>
                <div className='map center'>

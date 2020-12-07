@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { FormControl, Button } from '@material-ui/core'
+import { FormControl, Button, Icon } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import { __RegisterUser } from '../services/UserService'
 import Nav from '../components/Nav'
@@ -63,9 +63,9 @@ function SignUp(props) {
                     value={password}
                     onChange={handlePassword}
                 />
-                <Button onClick={handleSubmit} className="btn waves-effect waves-light" type="submit" name="action">Sign Up
-                         <i className="material-icons left">person_add</i>
-
+                <br/>
+                <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person_add</Icon>}>
+                    Sign Up
                 </Button>
                     {formError ? <p>Account Error</p> : <p></p>}
 

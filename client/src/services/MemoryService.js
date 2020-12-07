@@ -96,3 +96,14 @@ export const __DeleteMemory = async ( memoryId ) => {
       throw err
    }
 }
+
+
+export const __GetMemories = async ( userId ) => {
+   try {
+      const res = await ApiClient.get(`/memory/${userId}`)
+      return res.data
+   }
+   catch (err) {
+      throw err
+   }
+}
