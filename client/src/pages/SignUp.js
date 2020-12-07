@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import { FormControl, Button } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import { __RegisterUser } from '../services/UserService'
 import Nav from '../components/Nav'
@@ -39,38 +40,36 @@ function SignUp(props) {
     return (
         <div>
             <Nav />
-            <div className="signup flex-col center">
+            <FormControl className="flex-col" onSubmit={handleSubmit}>
+                <TextInput
+                    placeholder="Your Name"
+                    type="text"
+                    name="name"
+                    value={name}
+                    onChange={handleName}
+                />
+                <TextInput
+                    placeholder="Your Email"
+                    name="email"
+                    value={email}
+                    type="email"
+                    onChange={handleEmail}
+                />
 
-                <form className="flex-col" onSubmit={handleSubmit}>
-                    <TextInput
-                        placeholder="Your Name"
-                        type="text"
-                        name="name"
-                        value={name}
-                        onChange={handleName}
-                    />
-                    <TextInput
-                        placeholder="Your Email"
-                        name="email"
-                        value={email}
-                        type="email"
-                        onChange={handleEmail}
-                    />
-
-                    <TextInput
-                        placeholder="Password"
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={handlePassword}
-                    />
-                    <button onClick={handleSubmit} className="btn waves-effect waves-light" type="submit" name="action">Sign Up
+                <TextInput
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={handlePassword}
+                />
+                <Button onClick={handleSubmit} className="btn waves-effect waves-light" type="submit" name="action">Sign Up
                          <i className="material-icons left">person_add</i>
-                    </button>
+
+                </Button>
                     {formError ? <p>Account Error</p> : <p></p>}
 
-                </form>
-            </div>
+            </FormControl>
         </div>
     )
 }
