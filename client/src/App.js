@@ -23,7 +23,7 @@ function App(props) {
   const toggleAuthenticated = (value, user) => {
     updateAuthenticated(value)
     updateUser(user)
-    props.history.push('/')
+    props.history.push('/profile')
   }
 
   const verifyTokenValid = async () => {
@@ -87,16 +87,16 @@ function App(props) {
           />
           <ProtectedRoute
             authenticated={authenticated}
-            path="/profile/:profile_id"
+            path="/profile"
             component={()=> (
               <Profile 
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}
           />
-          <ProtectedRoute
+          <Route
             authenticated={authenticated}
-            path="/createmem"
+            path="/createmem/:user_id"
             component={()=> (
               <CreateMemory
                 currentUser={currentUser}
