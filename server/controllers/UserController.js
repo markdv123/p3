@@ -68,10 +68,7 @@ const CreateUser = async (req, resp, next) => {
       // first check to see if the user already exists, if so, return a graceful error...
       const checkUser = await User.findOne( { where: { email: req.body.email } } )
       if ( checkUser ) {
-         return resp.send( {
-            id: -1,
-            name: 'Error creating account',
-         })
+         return resp.status(400).send({ msg: 'Error creating account' })
       }
 
       const password_digest = await generatePassword (req.body.password)
