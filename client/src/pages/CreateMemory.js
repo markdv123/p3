@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme } from '@material-ui/core'
+import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme, Button } from '@material-ui/core'
 import TextInput from '../components/TextInput'
+import Nav from '../components/Nav'
+import Icon from '@material-ui/core/Icon'
 import { __CreateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
+        minWidth: 200,
         maxWidth: 300,
     },
     chips: {
@@ -42,10 +44,10 @@ const MenuProps = {
     },
 }
 
-function getStyles(name, tags, theme) {
+function getStyles(tag, tags, theme) {
     return {
         fontWeight:
-            tags.indexOf(name) === -1
+            tags.indexOf(tag) === -1
                 ? theme.typography.fontWeightRegular
                 : theme.typography.fontWeightMedium,
     }
@@ -64,13 +66,11 @@ const CreateMemory = (props) => {
 
     useEffect(() => {
         getTheTags()
-        console.log(allTags)
     }, [])
 
     const getTheTags = async () => {
         try {
             const everyTag = await __GetAllTags()
-            console.log(everyTag)
             setAllTags(everyTag)
         } catch (error) {
             throw error
@@ -93,8 +93,27 @@ const CreateMemory = (props) => {
         setTags(target.value)
     ]
 
+    const handleSubmit = async () => {
+        try {
+            await __CreateMemory( userId, {
+                name: name,
+                description: description,
+                public: isPublic,
+                location: {
+                    long: location.long,
+                    lat: location.lat
+                },
+                tags: tags
+            })
+            props.history.push('/profile')
+        } catch (error) {
+            throw error
+        }
+    }
+
     return (
         <div>
+            <Nav />
             <FormControl className={classes.formcontrol} noValidate autoComplete="off">
                 <TextInput
                     id="standard-basic"
@@ -111,17 +130,16 @@ const CreateMemory = (props) => {
                     value={description}
                     onChange={handleDesc}
                 />
-                <div>
-                    <label>Public or Private Memory</label>
-                    <select className="browser-default"
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Public or Private Memory</InputLabel>
+                    <Select
                         name='isPublic'
                         value={isPublic}
                         onChange={handlePublic}>
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="false">Public</option>
-                        <option value="true">Private</option>
-                    </select>
-                </div>
+                        <MenuItem value="false">Public</MenuItem>
+                        <MenuItem value="true">Private</MenuItem>
+                    </Select>
+                </FormControl>
                 <FormControl className={classes.formControl}>
                     <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
                     <Select
@@ -140,13 +158,25 @@ const CreateMemory = (props) => {
                         )}
                         MenuProps={MenuProps}
                     >
-                        {allTags.map((tag, i) => (
-                            <MenuItem key={i} value={tag.id} style={getStyles(tag.name, tags, theme)}>
-                                {tag.name}
-                            </MenuItem>
-                        ))}
+                        {allTags.map((tag) => {
+                            console.log(tag)
+                            return (
+                                <MenuItem key={tag.id} value={tag.id} style={getStyles(tag, tags, theme)}>
+                                    {tag.name}
+                                </MenuItem>
+                            )
+                        })}
                     </Select>
                 </FormControl>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>send</Icon>}
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </Button>
             </FormControl>
 
         </div>
