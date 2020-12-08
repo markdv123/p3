@@ -7,11 +7,12 @@ const { Memory, TagMemory, Location, Tag, sequelize } = require('../models')
       name: <name>,
       description: <description>,
       public: <true|false>    //optional...default to false,
+      date: <memoryDate>      //optional...default to null
       location: { long: <longitude>, lat: <lattitude> }
       tags: [ <tagId>, <tagId>, ... ]
    }
-
 */
+
 const CreateMemory = async (req, resp) => {
    try {
       const result = await sequelize.transaction(async (t) => {
@@ -21,6 +22,7 @@ const CreateMemory = async (req, resp) => {
             name: req.body.name,
             description: req.body.description,
             public: req.body.public ? req.body.public : false,
+            date: req.body.date ? req.body.date : null
          })
 
          const tagList = []
@@ -41,6 +43,7 @@ const CreateMemory = async (req, resp) => {
 
          resp.send({
             id: memory.id,
+            public: memory.public,
             ...req.body,
          })
       })
@@ -62,6 +65,7 @@ const UpdateMemory = async (req, resp) => {
                name: req.body.name,
                description: req.body.description,
                public: req.body.public,
+               date: req.body.date
             },
             {
                where: { id: memoryId },
@@ -86,7 +90,7 @@ const UpdateMemory = async (req, resp) => {
                attributes: ['lat', 'long'],
             },
          ],
-         attributes: ['id', 'name', 'description', 'public'],
+         attributes: ['id', 'name', 'description', 'public', 'date'],
       })
 
       resp.send({
@@ -162,7 +166,7 @@ const GetMemories = async (req, resp) => {
                through: { attributes: [] },
             },
          ],
-         attributes: ['id', 'name', 'description', 'public'],
+         attributes: ['id', 'name', 'description', 'public', 'date'],
       })
 
       console.log('memories', memories)
@@ -175,6 +179,7 @@ const GetMemories = async (req, resp) => {
             name: e.dataValues.name,
             description: e.dataValues.description,
             location: e.dataValues.location.dataValues,
+            date: e.dataValues.date,
             tags: tags.map((tag) => tag.dataValues.id),
          }
       })
