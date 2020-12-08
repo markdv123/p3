@@ -12,7 +12,7 @@ const Memory = (props) => {
 
     useEffect(()=> {
         setMode(props.mode)
-    })
+    }, [props.mode])
 
     let content = ''
     switch (mode) {
