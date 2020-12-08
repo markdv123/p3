@@ -7,7 +7,7 @@ import {Button, Icon} from '@material-ui/core'
 function UpdateName(props) {
     const [name, updateName] = useState('')
     const [email, updateEmail] = useState('')
-    const [password, updatePassword] = useState('')
+    
 
     useEffect(() => {
         console.log(props)
@@ -24,9 +24,10 @@ function UpdateName(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const update = await __UpdateName(email, name)
-            console.log(update)
+            console.log(props.currentUser)
+            const update = await __UpdateName(props.currentUser.email, name)
             props.history.push('/profile')
+            console.log(name)
         } catch (error) {
             console.log(error)
         }
@@ -44,7 +45,7 @@ function UpdateName(props) {
                 />
 
                 <br />
-                <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
+                <Button onClick={handleSubmit}  variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
                     Submit
                 </Button>
             </form>
