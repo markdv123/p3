@@ -4,6 +4,7 @@ import { List, ListItem, Button, Icon } from '@material-ui/core'
 import ViewMemory from '../pages/ViewMemory'
 import CreateMemory from '../pages/CreateMemory'
 import EditMemory from '../pages/EditMemory'
+import { __DeleteMemory } from '../services/MemoryService'
 
 const Memory = (props) => {
     const [mode, setMode] = useState('')
@@ -31,9 +32,9 @@ const Memory = (props) => {
         case "view":
             content = (
                 <div>
-                    <ViewMemory />
+                    <ViewMemory mem={props.memories.find(e=> e.id === props.viewMem)}/>
                     <Button style={{margin: '5px'}} variant="contained" color="primary" onClick={()=> {setMode("edit")}} endIcon={<Icon>edit</Icon>}>Edit Memory</Button>
-                    <Button style={{margin: '5px'}} variant="contained" color="primary" onClick={()=> {console.log('delete button clicked')}} endIcon={<Icon>delete</Icon>}>Delete Memory</Button>
+                    <Button style={{margin: '5px'}} variant="contained" color="primary" onClick={()=> {props.deleteMem(props.viewMem)}} endIcon={<Icon>delete</Icon>}>Delete Memory</Button>
                 </div>               
             )
             break
@@ -47,7 +48,7 @@ const Memory = (props) => {
             break
         case "edit":
             content = (
-                <EditMemory />
+                <EditMemory mem={props.memories.find(e=> e.id === props.viewMem)}/>
             )
             break
     }
