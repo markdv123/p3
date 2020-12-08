@@ -5,19 +5,7 @@ import ApiClient from './ApiClient'
    { 
       id: <userId>, 
       name:  <displayName>, 
-      memories: [ 
-         { 
-            id: <memoryId>,
-            name: <memoryName>,
-            description: <memoryDescription>,
-            location: {
-               long: <longitude>,
-               lat: <latitude>
-            },
-            tags: [ <tagId>, <tagId>, ... ]
-         }, 
-         ... 
-      ] 
+      email: <userEmail>
    }
 
    on failure (401), it will return 
@@ -25,6 +13,7 @@ import ApiClient from './ApiClient'
       msg: "unauthorized" 
    }
 */
+
 export const __LoginUser = async (email, password) => {
    try {
       const res = await ApiClient.post('/user/login', { email, password })
@@ -34,12 +23,12 @@ export const __LoginUser = async (email, password) => {
    }
 }
 
-
 /* 
-   __RegisterUser(name, email, password) returns an object
-   {  
-      id: <userId>,
-      msg: 'User created'
+   __RegisterUser(name, email, password) returns a user object
+   { 
+      id: <userId>, 
+      name:  <displayName>, 
+      email: <userEmail>
    }
 */
 export const __RegisterUser = async (name, email, password) => {
