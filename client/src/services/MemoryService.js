@@ -100,7 +100,18 @@ export const __DeleteMemory = async ( memoryId ) => {
 
 export const __GetMemories = async ( userId ) => {
    try {
-      const res = await ApiClient.get(`/memory/${userId}`)
+      const res = await ApiClient.get(`/memory/user/${userId}`)
+      return res.data
+   }
+   catch (err) {
+      throw err
+   }
+}
+
+
+export const __GetPublicMemories = async () => {
+   try {
+      const res = await ApiClient.get('/memory/public')
       return res.data
    }
    catch (err) {

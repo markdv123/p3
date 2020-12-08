@@ -3,9 +3,11 @@ const Router = require('express').Router()
 const { verifyToken, getToken } = require('../middleware/jwtHandler')
 const controller = require('../controllers/MemoryController')
 
-Router.post('/create/:user_id', controller.CreateMemory)
-Router.put('/update/:memory_id', controller.UpdateMemory)
-Router.delete('/:memory_id', controller.DeleteMemory)
-Router.get('/:user_id', controller.GetMemories)
+Router.post('/create/:user_id', getToken, verifyToken,  controller.CreateMemory)
+Router.put('/update/:memory_id', getToken, verifyToken,  controller.UpdateMemory)
+Router.delete('/:memory_id',  getToken, verifyToken, controller.DeleteMemory)
+Router.get('/user/:user_id',  getToken, verifyToken, controller.GetMemories)
+
+Router.get('/public', controller.GetPublicMemories)
 
 module.exports = Router

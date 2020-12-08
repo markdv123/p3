@@ -13,6 +13,8 @@ function Map(props) {
    const [popupLoc, setPopupLoc] = useState([0, 0])
    const [mapHandle, setMapHandle] = useState(null)
    const [showMem, setShowMem] = useState(null)
+   const [publicView, setPublicView] = useState(false)
+   const [zoomDefault, setZoomDefault] = useState(13)
       
 
    const styles = {
@@ -27,6 +29,13 @@ function Map(props) {
 
 
    useEffect(() => {
+      if ( props.publicView ) {
+         setPublicView(true)
+         setShowMem( { location: { long: -100, lat: 40 } } )
+         setZoomDefault( 3 )
+         gotoMemory( { location: { long: -90, lat: 30 } } )
+         return
+      }
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
       let startMem = null
       if (props.gotoMemory >= 0) {
@@ -41,33 +50,41 @@ function Map(props) {
 
 
    const gotoMemory = (memory) => {
-       console.log('memory', memory)
       if (mapHandle)
          mapHandle.flyTo({
             center: [memory.location.long, memory.location.lat],
             speed: 1.5,
             curve: 1.3,
-            zoom: [13],
+            zoom: [zoomDefault],
          })
    }
 
    const viewMemory = (e, m) => {
+      if ( publicView) return
+
       const thisFeature = e.target.queryRenderedFeatures(e.point)[0]
       // call the callback from profiles to view a memory, just give it the thisFeature.properties.featureId
       props.viewMemory(thisFeature.properties.featureId)
    }
 
    const enterExit = () => {
+      if ( publicView ) {
+         // do a popup on hover?
+      }
       setHover(!hoverFlag)
    }
 
    const createMemory = () => {
+      if ( publicView ) return
+
       setPopup(false)
       // call the callback from profiles to create memories with popupLoc as the location
       props.createMemory({ lng: popupLoc.lng, lat: popupLoc.lat })
    }
 
    const handleMapClick = (map, event) => {
+      if ( publicView ) return
+
       // if we're hovering, this event needs to be handled by ViewMemory, not me.
       if (hoverFlag) return
       if (hasPopup) {

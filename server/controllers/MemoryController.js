@@ -1,5 +1,5 @@
 const { response } = require('express')
-const { Memory, TagMemory, Location, Tag, sequelize } = require('../models')
+const { Memory, TagMemory, Location, Tag, User, sequelize } = require('../models')
 
 /* 
    create memory takes a user_id param and a req.body of 
@@ -172,7 +172,6 @@ const GetMemories = async (req, resp) => {
          attributes: ['id', 'name', 'description', 'public', 'date'],
       })
 
-      console.log('memories', memories)
       // clean up the tags in memories
       const finalMemories = memories.map((e) => {
          const tags = [...e.dataValues.tags]
@@ -195,10 +194,63 @@ const GetMemories = async (req, resp) => {
    }
 }
 
+
+const GetPublicMemories = async (req, resp) => {
+   try {
+      const memories = await Memory.findAll({
+         where: { public: true },
+
+         include: [
+            {
+               model: Location,
+               as: 'location',
+               attributes: ['lat', 'long'],
+            },
+            {
+               model: Tag,
+               as: 'tags',
+               attributes: ['id', 'name'],
+               through: { attributes: [] },
+            },
+            {
+               model: User,
+               as: 'user',
+               attributes: [ 'name' ]
+            }
+         ],
+         attributes: ['id', 'name', 'description', 'public', 'date'],
+      })
+
+      // clean up the tags in memories
+      const finalMemories = memories.map((e) => {
+         const tags = [...e.dataValues.tags]
+         tags.sort((a, b) => (a.dataValues.name < b.dataValues.name ? -1 : 1))
+         return {
+            id: e.dataValues.id,
+            name: e.dataValues.name,
+            description: e.dataValues.description,
+            location: e.dataValues.location.dataValues,
+            date: e.dataValues.date,
+            tags: tags.map((tag) => tag.dataValues.id),
+            public: e.dataValues.public,
+            user: e.dataValues.user.name
+         }
+      })
+
+      resp.send(finalMemories)
+   }
+   catch ( err) {
+      console.log ( 'Error in MemoryController.GetPublicMemories', err)
+      throw err
+   }
+}
+
+
 module.exports = {
    CreateMemory,
    UpdateMemory,
    UpdateTags,
    DeleteMemory,
    GetMemories,
+   GetPublicMemories
 }
