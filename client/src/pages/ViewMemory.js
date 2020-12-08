@@ -21,11 +21,15 @@ const ViewMemory = (props) => {
     const getTheTags = async () => {
         try {
             const everyTag = await __GetAllTags()
-            const theTags = everyTag.filter((tag)=> props.mem.tags.find(e=> e === tag.id))
+            const theTags = everyTag.filter((tag) => props.mem.tags.find(e => e === tag.id))
             setPostTags(theTags)
         } catch (error) {
             throw error
         }
+    }
+
+    const convertDate = (d) => {
+        return new Date(d).toDateString()
     }
 
     // const setTags = () => {
@@ -43,6 +47,7 @@ const ViewMemory = (props) => {
     return (
         <div>
             <h2>{props.mem.name}</h2>
+            <h3>{convertDate(props.mem.date)}</h3>
             <p>{props.mem.description}</p>
             <p>Tags:</p>
             <ul>

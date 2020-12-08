@@ -88,6 +88,7 @@ const CreateMemory = (props) => {
         try {
             const res = await __CreateMemory(userId, {
                 name: name,
+                date: date,
                 description: description,
                 public: isPublic,
                 location: {
