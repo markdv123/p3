@@ -31,8 +31,8 @@ function SignUp(props) {
         try {
             const register = await __RegisterUser(name, email, password)
             console.log(register)
+            props.history.push('/profile')    
             props.toggleAuthenticated(true, register.user)
-            props.history.push('/')    
         } catch (error) {
             setError(true)
         }
@@ -67,8 +67,8 @@ function SignUp(props) {
                 <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person_add</Icon>}>
                     Sign Up
                 </Button>
-                    {formError ? <p>Account Error</p> : <p></p>}
 
+                    {formError ? <p>Account Error</p> : <p></p>}
             </FormControl>
         </div>
     )

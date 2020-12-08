@@ -61,6 +61,7 @@ function App(props) {
             component={(props)=> (
               <SignUp 
                 {...props}
+                toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}
