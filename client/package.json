@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.5.0",
@@ -13,7 +14,6 @@
     "react-mapbox-gl": "^4.8.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "react-window": "^1.8.6",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
