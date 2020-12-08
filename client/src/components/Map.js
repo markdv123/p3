@@ -22,7 +22,15 @@ function Map(props) {
       bottom: 'auto',
    }
 
-   useEffect(() => {}, [])
+   useEffect(() => {
+      // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
+      // gotoMemory={gotoMemory}
+      if ( props.gotoMemory >= 0 ) {
+         const showMem = props.memories.find(e => e.id = props.gotoMemory )
+         console.log ( `go to memory ${props.gotoMemory}`)
+      }
+         
+   }, [])
 
    const viewMemory = (e, m) => {
       console.log ('m', m)
@@ -31,7 +39,9 @@ function Map(props) {
       // console.log('fId is', thisFeature.properties.featureId)
       // call the callback from profiles to view a memory, just give it the thisFeature.properties.featureId
       console.log ( `props.viewMemory(${thisFeature.properties.featureId})`)
+      props.viewMemory( thisFeature.properties.featureId)
    }
+
 
    const enterExit = () => {
       setHover(!hoverFlag)
@@ -40,7 +50,7 @@ function Map(props) {
    const createMemory = () => {
       setPopup(false)
       // call the callback from profiles to create memories with popupLoc as the location
-      console.log ( `props.createMemory(${popupLoc})`)
+      props.createMemory ( { lng: popupLoc.lng, lat: popupLoc.lat } )
    }
 
    const handleMapClick = (map, event) => {
@@ -59,6 +69,7 @@ function Map(props) {
          <MapView
             style="mapbox://styles/mapbox/dark-v10"
             containerStyle={styles}
+            
             onClick={handleMapClick}
          >
             <Layer
