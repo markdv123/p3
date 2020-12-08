@@ -4,7 +4,7 @@ import { Grid, Container } from '@material-ui/core'
 import Map from '../components/Map'
 import Nav from '../components/Nav'
 import Memory from '../components/Memory'
-import { __GetMemories } from '../services/MemoryService'
+import { __GetMemories, __DeleteMemory } from '../services/MemoryService'
 
 function Profile(props) {
    const [memories, setMemories] = useState([])
@@ -42,6 +42,16 @@ function Profile(props) {
       setGoto(-1)
    }
 
+   const deleteMem = async (memoryId) => {
+       try {
+           await __DeleteMemory(memoryId)
+           setMode('list')
+           await getMems()
+       } catch (error) {
+           throw error
+       }
+   }
+
    return (
       <div>
          <Nav
@@ -67,6 +77,7 @@ function Profile(props) {
                   authenticated={props.authenticated}
                   currentUser={props.currentUser}
                   mode={mode}
+                  deleteMem={deleteMem}
                   viewMem={ mode === 'view' ? viewMem : '' }
                   newLoc={ mode === 'create' ? newLoc : '' }
                />

@@ -64,7 +64,6 @@ const CreateMemory = (props) => {
     const [allTags, setAllTags] = useState([])
 
     useEffect(() => {
-        console.log(props)
         getTheTags()
     }, [])
 

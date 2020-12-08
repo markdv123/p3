@@ -56,11 +56,11 @@ function getStyles(tag, tags, theme) {
 const EditMemory = (props) => {
     const classes = useStyles()
     const theme = useTheme()
-    const [memoryId, setMemoryId] = useState('')
-    const [name, setName] = useState('')
-    const [description, setDesc] = useState('')
-    const [isPublic, setPublic] = useState(null)
-    const [tags, setTags] = useState([])
+    const [memoryId, setMemoryId] = useState(props.mem.id)
+    const [name, setName] = useState(props.mem.name)
+    const [description, setDesc] = useState(props.mem.description)
+    const [isPublic, setPublic] = useState(props.mem.public)
+    const [tags, setTags] = useState(props.mem.tags)
     const [allTags, setAllTags] = useState([])
 
     useEffect(() => {
@@ -160,7 +160,7 @@ const EditMemory = (props) => {
                         renderValue={(selected) => (
                             <div className={classes.chips}>
                                 {selected.map((value) => (
-                                    <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
+                                    <Chip key={value} label={allTags.find(e => e.id === value) ? allTags.find(e => e.id === value).name : ''} className={classes.chip} />
                                 ))}
                             </div>
                         )}
