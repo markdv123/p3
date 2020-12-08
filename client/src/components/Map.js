@@ -80,7 +80,7 @@ function Map(props) {
                {props.memories.map((e) => (
                   <Feature
                      key={e.id}
-                     coordinates={[e.location.lng, e.location.lat]}
+                     coordinates={[e.location.long, e.location.lat]}
                      onClick={viewMemory}
                      onMouseEnter={enterExit}
                      onMouseLeave={enterExit}
