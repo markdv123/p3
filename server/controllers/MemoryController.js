@@ -58,14 +58,16 @@ const CreateMemory = async (req, resp) => {
 */
 const UpdateMemory = async (req, resp) => {
    try {
+      const oldMemory = req.body.memory
+      
       const memoryId = parseInt(req.params.memory_id)
       const result = await sequelize.transaction(async (t) => {
          const memory = await Memory.update(
             {
-               name: req.body.name,
-               description: req.body.description,
-               public: req.body.public,
-               date: req.body.date
+               name: oldMemory.name,
+               description: oldMemory.description,
+               public: oldMemory.public,
+               date: oldMemory.date
             },
             {
                where: { id: memoryId },
@@ -74,8 +76,9 @@ const UpdateMemory = async (req, resp) => {
 
          // first delete the tags for this memory
          await TagMemory.destroy({ where: { memory_id: memoryId } })
+
          await TagMemory.bulkCreate(
-            req.body.tags.map((e) => ({
+            oldMemory.tags.map((e) => ({
                memoryId: memoryId,
                tagId: e,
             }))
@@ -96,7 +99,7 @@ const UpdateMemory = async (req, resp) => {
       resp.send({
          id: memoryId,
          location: updMemory.location,
-         ...req.body,
+         ...oldMemory,
       })
    } catch (err) {
       console.log('Error in MemoryController.UpdateMemory', err)
@@ -181,6 +184,7 @@ const GetMemories = async (req, resp) => {
             location: e.dataValues.location.dataValues,
             date: e.dataValues.date,
             tags: tags.map((tag) => tag.dataValues.id),
+            public: e.dataValues.public
          }
       })
 
