@@ -29,7 +29,7 @@ const ViewMemory = (props) => {
     }
 
     const convertDate = (d) => {
-        return new Date(d).toDateString()
+        return new Date(d).toLocaleString()
     }
 
     // const setTags = () => {
