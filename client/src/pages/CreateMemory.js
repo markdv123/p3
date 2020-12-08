@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme, Button, Grid } from '@material-ui/core'
+import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme, Button, Grid, TextField } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import Icon from '@material-ui/core/Icon'
 import { withRouter } from 'react-router-dom'
@@ -129,7 +129,11 @@ const CreateMemory = (props) => {
                 </Grid>
                 <Grid container justify="center" alignItems="center">
                     <FormControl className={classes.formcontrol} noValidate autoComplete="off">
-                        <TextInput
+                        <TextField
+                            style={{width: '450px'}}
+                            multiline
+                            variant="outlined"
+                            id="outlined-textarea"
                             className={classes.textField}
                             placeholder="Description"
                             name="description"

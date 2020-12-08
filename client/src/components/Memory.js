@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { List, ListItem } from '@material-ui/core'
+import { List, ListItem, Button, Icon } from '@material-ui/core'
 import ViewMemory from '../pages/ViewMemory'
 import CreateMemory from '../pages/CreateMemory'
 import EditMemory from '../pages/EditMemory'
 
 const Memory = (props) => {
-    const [mode, setMode] = useState(3)
+    const [mode, setMode] = useState("view")
 
     let content = ''
     switch (mode) {
-        case 1:
+        case "list":
             content = (
                 <div>
                     <h3>Click on the Map to create a memory</h3>
@@ -23,19 +23,23 @@ const Memory = (props) => {
                 </div>
             )
             break
-        case 2:
+        case "view":
             content = (
-                <ViewMemory />
+                <div>
+                    <ViewMemory />
+                    <Button style={{margin: '5px'}} variant="contained" color="primary" onClick={()=> {setMode("edit")}} endIcon={<Icon>edit</Icon>}>Edit Memory</Button>
+                    <Button style={{margin: '5px'}} variant="contained" color="primary" onClick={()=> {console.log('delete button clicked')}} endIcon={<Icon>delete</Icon>}>Delete Memory</Button>
+                </div>               
             )
             break
-        case 3:
+        case "create":
             content = (
                 <CreateMemory 
                     authenticated={props.authenticated}
                     currentUser={props.currentUser}/>
             )
             break
-        case 4:
+        case "edit":
             content = (
                 <EditMemory />
             )
