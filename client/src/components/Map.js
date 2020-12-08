@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { __GetAllTags } from '../services/TagService'
 
 const MapView = ReactMapBoxGl({
    accessToken:
@@ -15,7 +16,7 @@ function Map(props) {
    const [showMem, setShowMem] = useState(null)
    const [publicView, setPublicView] = useState(false)
    const [zoomDefault, setZoomDefault] = useState(13)
-      
+   const [allTags, setAllTags] = useState([])
 
    const styles = {
       width: '90%',
@@ -27,27 +28,43 @@ function Map(props) {
       bottom: 'auto',
    }
 
+   const tagName = (tagId) => allTags.find((e) => (e.id === tagId)).name
+
+   const tagString = ( tags ) => {
+      let tmp = ''
+      tags.forEach( (e,i) => i===0 ? tmp += tagName(e) : tmp += ` - ${tagName(e)}`)
+      return tmp
+   }
+
+   const getTags = async () => {
+      try {
+         const res = await __GetAllTags()
+         setAllTags( res )
+
+      } catch (err) {
+         throw err
+      }
+   }
 
    useEffect(() => {
-      if ( props.publicView ) {
+      if (props.publicView) {
          setPublicView(true)
-         setShowMem( { location: { long: -100, lat: 40 } } )
-         setZoomDefault( 3 )
-         gotoMemory( { location: { long: -90, lat: 30 } } )
+         setShowMem({ location: { long: -100, lat: 40 } })
+         setZoomDefault(3)
+         gotoMemory({ location: { long: -90, lat: 30 } })
+         getTags()
          return
       }
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
       let startMem = null
       if (props.gotoMemory >= 0) {
-         startMem = props.memories.find((e) => (e.id === props.gotoMemory)) 
+         startMem = props.memories.find((e) => e.id === props.gotoMemory)
       } else if (props.memories.length) {
-         startMem = props.memories[props.memories.length - 1] 
+         startMem = props.memories[props.memories.length - 1]
       }
-      setShowMem ( startMem )  
-      if ( startMem )
-         gotoMemory ( startMem )
+      setShowMem(startMem)
+      if (startMem) gotoMemory(startMem)
    }, [props.memories, props.gotoMemory])
-
 
    const gotoMemory = (memory) => {
       if (mapHandle)
@@ -60,22 +77,33 @@ function Map(props) {
    }
 
    const viewMemory = (e, m) => {
-      if ( publicView) return
+      if (publicView) return
 
       const thisFeature = e.target.queryRenderedFeatures(e.point)[0]
-      // call the callback from profiles to view a memory, just give it the thisFeature.properties.featureId
-      props.viewMemory(thisFeature.properties.featureId)
+      // call the callback from profiles to view a memory, just give it the thisFeature.properties.memoryId
+      props.viewMemory(thisFeature.properties.memoryId)
    }
 
-   const enterExit = () => {
-      if ( publicView ) {
-         // do a popup on hover?
+   const hover = (e, m) => {
+      if (publicView) {
+         // do a popup on hover
+         if (!hoverFlag) {
+            // we are just starting to hover
+            const memoryId = e.feature.properties.memoryId
+            const memory = props.memories.find((e) => (e.id === memoryId))
+            setShowMem( memory )
+      
+            setPopupLoc( { lng: memory.location.long, lat: memory.location.lat } )
+            setPopup(true)
+         } else {
+            setPopup(false)
+         }
       }
       setHover(!hoverFlag)
    }
 
    const createMemory = () => {
-      if ( publicView ) return
+      if (publicView) return
 
       setPopup(false)
       // call the callback from profiles to create memories with popupLoc as the location
@@ -83,7 +111,7 @@ function Map(props) {
    }
 
    const handleMapClick = (map, event) => {
-      if ( publicView ) return
+      if (publicView) return
 
       // if we're hovering, this event needs to be handled by ViewMemory, not me.
       if (hoverFlag) return
@@ -99,9 +127,8 @@ function Map(props) {
    const checkMap = (map, event) => {
       if (mapHandle) return
       else {
-         setMapHandle( map )
-         if (showMem)
-            gotoMemory(showMem)
+         setMapHandle(map)
+         if (showMem) gotoMemory(showMem)
       }
    }
 
@@ -123,20 +150,31 @@ function Map(props) {
                      key={e.id}
                      coordinates={[e.location.long, e.location.lat]}
                      onClick={viewMemory}
-                     onMouseEnter={enterExit}
-                     onMouseLeave={enterExit}
-                     properties={{ featureId: e.id }}
+                     onMouseEnter={hover}
+                     onMouseLeave={hover}
+                     properties={{ memoryId: e.id }}
                   />
                ))}
             </Layer>
-            {hasPopup ? (
-               <Popup coordinates={popupLoc}>
-                  <div>
-                     <div>Do you want to create a new Memory?</div>
-                     <button onClick={createMemory}>Yes!</button>
-                  </div>
-               </Popup>
-            ) : null}
+            {hasPopup ? 
+               publicView ? (
+                  <Popup coordinates={[ showMem.location.long, showMem.location.lat]} >
+                     <div><h3>{`${showMem.user}'s Memory!`}</h3>
+                        <h4>{showMem.name}</h4>
+                        <p>{showMem.description}</p>
+                        <p>{tagString( showMem.tags )}
+                        </p>
+                     </div>
+                  </Popup>
+               ) : (
+                  <Popup coordinates={popupLoc}>
+                     <div>
+                        <div>Do you want to create a new Memory?</div>
+                        <button onClick={createMemory}>Yes!</button>
+                     </div>
+                  </Popup>
+               )
+             : null}
          </MapView>
       </div>
    )
