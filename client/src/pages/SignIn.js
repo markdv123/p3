@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { FormControl, Button, Icon } from '@material-ui/core'
-import {withRouter} from 'react-router-dom'
+import { FormControl, Button, Icon, Grid } from '@material-ui/core'
+import { withRouter } from 'react-router-dom'
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
-import {__LoginUser} from '../services/UserService'
+import { __LoginUser } from '../services/UserService'
 
 function SignIn(props) {
     const [email, setEmail] = useState('')
@@ -34,6 +34,7 @@ function SignIn(props) {
     return (
         <div>
             <Nav />
+            <Grid container justify="center" style={{margin: '20px'}}>
                 <FormControl className="flex-col" onSubmit={handleSubmit}>
                     <TextInput
                         placeholder='Your Email'
@@ -49,12 +50,13 @@ function SignIn(props) {
                         value={password}
                         onChange={handlePassword}
                     />
-                    <br/>
-                    <Button onClick={handleSubmit} variant="contained" color="primary"  endIcon={<Icon>person</Icon>}>
+                    <br />
+                    <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
                         Sign In
                     </Button>
                     {formError ? <p>Error While Logging In</p> : <p></p>}
                 </FormControl>
+            </Grid>
         </div>
     )
 }

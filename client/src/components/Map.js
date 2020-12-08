@@ -30,7 +30,7 @@ function Map(props) {
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
       let startMem = null
       if (props.gotoMemory >= 0) {
-         startMem = props.memories.find((e) => (e.id = props.gotoMemory)) 
+         startMem = props.memories.find((e) => (e.id === props.gotoMemory)) 
       } else if (props.memories.length) {
          startMem = props.memories[props.memories.length - 1] 
       }
@@ -41,10 +41,11 @@ function Map(props) {
 
 
    const gotoMemory = (memory) => {
+       console.log('memory', memory)
       if (mapHandle)
          mapHandle.flyTo({
             center: [memory.location.long, memory.location.lat],
-            speed: 1.0,
+            speed: 1.5,
             curve: 1.3,
             zoom: [13],
          })

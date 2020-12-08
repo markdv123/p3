@@ -28,7 +28,6 @@ function App(props) {
     if(token) {
       try {
         const session = await __CheckSession()
-        console.log('session', session)
         updateUser(session.user)
         updateAuthenticated(true)
         props.history.push(window.location.pathname)
