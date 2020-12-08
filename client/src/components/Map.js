@@ -11,10 +11,9 @@ function Map(props) {
    const [hoverFlag, setHover] = useState(false)
    const [hasPopup, setPopup] = useState(false)
    const [popupLoc, setPopupLoc] = useState([0, 0])
-   
-
-   let mapHandle = useRef(null)
-   let showMem = useRef(null)
+   const [mapHandle, setMapHandle] = useState(null)
+   const [showMem, setShowMem] = useState(null)
+      
 
    const styles = {
       width: '90%',
@@ -26,23 +25,28 @@ function Map(props) {
       bottom: 'auto',
    }
 
+
    useEffect(() => {
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
-      console.log ( 'in useEffect')
+      let startMem = null
       if (props.gotoMemory >= 0) {
-         showMem.current = props.memories.find((e) => (e.id = props.gotoMemory))
+         startMem = props.memories.find((e) => (e.id = props.gotoMemory)) 
       } else if (props.memories.length) {
-         showMem.current = props.memories[props.memories.length - 1]
+         startMem = props.memories[props.memories.length - 1] 
       }
-   }, [])
+      setShowMem ( startMem )  
+      if ( startMem )
+         gotoMemory ( startMem )
+   }, [props.memories, props.gotoMemory])
+
 
    const gotoMemory = (memory) => {
-      if (mapHandle.current)
-         mapHandle.current.flyTo({
+      if (mapHandle)
+         mapHandle.flyTo({
             center: [memory.location.long, memory.location.lat],
-            speed: 0.5,
+            speed: 1.0,
             curve: 1.3,
-            zoom: [9],
+            zoom: [13],
          })
    }
 
@@ -75,14 +79,12 @@ function Map(props) {
 
    // get the handle for the map so we can flyTo the right memory.
    const checkMap = (map, event) => {
-      console.log('checkMap', mapHandle)
-      if (mapHandle.current) return
+      if (mapHandle) return
       else {
-         console.log ('check showMem', showMem)
-         mapHandle.current = map
-         if (showMem.current) gotoMemory(showMem.current)
+         setMapHandle( map )
+         if (showMem)
+            gotoMemory(showMem)
       }
-      console.log ('exit checkMap')
    }
 
    return (
