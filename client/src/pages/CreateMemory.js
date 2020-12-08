@@ -14,12 +14,12 @@ const useStyles = makeStyles((theme) => ({
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: '25ch',
+        width: '230px',
     },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 200,
-        maxWidth: 300,
+        maxWidth: 450,
     },
     chips: {
         display: 'flex',
@@ -58,6 +58,7 @@ const CreateMemory = (props) => {
     const theme = useTheme()
     const [userId, setUserId] = useState(props.currentUser.id)
     const [name, setName] = useState('')
+    const [date, setDate] = useState('')
     const [description, setDesc] = useState('')
     const [isPublic, setPublic] = useState(null)
     const [tags, setTags] = useState([])
@@ -76,21 +77,12 @@ const CreateMemory = (props) => {
         }
     }
 
-    const handleName = ({ target }) => {
-        setName(target.value)
-    }
-
-    const handleDesc = ({ target }) => {
-        setDesc(target.value)
-    }
-
-    const handlePublic = ({ target }) => [
-        setPublic(target.value)
-    ]
-
-    const handleTags = ({ target }) => [
-        setTags(target.value)
-    ]
+    const handleName = ({ target }) => setName(target.value)
+    const handleDesc = ({ target }) => setDesc(target.value)
+    const handlePublic = ({ target }) => setPublic(target.value)
+    const handleTags = ({ target }) => setTags(target.value)
+    const handleDate = ({ target }) => setDate(target.value)
+    const clearDate = () => setDate('')
 
     const handleSubmit = async () => {
         try {
@@ -112,87 +104,112 @@ const CreateMemory = (props) => {
     }
 
     return (
-        <div style={{height: "80vh", display: "grid"}}>
-                <Grid container justify="center" alignItems="center">
-                    <FormControl className={classes.formcontrol} noValidate autoComplete="off">
-                        <TextInput
-                            id="standard-basic"
-                            className={classes.textField}
-                            placeholder="Name"
-                            name="name"
-                            value={name}
-                            onChange={handleName}
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid container justify="center" alignItems="center">
-                    <FormControl className={classes.formcontrol} noValidate autoComplete="off">
-                        <TextField
-                            style={{width: '450px'}}
-                            multiline
-                            variant="outlined"
-                            id="outlined-textarea"
-                            className={classes.textField}
-                            placeholder="Description"
-                            name="description"
-                            value={description}
-                            onChange={handleDesc}
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid container justify="center" alignItems="center">
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-label">Public or Private Memory</InputLabel>
-                        <Select
-                            name='isPublic'
-                            value={isPublic}
-                            onChange={handlePublic}>
-                            <MenuItem value="false">Public</MenuItem>
-                            <MenuItem value="true">Private</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid container justify="center" alignItems="center">
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
-                        <Select
-                            labelId="demo-mutiple-chip-label"
-                            id="demo-mutiple-chip"
-                            multiple
-                            value={tags}
-                            onChange={handleTags}
-                            input={<Input id="select-multiple-chip" />}
-                            renderValue={(selected) => (
-                                <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                        <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
-                                    ))}
-                                </div>
-                            )}
-                            MenuProps={MenuProps}
-                        >
-                            {allTags.map((tag) => {
-                                console.log(tag)
-                                return (
-                                    <MenuItem key={tag.id} value={tag.id} style={getStyles(tag, tags, theme)}>
-                                        {tag.name}
-                                    </MenuItem>
-                                )
-                            })}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid container justify="center" alignItems="center">
+        <div style={{ height: "80vh", display: "grid" }}>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                    <TextInput
+                        id="standard-basic"
+                        className={classes.textField}
+                        placeholder="Name"
+                        name="name"
+                        value={name}
+                        onChange={handleName}
+                    />
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                    <TextField
+                        id="datetime-local"
+                        label="Next appointment"
+                        type="datetime-local"
+                        defaultValue="2017-05-24T10:30"
+                        value={date}
+                        onChange={handleDate}
+                        className={classes.textField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
                     <Button
+                        size="small"
+                        style={{width: '100px', justifyContent: "center"}}
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        endIcon={<Icon>send</Icon>}
-                        onClick={handleSubmit}
+                        endIcon={<Icon>backspace</Icon>}
+                        onClick={clearDate}
+                    >Clear</Button>
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                    <TextField
+                        style={{ width: '450px' }}
+                        multiline
+                        variant="outlined"
+                        id="outlined-textarea"
+                        className={classes.textField}
+                        placeholder="Description"
+                        name="description"
+                        value={description}
+                        onChange={handleDesc}
+                    />
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Public or Private Memory</InputLabel>
+                    <Select
+                        name='isPublic'
+                        value={isPublic}
+                        onChange={handlePublic}>
+                        <MenuItem value="false">Public</MenuItem>
+                        <MenuItem value="true">Private</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
+                    <Select
+                        labelId="demo-mutiple-chip-label"
+                        id="demo-mutiple-chip"
+                        multiple
+                        value={tags}
+                        onChange={handleTags}
+                        input={<Input id="select-multiple-chip" />}
+                        renderValue={(selected) => (
+                            <div className={classes.chips}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
+                                ))}
+                            </div>
+                        )}
+                        MenuProps={MenuProps}
                     >
-                        Submit
+                        {allTags.map((tag) => {
+                            console.log(tag)
+                            return (
+                                <MenuItem key={tag.id} value={tag.id} style={getStyles(tag, tags, theme)}>
+                                    {tag.name}
+                                </MenuItem>
+                            )
+                        })}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>arrow_forward_ios</Icon>}
+                    onClick={handleSubmit}
+                >
+                    Submit
                 </Button>
-                </Grid>
+            </Grid>
         </div>
     )
 }
