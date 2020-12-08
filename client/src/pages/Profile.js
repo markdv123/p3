@@ -36,6 +36,10 @@ function Profile(props) {
       setMode ( 'view' )
    }
 
+   const setGotoMem = (mem) => {
+       setGoto(mem)
+   }
+
    const clearGoto = () => {
       setGoto(-1)
    }
@@ -78,6 +82,7 @@ function Profile(props) {
                   deleteMem={deleteMem}
                   viewMem={ mode === 'view' ? viewMem : '' }
                   newLoc={ mode === 'create' ? newLoc : '' }
+                  setGotoMem={setGotoMem}
                />
             </Grid>
          </Container>
