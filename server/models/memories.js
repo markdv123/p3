@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
          name: DataTypes.STRING,
          description: DataTypes.STRING,
          public: DataTypes.BOOLEAN,
+         date: DataTypes.DATE
       },
       {
          sequelize,

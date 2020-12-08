@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -11,9 +11,10 @@ function Map(props) {
    const [hoverFlag, setHover] = useState(false)
    const [hasPopup, setPopup] = useState(false)
    const [popupLoc, setPopupLoc] = useState([0, 0])
+   
 
-   let mapHandle = null
-   let showMem = null
+   let mapHandle = useRef(null)
+   let showMem = useRef(null)
 
    const styles = {
       width: '90%',
@@ -27,24 +28,22 @@ function Map(props) {
 
    useEffect(() => {
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
-      
+      console.log ( 'in useEffect')
       if (props.gotoMemory >= 0) {
-         showMem = props.memories.find((e) => (e.id = props.gotoMemory))
+         showMem.current = props.memories.find((e) => (e.id = props.gotoMemory))
+      } else if (props.memories.length) {
+         showMem.current = props.memories[props.memories.length - 1]
       }
-      else if ( props.memories.length ) {
-         showMem = props.memories[ props.memories.length -1 ]
-      }
-
    }, [])
 
-   const gotoMemory = ( memory ) => {
-      if ( mapHandle )
-      mapHandle.flyTo({
-         center: [ memory.location.long, memory.location.lat ],
-         speed: 0.5,
-         curve: 1.3,
-         zoom: [9]
-      })
+   const gotoMemory = (memory) => {
+      if (mapHandle.current)
+         mapHandle.current.flyTo({
+            center: [memory.location.long, memory.location.lat],
+            speed: 0.5,
+            curve: 1.3,
+            zoom: [9],
+         })
    }
 
    const viewMemory = (e, m) => {
@@ -75,14 +74,15 @@ function Map(props) {
    }
 
    // get the handle for the map so we can flyTo the right memory.
-      const checkMap = (map, event) => {
-      if (mapHandle) return
+   const checkMap = (map, event) => {
+      console.log('checkMap', mapHandle)
+      if (mapHandle.current) return
       else {
-         mapHandle = map
-         if ( showMem )
-            gotoMemory ( showMem )
-
+         console.log ('check showMem', showMem)
+         mapHandle.current = map
+         if (showMem.current) gotoMemory(showMem.current)
       }
+      console.log ('exit checkMap')
    }
 
    return (
