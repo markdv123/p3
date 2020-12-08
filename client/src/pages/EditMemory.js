@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: '25ch',
+        width: '230px',
     },
     formControl: {
         margin: theme.spacing(1),
@@ -58,6 +58,7 @@ const EditMemory = (props) => {
     const theme = useTheme()
     const [memoryId, setMemoryId] = useState(props.mem.id)
     const [name, setName] = useState(props.mem.name)
+    const [date, setDate] = useState('')
     const [description, setDesc] = useState(props.mem.description)
     const [isPublic, setPublic] = useState(props.mem.public)
     const [tags, setTags] = useState(props.mem.tags)
@@ -76,21 +77,12 @@ const EditMemory = (props) => {
         }
     }
 
-    const handleName = ({ target }) => {
-        setName(target.value)
-    }
-
-    const handleDesc = ({ target }) => {
-        setDesc(target.value)
-    }
-
-    const handlePublic = ({ target }) => [
-        setPublic(target.value)
-    ]
-
-    const handleTags = ({ target }) => [
-        setTags(target.value)
-    ]
+    const handleName = ({ target }) => setName(target.value)
+    const handleDesc = ({ target }) => setDesc(target.value)
+    const handlePublic = ({ target }) => setPublic(target.value)
+    const handleTags = ({ target }) => setTags(target.value)
+    const handleDate = ({ target }) => setDate(target.value)
+    const clearDate = () => setDate('')
 
     const handleSubmit = async () => {
         try {
@@ -123,7 +115,32 @@ const EditMemory = (props) => {
             <Grid container justify="center" alignItems="center">
                 <FormControl className={classes.formcontrol} noValidate autoComplete="off">
                     <TextField
-                        style={{width: '450px'}}
+                        id="datetime-local"
+                        label="Next appointment"
+                        type="datetime-local"
+                        defaultValue="2017-05-24T10:30"
+                        value={date}
+                        onChange={handleDate}
+                        className={classes.textField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <Button
+                        size="small"
+                        style={{width: '100px', justifyContent: "center"}}
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<Icon>backspace</Icon>}
+                        onClick={clearDate}
+                    >Clear</Button>
+                </FormControl>
+            </Grid>
+            <Grid container justify="center" alignItems="center">
+                <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                    <TextField
+                        style={{ width: '450px' }}
                         multiline
                         variant="outlined"
                         id="outlined-textarea"
@@ -160,7 +177,7 @@ const EditMemory = (props) => {
                         renderValue={(selected) => (
                             <div className={classes.chips}>
                                 {selected.map((value) => (
-                                    <Chip key={value} label={allTags.find(e => e.id === value) ? allTags.find(e => e.id === value).name : ''} className={classes.chip} />
+                                    <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
                                 ))}
                             </div>
                         )}
@@ -182,7 +199,7 @@ const EditMemory = (props) => {
                     variant="contained"
                     color="primary"
                     className={classes.button}
-                    endIcon={<Icon>send</Icon>}
+                    endIcon={<Icon>arrow_forward_ios</Icon>}
                     onClick={handleSubmit}
                 >
                     Submit
