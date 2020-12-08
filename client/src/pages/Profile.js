@@ -21,8 +21,6 @@ function Profile(props) {
       try {
          const res = await __GetMemories(props.currentUser.id)
          setMemories(res)
-         if ( memories.length ) 
-            setGoto ( memories[memories.length-1].id )
       } catch (error) {
          throw error
       }

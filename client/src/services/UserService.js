@@ -16,8 +16,9 @@ import ApiClient from './ApiClient'
 
 export const __LoginUser = async (email, password) => {
    try {
-      const res = await ApiClient.post('/user/login', { email, password })
-      return res.data
+      const resp = await ApiClient.post('/user/login', { email, password })
+      localStorage.setItem('token', resp.data.token)
+      return resp.data
    } catch (err) {
       throw err
    }
@@ -33,12 +34,13 @@ export const __LoginUser = async (email, password) => {
 */
 export const __RegisterUser = async (name, email, password) => {
    try {
-      const res = await ApiClient.post('/user/create', {
+      const resp = await ApiClient.post('/user/create', {
          name,
          email,
          password,
       })
-      return res.data
+      localStorage.setItem('token', resp.data.token)
+      return resp.data
    } catch (err) {
       throw err
    }
