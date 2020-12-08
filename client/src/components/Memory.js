@@ -23,7 +23,7 @@ const Memory = (props) => {
                     <h4>My Memories:</h4>
                     <List>
                         {props.memories.map((memory) => (
-                            <ListItem>{memory.name}</ListItem>
+                            <ListItem button onClick={()=> {props.setGotoMem(memory.id)}}>{memory.name}</ListItem>
                         ))}
                     </List>
                 </div>
