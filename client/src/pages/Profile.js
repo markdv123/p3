@@ -54,6 +54,7 @@ function Profile(props) {
       <div>
          <Nav
             authenticated={props.authenticated}
+            {...props}
             currentUser={props.currentUser}
          />
          <Container style={{ display: 'flex' }}>

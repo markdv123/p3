@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import Profile from './pages/Profile'
+import UpdateName from './pages/UpdateName'
 import {__CheckSession} from './services/UserService'
 
 function App(props) {
@@ -20,7 +21,6 @@ function App(props) {
   const toggleAuthenticated = (value, user) => {
     updateAuthenticated(value)
     updateUser(user)
-    props.history.push('/profile')
   }
 
   const verifyTokenValid = async () => {
@@ -57,6 +57,16 @@ function App(props) {
             )}
           />
           <Route
+            path="/updatename"
+            component={(props)=> (
+              <UpdateName 
+                toggleAuthenticated={toggleAuthenticated}
+                currentUser={currentUser}
+                authenticated={authenticated}/>
+            )}
+          />
+
+          <Route
             path="/register"
             component={(props)=> (
               <SignUp 
@@ -80,6 +90,7 @@ function App(props) {
             path="/profile"
             component={()=> (
               <Profile 
+                toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}

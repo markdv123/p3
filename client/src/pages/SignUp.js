@@ -31,8 +31,8 @@ function SignUp(props) {
         try {
             const register = await __RegisterUser(name, email, password)
             console.log(register)
-            props.history.push('/profile')    
             props.toggleAuthenticated(true, register.user)
+            props.history.push('/profile')    
         } catch (error) {
             setError(true)
         }

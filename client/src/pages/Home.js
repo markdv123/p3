@@ -7,6 +7,7 @@ const Home = (props) => {
         <div >
             <Nav
                 authenticated={props.authenticated}
+                {...props}
                 currentUser={props.currentUser} />
             <div style={{ textAlign: "center" }}>
                 <h1>Welcome to Gaiary</h1>
