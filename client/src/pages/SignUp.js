@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { FormControl, Button, Icon } from '@material-ui/core'
+import { FormControl, Button, Icon, Grid } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import { __RegisterUser } from '../services/UserService'
 import Nav from '../components/Nav'
@@ -40,36 +40,38 @@ function SignUp(props) {
     return (
         <div>
             <Nav />
-            <FormControl className="flex-col" onSubmit={handleSubmit}>
-                <TextInput
-                    placeholder="Your Name"
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={handleName}
-                />
-                <TextInput
-                    placeholder="Your Email"
-                    name="email"
-                    value={email}
-                    type="email"
-                    onChange={handleEmail}
-                />
+            <Grid container justify="center" style={{ margin: '20px' }}>
+                <FormControl className="flex-col" onSubmit={handleSubmit}>
+                    <TextInput
+                        placeholder="Your Name"
+                        type="text"
+                        name="name"
+                        value={name}
+                        onChange={handleName}
+                    />
+                    <TextInput
+                        placeholder="Your Email"
+                        name="email"
+                        value={email}
+                        type="email"
+                        onChange={handleEmail}
+                    />
 
-                <TextInput
-                    placeholder="Password"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={handlePassword}
-                />
-                <br/>
-                <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person_add</Icon>}>
-                    Sign Up
+                    <TextInput
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePassword}
+                    />
+                    <br />
+                    <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person_add</Icon>}>
+                        Sign Up
                 </Button>
 
                     {formError ? <p>Account Error</p> : <p></p>}
-            </FormControl>
+                </FormControl>
+            </Grid>
         </div>
     )
 }
