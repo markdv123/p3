@@ -35,9 +35,9 @@ const Nav = (props) => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem onClick={handleClose} onClick={() => props.history.push('/updatename')}>Change Name</MenuItem>
+                        <MenuItem onClick={handleClose}onClick={() => props.history.push('/updatepassword')}>Change Password</MenuItem>
+                        
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -51,7 +51,7 @@ const Nav = (props) => {
                         </IconButton>
                         <Typography variant="h6" style={{ flexGrow: 1 }}>
                             Gaiary
-                    </Typography>
+                        </Typography>
                         <Button color="inherit" href="/login" >Sign In</Button>
                         <Button color="inherit" href='/register'>Sign Up</Button>
                     </Toolbar>
