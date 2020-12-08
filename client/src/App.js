@@ -4,11 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
-import ViewMemory from './pages/ViewMemory'
-import CreateMemory from './pages/CreateMemory'
-import EditMemory from './pages/EditMemory'
 import Profile from './pages/Profile'
-import Map from './components/Map'
 import {__CheckSession} from './services/UserService'
 
 function App(props) {
@@ -86,14 +82,6 @@ function App(props) {
                 authenticated={authenticated}/>
             )}
           />
-          <Route
-            path="/map"
-            component={()=> (
-              <Map 
-                currentUser={currentUser}
-                authenticated={authenticated}/>
-            )}
-          />
           <ProtectedRoute
             authenticated={authenticated}
             path="/profile"
@@ -102,34 +90,6 @@ function App(props) {
                 currentUser={currentUser}
                 authenticated={authenticated}/>
             )}
-          />
-          <ProtectedRoute
-            authenticated={authenticated}
-            path="/viewmem/:memory_id"
-            component={()=> (
-              <ViewMemory 
-                currentUser={currentUser}
-                authenticated={authenticated}/>
-            )}
-          />
-          <ProtectedRoute
-            authenticated={authenticated}
-            path="/createmem/:user_id"
-            component={()=> (
-              <CreateMemory
-                addMemory={(memory)=>addMemory(memory)}
-                currentUser={currentUser}
-                authenticated={authenticated}/>
-            )}
-          />
-          <ProtectedRoute
-            authenticated={authenticated}
-            path='/editmem/:memory_id'
-            component={()=> {
-              <EditMemory
-                currentUser={currentUser}
-                authenticated={authenticated}/>
-            }}
           />
         </Switch>
       )}

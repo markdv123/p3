@@ -1,9 +1,6 @@
 import React from 'react';
 import Nav from '../components/Nav'
-import { Link } from 'react-router-dom'
 import { Button, Icon } from '@material-ui/core'
-
-
 
 const Home = (props) => {
     return (

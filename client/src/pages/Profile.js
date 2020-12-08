@@ -36,7 +36,10 @@ function Profile(props) {
                     </div>
                 </Grid>
                 <Grid xs={12} sm={6}>
-                    <Memory memories={memories}/>
+                    <Memory 
+                        memories={memories}
+                        authenticated={props.authenticated}
+                        currentUser={props.currentUser}/>
                 </Grid>
             </Container>
 

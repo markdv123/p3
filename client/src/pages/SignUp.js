@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { FormControl, Button, Icon } from '@material-ui/core'
 import TextInput from '../components/TextInput'
 import { __RegisterUser } from '../services/UserService'
@@ -11,7 +11,7 @@ function SignUp(props) {
     const [password, setPassword] = useState('')
     const [formError, setError] = useState(false)
 
-    useEffect(() => {
+    useEffect((props) => {
         console.log(props)
     }, [])
     const handleName = ({ target }) => {
@@ -74,4 +74,4 @@ function SignUp(props) {
     )
 }
 
-export default SignUp
+export default withRouter(SignUp)

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme, Button } from '@material-ui/core'
+import { makeStyles, FormControl, InputLabel, Select, Chip, MenuItem, Input, useTheme, Button, Grid } from '@material-ui/core'
 import TextInput from '../components/TextInput'
-import Nav from '../components/Nav'
 import Icon from '@material-ui/core/Icon'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { __CreateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
@@ -67,7 +66,6 @@ const CreateMemory = (props) => {
 
     useEffect(() => {
         getTheTags()
-        console.log(props)
     }, [])
 
     const getTheTags = async () => {
@@ -97,7 +95,7 @@ const CreateMemory = (props) => {
 
     const handleSubmit = async () => {
         try {
-            const res = await __CreateMemory( userId, {
+            const res = await __CreateMemory(userId, {
                 name: name,
                 description: description,
                 public: isPublic,
@@ -116,73 +114,83 @@ const CreateMemory = (props) => {
     }
 
     return (
-        <div>
-            <Nav />
-            <FormControl className={classes.formcontrol} noValidate autoComplete="off">
-                <TextInput
-                    id="standard-basic"
-                    className={classes.textField}
-                    placeholder="Name"
-                    name="name"
-                    value={name}
-                    onChange={handleName}
-                />
-                <TextInput
-                    className={classes.textField}
-                    placeholder="Description"
-                    name="description"
-                    value={description}
-                    onChange={handleDesc}
-                />
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Public or Private Memory</InputLabel>
-                    <Select
-                        name='isPublic'
-                        value={isPublic}
-                        onChange={handlePublic}>
-                        <MenuItem value="false">Public</MenuItem>
-                        <MenuItem value="true">Private</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
-                    <Select
-                        labelId="demo-mutiple-chip-label"
-                        id="demo-mutiple-chip"
-                        multiple
-                        value={tags}
-                        onChange={handleTags}
-                        input={<Input id="select-multiple-chip" />}
-                        renderValue={(selected) => (
-                            <div className={classes.chips}>
-                                {selected.map((value) => (
-                                    <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
-                                ))}
-                            </div>
-                        )}
-                        MenuProps={MenuProps}
+        <div style={{height: "80vh", display: "grid"}}>
+                <Grid container justify="center" alignItems="center">
+                    <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                        <TextInput
+                            id="standard-basic"
+                            className={classes.textField}
+                            placeholder="Name"
+                            name="name"
+                            value={name}
+                            onChange={handleName}
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid container justify="center" alignItems="center">
+                    <FormControl className={classes.formcontrol} noValidate autoComplete="off">
+                        <TextInput
+                            className={classes.textField}
+                            placeholder="Description"
+                            name="description"
+                            value={description}
+                            onChange={handleDesc}
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid container justify="center" alignItems="center">
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Public or Private Memory</InputLabel>
+                        <Select
+                            name='isPublic'
+                            value={isPublic}
+                            onChange={handlePublic}>
+                            <MenuItem value="false">Public</MenuItem>
+                            <MenuItem value="true">Private</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid container justify="center" alignItems="center">
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
+                        <Select
+                            labelId="demo-mutiple-chip-label"
+                            id="demo-mutiple-chip"
+                            multiple
+                            value={tags}
+                            onChange={handleTags}
+                            input={<Input id="select-multiple-chip" />}
+                            renderValue={(selected) => (
+                                <div className={classes.chips}>
+                                    {selected.map((value) => (
+                                        <Chip key={value} label={allTags.find(e => e.id === value).name} className={classes.chip} />
+                                    ))}
+                                </div>
+                            )}
+                            MenuProps={MenuProps}
+                        >
+                            {allTags.map((tag) => {
+                                console.log(tag)
+                                return (
+                                    <MenuItem key={tag.id} value={tag.id} style={getStyles(tag, tags, theme)}>
+                                        {tag.name}
+                                    </MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid container justify="center" alignItems="center">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<Icon>send</Icon>}
+                        onClick={handleSubmit}
                     >
-                        {allTags.map((tag) => {
-                            console.log(tag)
-                            return (
-                                <MenuItem key={tag.id} value={tag.id} style={getStyles(tag, tags, theme)}>
-                                    {tag.name}
-                                </MenuItem>
-                            )
-                        })}
-                    </Select>
-                </FormControl>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<Icon>send</Icon>}
-                    onClick={handleSubmit}
-                >
-                    Submit
+                        Submit
                 </Button>
-            </FormControl>
-
+                </Grid>
         </div>
     )
 }

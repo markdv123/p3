@@ -1,7 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, IconButton, Typography, Button, Icon } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
 
 export default ({ authenticated, currentUser }) => {
     return authenticated && currentUser ? (
