@@ -58,7 +58,7 @@ const EditMemory = (props) => {
     const theme = useTheme()
     const [memoryId, setMemoryId] = useState(props.mem.id)
     const [name, setName] = useState(props.mem.name)
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(props.mem.date)
     const [description, setDesc] = useState(props.mem.description)
     const [isPublic, setPublic] = useState(props.mem.public)
     const [tags, setTags] = useState(props.mem.tags)
@@ -88,6 +88,7 @@ const EditMemory = (props) => {
         try {
             await __UpdateMemory(memoryId, {
                 name: name,
+                date: date,
                 description: description,
                 public: isPublic,
                 tags: tags
