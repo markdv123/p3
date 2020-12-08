@@ -24,9 +24,10 @@ function UpdateName(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            console.log(props.currentUser)
             const update = await __UpdateName(props.currentUser.email, name)
-            console.log(update)
             props.history.push('/profile')
+            console.log(name)
         } catch (error) {
             console.log(error)
         }
@@ -44,7 +45,7 @@ function UpdateName(props) {
                 />
 
                 <br />
-                <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
+                <Button onClick={handleSubmit}  variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
                     Submit
                 </Button>
             </form>

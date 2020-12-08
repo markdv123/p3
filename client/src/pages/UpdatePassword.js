@@ -8,7 +8,7 @@ function UpdatePassword(props) {
     const [email, updateEmail] = useState('')
     const [oldPassword, updateOld] = useState('')
     const [newPassword, updateNew] = useState('')
-    
+    const [currentUser, updateUser]= useState('')   
 
     useEffect(() => {
         console.log(props)
