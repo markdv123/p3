@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       static associate(models) {
          Memory.belongsTo(models.User, {
             foriegnKey: 'user_id',
+            as: 'user'
          })
          Memory.hasOne(models.Location, {
             foreignKey: 'memory_id',
