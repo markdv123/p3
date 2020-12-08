@@ -59,12 +59,12 @@ const CreateMemory = (props) => {
     const [userId, setUserId] = useState(props.currentUser.id)
     const [name, setName] = useState('')
     const [description, setDesc] = useState('')
-    const [location, setLocation] = useState({ long: 0, lat: 0 })
     const [isPublic, setPublic] = useState(null)
     const [tags, setTags] = useState([])
     const [allTags, setAllTags] = useState([])
 
     useEffect(() => {
+        console.log(props)
         getTheTags()
     }, [])
 
@@ -100,13 +100,12 @@ const CreateMemory = (props) => {
                 description: description,
                 public: isPublic,
                 location: {
-                    long: location.long,
-                    lat: location.lat
+                    long: props.newLoc.lng,
+                    lat: props.newLoc.lat
                 },
                 tags: tags
             })
             console.log('res', res)
-            props.addMemory(res)
             props.history.push('/profile')
         } catch (error) {
             throw error

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { List, ListItem, Button, Icon } from '@material-ui/core'
 import ViewMemory from '../pages/ViewMemory'
@@ -6,7 +6,12 @@ import CreateMemory from '../pages/CreateMemory'
 import EditMemory from '../pages/EditMemory'
 
 const Memory = (props) => {
-    const [mode, setMode] = useState("view")
+    const [mode, setMode] = useState('')
+    console.log('mem', props)
+
+    useEffect(()=> {
+        setMode(props.mode)
+    })
 
     let content = ''
     switch (mode) {
@@ -35,6 +40,7 @@ const Memory = (props) => {
         case "create":
             content = (
                 <CreateMemory 
+                    newLoc={props.newLoc}
                     authenticated={props.authenticated}
                     currentUser={props.currentUser}/>
             )
