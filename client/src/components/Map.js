@@ -12,6 +12,9 @@ function Map(props) {
    const [hasPopup, setPopup] = useState(false)
    const [popupLoc, setPopupLoc] = useState([0, 0])
 
+   let mapHandle = null
+   let showMem = null
+
    const styles = {
       width: '90%',
       height: 'calc(80vh - 80px)',
@@ -24,24 +27,31 @@ function Map(props) {
 
    useEffect(() => {
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
-      // gotoMemory={gotoMemory}
-      if ( props.gotoMemory >= 0 ) {
-         const showMem = props.memories.find(e => e.id = props.gotoMemory )
-         console.log ( `go to memory ${props.gotoMemory}`)
+      
+      if (props.gotoMemory >= 0) {
+         showMem = props.memories.find((e) => (e.id = props.gotoMemory))
       }
-         
+      else if ( props.memories.length ) {
+         showMem = props.memories[ props.memories.length -1 ]
+      }
+
    }, [])
 
-   const viewMemory = (e, m) => {
-      console.log ('m', m)
-      const thisFeature = e.target.queryRenderedFeatures(e.point)[0]
-      // console.log(thisFeature)
-      // console.log('fId is', thisFeature.properties.featureId)
-      // call the callback from profiles to view a memory, just give it the thisFeature.properties.featureId
-      console.log ( `props.viewMemory(${thisFeature.properties.featureId})`)
-      props.viewMemory( thisFeature.properties.featureId)
+   const gotoMemory = ( memory ) => {
+      if ( mapHandle )
+      mapHandle.flyTo({
+         center: [ memory.location.long, memory.location.lat ],
+         speed: 0.5,
+         curve: 1.3,
+         zoom: [9]
+      })
    }
 
+   const viewMemory = (e, m) => {
+      const thisFeature = e.target.queryRenderedFeatures(e.point)[0]
+      // call the callback from profiles to view a memory, just give it the thisFeature.properties.featureId
+      props.viewMemory(thisFeature.properties.featureId)
+   }
 
    const enterExit = () => {
       setHover(!hoverFlag)
@@ -50,12 +60,12 @@ function Map(props) {
    const createMemory = () => {
       setPopup(false)
       // call the callback from profiles to create memories with popupLoc as the location
-      props.createMemory ( { lng: popupLoc.lng, lat: popupLoc.lat } )
+      props.createMemory({ lng: popupLoc.lng, lat: popupLoc.lat })
    }
 
    const handleMapClick = (map, event) => {
+      // if we're hovering, this event needs to be handled by ViewMemory, not me.
       if (hoverFlag) return
-
       if (hasPopup) {
          setPopup(false)
          return
@@ -64,13 +74,24 @@ function Map(props) {
       setPopup(true)
    }
 
+   // get the handle for the map so we can flyTo the right memory.
+      const checkMap = (map, event) => {
+      if (mapHandle) return
+      else {
+         mapHandle = map
+         if ( showMem )
+            gotoMemory ( showMem )
+
+      }
+   }
+
    return (
       <div id="map">
          <MapView
             style="mapbox://styles/mapbox/dark-v10"
             containerStyle={styles}
-            
             onClick={handleMapClick}
+            onRender={checkMap}
          >
             <Layer
                type="symbol"
