@@ -15,7 +15,7 @@ const Login = async (req, resp, next) => {
       const email = req.body.email
       const password = req.body.password
       const user = await User.findOne({
-         where: { email: email }
+         where: { email: email },
       })
 
       if (user && (await checkPassword(password, user.password))) {
@@ -92,13 +92,20 @@ const UpdatePassword = async (req, resp) => {
    }
 }
 
-const UpdateName = async (req, resp) => {
+const UpdateName = async (req, resp, next) => {
    try {
       const user = await User.update(
          { name: req.body.name },
-         { where: { email: req.body.email } }
+         { where: { email: req.body.email }, returning: true }
       )
-      resp.send({ msg: 'User updated' })
+      const userData = user[1][0].dataValues
+      const payload = {
+         id: userData.id,
+         name: userData.name,
+         email: userData.email,
+      }
+      resp.locals.payload = payload
+      return next()
    } catch (err) {
       console.log('Error in UserController.UpdateName', err)
       throw err

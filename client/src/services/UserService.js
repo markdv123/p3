@@ -62,8 +62,13 @@ export const __UpdatePasword = async ( email, oldPassword, newPassword ) => {
 }
 
 /*
-   __UpdateName returns an object
-   { msg: 'User updated' }
+   __UpdateName returns a user object
+   { 
+      id: <userId>, 
+      name:  <displayName>, 
+      email: <userEmail>
+   }
+   
 */
 export const __UpdateName = async ( email, name ) => {
    try {
