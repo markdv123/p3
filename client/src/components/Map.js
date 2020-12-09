@@ -7,7 +7,7 @@ import { __GetAllTags } from '../services/TagService'
 const mapStyles = [
    {
       name: 'Streets',
-      url: 'mapbox://styles/markdv/ckihsflpg6fv919p9p388gawa'
+      url: 'mapbox://styles/markdv/ckihxfc0b0wje19kiqiehdsn9'
    },
    {
       name: 'Outdoors',
