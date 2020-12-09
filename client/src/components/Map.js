@@ -19,27 +19,27 @@ const mapStyles = [
    },
    {
       name: 'Dark',
-      url: 'mapbox://styles/markdv/ckihsv6426m6d19t0wkajeq0l'
+      url: 'mapbox://styles/markdv/ckihxtc20038u19r3k38x61ce'
    },
    {
       name: 'Midnight',
-      url: 'mapbox://styles/markdv/ckihswznz6gc119p977yjes0i'
+      url: 'mapbox://styles/markdv/ckihxujca2agd19oij6g7y48n'
    },
    {
       name: 'Bubblegum',
-      url: 'mapbox://styles/markdv/ckiagvwfa0o8u19qgxqkrjyr2'
+      url: 'mapbox://styles/markdv/ckihxvr9i2a4119sa12a7y2xk'
    },
    {
       name: 'Sky',
-      url: 'mapbox://styles/markdv/ckiht9iuj0w2g19o9uvtw46dt'
+      url: 'mapbox://styles/markdv/ckihxwue410xo19szzmaxchz0'
    },
    {
       name: 'Golden',
-      url: 'mapbox://styles/markdv/ckihtc3t525q91bp7278ol5ps'
+      url: 'mapbox://styles/markdv/ckihxy1zf10yt19szc7f8icz7'
    },
    {
       name: 'Light',
-      url: 'mapbox://styles/markdv/ckihto26512f719rg77ktky5s'
+      url: 'mapbox://styles/markdv/ckihxz9um16hv19nwrph95mcn'
    }
 ]
 
