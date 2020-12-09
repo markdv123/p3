@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import {Button, Icon} from '@material-ui/core'
 import { __GetAllTags } from '../services/TagService'
 
 const ViewMemory = (props) => {
@@ -54,6 +55,7 @@ const ViewMemory = (props) => {
                 {postTags.length ? postTags.map((tag) => (<li key={tag.id}>{tag.name}</li>)) : null}
             </ul>
             {props.mem.public === true ? (<h4>This is a public memory.</h4>) : (<h4>This is a private memory.</h4>)}
+            <Button style={{ margin: '5px' }} variant="contained" color="primary" onClick={() => { props.resetMode() }} endIcon={<Icon>arrow_back_ios</Icon>}>Return to List</Button>
         </div>
     )
 }

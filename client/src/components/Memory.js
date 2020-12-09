@@ -24,7 +24,7 @@ const Memory = (props) => {
 
     useEffect(()=> {
         setMode(props.mode)
-    })
+    }, [props.viewMem])
     
     const handlePage = (event, page) => {
         setPageNum(page)
@@ -33,7 +33,6 @@ const Memory = (props) => {
     const createList = () => {
         let list = []
         for(let i = 0 + ((pageNum - 1) * 10); i < (pageNum * 10); i++){
-            console.log(props.memories[i])
             if(props.memories[i]){
                 list.push((<ListItem button onClick={()=> {props.setGotoMem(props.memories[i].id)}}>{props.memories[i].name}</ListItem>))
             }
@@ -49,9 +48,6 @@ const Memory = (props) => {
                     <h3>Click on the Map to create a memory</h3>
                     <h4>My Memories:</h4>
                     <List>
-                        {/* {props.memories.map((memory) => (
-                            <ListItem button onClick={()=> {props.setGotoMem(memory.id)}}>{memory.name}</ListItem>
-                        ))} */}
                         {props.memories.length ? createList() : null}
                     </List>
                     <Pagination onChange={(event, page)=> handlePage(event, page)} defaultPage={1} count={Math.ceil(pages)} variant="outlined" shape="rounded"/>
@@ -62,8 +58,8 @@ const Memory = (props) => {
             if(props.memories.find(e => e.id === props.viewMem)){
                 content = (
                     <div>
-                        <ViewMemory mem={props.memories.find(e => e.id === props.viewMem)} />
-                        <Button style={{ margin: '5px' }} variant="contained" color="primary" onClick={() => { setMode("edit") }} endIcon={<Icon>edit</Icon>}>Edit Memory</Button>
+                        <ViewMemory resetMode={props.resetMode} mem={props.memories.find(e => e.id === props.viewMem)} />
+                        <Button style={{ margin: '5px' }} variant="contained" color="primary" onClick={() => { setMode('edit') }} endIcon={<Icon>edit</Icon>}>Edit Memory</Button>
                         <Button style={{ margin: '5px' }} variant="contained" color="primary" onClick={() => { props.deleteMem(props.viewMem) }} endIcon={<Icon>delete</Icon>}>Delete Memory</Button>
                     </div>
                 )}else{
