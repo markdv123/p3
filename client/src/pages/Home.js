@@ -43,24 +43,28 @@ const Home = (props) => {
                      you can see your map fill up with all of the chosen
                      memories from your life!
                   </p>
-                  <Button
-                     href="/register"
-                     variant="contained"
-                     color="primary"
-                     endIcon={<Icon>person_add</Icon>}
-                     style={{ margin: '0px 20px' }}
-                  >
-                     Get Started
-                  </Button>
-                  <Button
-                     href="/login"
-                     variant="contained"
-                     color="primary"
-                     endIcon={<Icon>person</Icon>}
-                     style={{ margin: '0px 20px' }}
-                  >
-                     Sign In
-                  </Button>
+                  {!props.authenticated ? (
+                     <div>
+                        <Button
+                           href="/register"
+                           variant="contained"
+                           color="primary"
+                           endIcon={<Icon>person_add</Icon>}
+                           style={{ margin: '0px 20px' }}
+                        >
+                           Get Started
+                        </Button>
+                        <Button
+                           href="/login"
+                           variant="contained"
+                           color="primary"
+                           endIcon={<Icon>person</Icon>}
+                           style={{ margin: '0px 20px' }}
+                        >
+                           Sign In
+                        </Button>
+                     </div>
+                  ) : null}
                </Grid>
             </Grid>
          </div>
