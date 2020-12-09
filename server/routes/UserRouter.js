@@ -11,5 +11,6 @@ Router.post('/create', controller.CreateUser, createToken)
 Router.get('/refresh/session', getToken, verifyToken, controller.RefreshSession)
 Router.put('/password', getToken, verifyToken, controller.UpdatePassword)
 Router.put('/name', getToken, verifyToken, controller.UpdateName, createToken)
+Router.put('/map', getToken, verifyToken, controller.UpdateMapStyle, createToken)
 
 module.exports = Router
