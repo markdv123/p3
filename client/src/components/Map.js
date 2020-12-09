@@ -66,7 +66,7 @@ function Map(props) {
    const [showMem, setShowMem] = useState(null)
    const [publicView, setPublicView] = useState(false)
    const [allTags, setAllTags] = useState([])
-   const [style, setStyle] = useState(mapStyles[1].url)
+   const [style, setStyle] = useState(mapStyles[0].url)
    const classes = (useStyles)
 
    const styles = {
