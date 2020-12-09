@@ -12,6 +12,7 @@ function UpdateName(props) {
     useEffect(() => {
         console.log(props)
     }, [])
+
     const handleName = ({ target }) => {
         updateName(target.value)
     }
@@ -24,10 +25,10 @@ function UpdateName(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(props.currentUser)
             const update = await __UpdateName(props.currentUser.email, name)
+            console.log(props.currentUser.name)
+            props.toggleAuthenticated(true, update.user)
             props.history.push('/profile')
-            console.log(name)
         } catch (error) {
             console.log(error)
         }
