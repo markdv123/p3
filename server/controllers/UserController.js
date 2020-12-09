@@ -55,6 +55,7 @@ const CreateUser = async (req, resp, next) => {
          id: user.id,
          name: user.name,
          email: user.email,
+         mapStyle: user.mapStyle
       }
       resp.locals.payload = payload
 
@@ -103,6 +104,7 @@ const UpdateName = async (req, resp, next) => {
          id: userData.id,
          name: userData.name,
          email: userData.email,
+         mapStyle: userData.mapStyle
       }
       resp.locals.payload = payload
       return next()
@@ -112,10 +114,33 @@ const UpdateName = async (req, resp, next) => {
    }
 }
 
+const UpdateMapStyle = async ( req, resp, next ) => {
+   try {
+      const user = await User.update(
+         { mapStyle: req.body.mapStyle },
+         { where: { email: req.body.email }, returning: true }
+      )
+      const userData = user[1][0].dataValues
+      const payload = {
+         id: userData.id,
+         name: userData.name,
+         email: userData.email,
+         mapStyle: userData.mapStyle
+      }
+      resp.locals.payload = payload
+      return next()
+   } catch (err) {
+      console.log('Error in UserController.UpdateMapStyle', err)
+      throw err
+   }
+
+}
+
 module.exports = {
    Login,
    CreateUser,
    RefreshSession,
    UpdatePassword,
    UpdateName,
+   UpdateMapStyle
 }
