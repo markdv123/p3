@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { __GetAllTags } from '../services/TagService'
@@ -28,31 +28,48 @@ function Map(props) {
       bottom: 'auto',
    }
 
-   const tagName = (tagId) => allTags.find((e) => (e.id === tagId)).name
+   const tagName = (tagId) => allTags.find((e) => e.id === tagId).name
 
-   const tagString = ( tags ) => {
+   const tagString = (tags) => {
       let tmp = ''
-      tags.forEach( (e,i) => i===0 ? tmp += tagName(e) : tmp += ` - ${tagName(e)}`)
+      tags.forEach((e, i) =>
+         i === 0 ? (tmp += tagName(e)) : (tmp += ` - ${tagName(e)}`)
+      )
       return tmp
    }
 
    const getTags = async () => {
       try {
          const res = await __GetAllTags()
-         setAllTags( res )
-
+         setAllTags(res)
       } catch (err) {
          throw err
       }
    }
 
+   // get the handle for the map so we can flyTo the right memory.
+   const getMap = (map, event) => {
+      console.log('getMap', mapHandle)
+      console.log ('map', map)
+      console.log ('showMem', showMem)
+      setMapHandle(map)
+      if ( showMem )
+         gotoMemory(showMem)
+   }
+
+   const startPublicMap = () => {
+      console.log('startPublicMap')
+      setPublicView(true)
+      setShowMem({ location: { long: -90, lat: 40 } })
+      setZoomDefault(3)
+      gotoMemory({ location: { long: -90, lat: 40 } })
+      getTags()
+   }
+
    useEffect(() => {
       if (props.publicView) {
-         setPublicView(true)
-         setShowMem({ location: { long: -100, lat: 40 } })
-         setZoomDefault(3)
-         gotoMemory({ location: { long: -90, lat: 30 } })
-         getTags()
+         console.log('useEffect.publicView')
+         startPublicMap()
          return
       }
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
@@ -64,9 +81,11 @@ function Map(props) {
       }
       setShowMem(startMem)
       if (startMem) gotoMemory(startMem)
-   }, [props.memories, props.gotoMemory])
+   }, [props.memories, props.gotoMemory, props.publicView, mapHandle])
 
    const gotoMemory = (memory) => {
+      console.log ( 'gotoMemory.memory', memory)
+      console.log ('gotoMemory.mapHandle', mapHandle)
       if (mapHandle)
          mapHandle.flyTo({
             center: [memory.location.long, memory.location.lat],
@@ -90,10 +109,10 @@ function Map(props) {
          if (!hoverFlag) {
             // we are just starting to hover
             const memoryId = e.feature.properties.memoryId
-            const memory = props.memories.find((e) => (e.id === memoryId))
-            setShowMem( memory )
-      
-            setPopupLoc( { lng: memory.location.long, lat: memory.location.lat } )
+            const memory = props.memories.find((e) => e.id === memoryId)
+            setShowMem(memory)
+
+            setPopupLoc({ lng: memory.location.long, lat: memory.location.lat })
             setPopup(true)
          } else {
             setPopup(false)
@@ -123,22 +142,13 @@ function Map(props) {
       setPopup(true)
    }
 
-   // get the handle for the map so we can flyTo the right memory.
-   const checkMap = (map, event) => {
-      if (mapHandle) return
-      else {
-         setMapHandle(map)
-         if (showMem) gotoMemory(showMem)
-      }
-   }
-
    return (
       <div id="map">
          <MapView
             style="mapbox://styles/mapbox/dark-v10"
             containerStyle={styles}
             onClick={handleMapClick}
-            onRender={checkMap}
+            onStyleLoad={getMap}
          >
             <Layer
                type="symbol"
@@ -156,14 +166,16 @@ function Map(props) {
                   />
                ))}
             </Layer>
-            {hasPopup ? 
+            {hasPopup ? (
                publicView ? (
-                  <Popup coordinates={[ showMem.location.long, showMem.location.lat]} >
-                     <div><h3>{`${showMem.user}'s Memory!`}</h3>
+                  <Popup
+                     coordinates={[showMem.location.long, showMem.location.lat]}
+                  >
+                     <div>
+                        <h3>{`${showMem.user}'s Memory!`}</h3>
                         <h4>{showMem.name}</h4>
                         <p>{showMem.description}</p>
-                        <p>{tagString( showMem.tags )}
-                        </p>
+                        <p>{tagString(showMem.tags)}</p>
                      </div>
                   </Popup>
                ) : (
@@ -174,7 +186,7 @@ function Map(props) {
                      </div>
                   </Popup>
                )
-             : null}
+            ) : null}
          </MapView>
       </div>
    )
