@@ -250,6 +250,17 @@ const EditMemory = (props) => {
                Submit
             </Button>
          </Grid>
+         <Grid container justify="center" alignItems="center">
+            <Button
+               variant="contained"
+               color="primary"
+               className={classes.button}
+               endIcon={<Icon>arrow_back_ios</Icon>}
+               onClick={() => {props.resetMode()}}
+            >
+               Cancel
+            </Button>
+         </Grid>
       </div>
    )
 }

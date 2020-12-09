@@ -44,6 +44,10 @@ function Profile(props) {
       setGoto(-1)
    }
 
+   const resetMode = () => {
+      setMode('list')
+  }
+
    const deleteMem = async (memoryId) => {
        try {
            await __DeleteMemory(memoryId)
@@ -84,6 +88,7 @@ function Profile(props) {
                   viewMem={ mode === 'view' ? viewMem : '' }
                   newLoc={ mode === 'create' ? newLoc : '' }
                   setGotoMem={setGotoMem}
+                  resetMode={resetMode}
                />
             </Grid>
          </Container>
