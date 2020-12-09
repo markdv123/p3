@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import Profile from './pages/Profile'
 import UpdateName from './pages/UpdateName'
+import UpdatePassword from './pages/UpdatePassword'
 import {__CheckSession} from './services/UserService'
 
 function App(props) {
@@ -64,7 +65,15 @@ function App(props) {
                 authenticated={authenticated}/>
             )}
           />
-
+          <Route
+            path="/updatepassword"
+            component={(props)=> (
+              <UpdatePassword 
+                toggleAuthenticated={toggleAuthenticated}
+                currentUser={currentUser}
+                authenticated={authenticated}/>
+            )}
+          />
           <Route
             path="/register"
             component={(props)=> (
