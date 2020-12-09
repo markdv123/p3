@@ -20,11 +20,10 @@ const Memory = (props) => {
     const pages = props.memories.length/10
     const [mode, setMode] = useState('')
     const [pageNum, setPageNum] = useState(1)
-    // const [page, setPage] = useState('')
 
     useEffect(()=> {
         setMode(props.mode)
-    }, [props.viewMem])
+    }, [props.viewMem, props.newLoc])
     
     const handlePage = (event, page) => {
         setPageNum(page)
@@ -70,15 +69,22 @@ const Memory = (props) => {
         case "create":
             content = (
                 <CreateMemory 
+                    resetMode={props.resetMode}
                     newLoc={props.newLoc}
                     authenticated={props.authenticated}
                     currentUser={props.currentUser}/>
             )
             break
         case "edit":
+            if(props.memories.find(e => e.id === props.viewMem)){
             content = (
-                <EditMemory mem={props.memories.find(e=> e.id === props.viewMem)}/>
-            )
+                <EditMemory 
+                    resetMode={props.resetMode}
+                    mem={props.memories.find(e=> e.id === props.viewMem)}/>
+            )}else{
+                content = ''
+                setMode('list')
+            }
             break
     }
     return (
