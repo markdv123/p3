@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { makeStyles, FormControl, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
 import { __GetAllTags } from '../services/TagService'
 
 const mapStyles = [
@@ -42,6 +43,16 @@ const mapStyles = [
    }
 ]
 
+const useStyles = makeStyles((theme) => ({
+   formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+   },
+   selectEmpty: {
+      marginTop: theme.spacing(2),
+   },
+}))
+
 const MapView = ReactMapBoxGl({
    accessToken:
       'pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw',
@@ -56,6 +67,7 @@ function Map(props) {
    const [publicView, setPublicView] = useState(false)
    const [allTags, setAllTags] = useState([])
    const [style, setStyle] = useState(mapStyles[1].url)
+   const classes = (useStyles)
 
    const styles = {
       width: '90%',
@@ -118,7 +130,7 @@ function Map(props) {
          // if we're not supposed to go to a specific memory, then reset.
          defaultView()
       }
-      
+
    }, [props.memories, props.gotoMemory, props.publicView, mapHandle])
 
    const gotoMemory = (memory) => {
@@ -178,14 +190,34 @@ function Map(props) {
       setPopup(true)
    }
 
+   const handleStyle = ({ target }) => {
+      setStyle(target.value)
+   }
+
    return (
       <div id="map">
+         <Grid container justify="start" alignItems="center">
+            <p>Map Style:</p>
+            <FormControl className={classes.formControl} style={{margin: '5px'}}>
+               <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={style}
+                  onChange={handleStyle}
+               >
+                  {mapStyles.map((style) => (
+                     <MenuItem value={style.url}>{style.name}</MenuItem>
+                  ))}
+               </Select>
+            </FormControl>
+         </Grid>
          <MapView
             style={style}
             containerStyle={styles}
             onClick={handleMapClick}
             onStyleLoad={getMap}
          >
+
             <Layer
                type="symbol"
                id="marker"
@@ -215,13 +247,13 @@ function Map(props) {
                      </div>
                   </Popup>
                ) : (
-                  <Popup coordinates={popupLoc}>
-                     <div>
-                        <div>Do you want to create a new Memory?</div>
-                        <button onClick={createMemory}>Yes!</button>
-                     </div>
-                  </Popup>
-               )
+                     <Popup coordinates={popupLoc}>
+                        <div>
+                           <div>Do you want to create a new Memory?</div>
+                           <button onClick={createMemory}>Yes!</button>
+                        </div>
+                     </Popup>
+                  )
             ) : null}
          </MapView>
       </div>
