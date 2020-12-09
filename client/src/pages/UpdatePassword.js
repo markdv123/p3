@@ -11,7 +11,7 @@ function UpdatePassword(props) {
     const [currentUser, updateUser]= useState('')   
 
     useEffect(() => {
-        console.log(props)
+    
     }, [])
     const handleOld = ({ target }) => {
         updateOld(target.value)

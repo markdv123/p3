@@ -59,7 +59,8 @@ function App(props) {
           <Route
             path="/updatename"
             component={(props)=> (
-              <UpdateName 
+              <UpdateName
+                {...props} 
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
@@ -69,6 +70,7 @@ function App(props) {
             path="/updatepassword"
             component={(props)=> (
               <UpdatePassword 
+                {...props}
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
@@ -87,7 +89,8 @@ function App(props) {
           <Route
             path="/login"
             component={()=> (
-              <SignIn 
+              <SignIn
+                {...props} 
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
@@ -98,6 +101,7 @@ function App(props) {
             path="/profile"
             component={()=> (
               <Profile 
+                {...props}
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>

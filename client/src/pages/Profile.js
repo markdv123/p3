@@ -15,7 +15,9 @@ function Profile(props) {
 
    useEffect(() => {
       getMems()
+      
    }, [])
+
 
    const getMems = async () => {
       try {
