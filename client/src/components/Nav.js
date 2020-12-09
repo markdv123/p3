@@ -10,6 +10,7 @@ import {
    MenuItem,
 } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
+ 
 
 const Nav = (props) => {
    const [anchorEl, setAnchorEl] = useState('')
@@ -36,11 +37,12 @@ const Nav = (props) => {
                <Typography variant="h6" style={{ flexGrow: 1 }}>
                   Gaiary
                </Typography>
+
                <Button
                   color="inherit"
                   onClick={() => props.history.push('/profile')}
                >
-                  Profile
+                     {props.currentUser.name}'s Profile
                </Button>
                <Button
                   color="inherit"
