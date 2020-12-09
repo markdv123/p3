@@ -50,32 +50,36 @@ function Map(props) {
    // get the handle for the map so we can flyTo the right memory.
    const getMap = (map, event) => {
       setMapHandle(map)
-      if ( showMem )
-         gotoMemory(showMem)
+      if (showMem) gotoMemory(showMem)
    }
 
-   const startPublicMap = () => {
-      setPublicView(true)
-      setShowMem({ location: { long: -90, lat: 40 } })
-      setZoomDefault(3)
-      gotoMemory({ location: { long: -90, lat: 40 } })
-      getTags()
+   const defaultView = () => {
+      if (mapHandle) {
+         mapHandle.jumpTo({
+            center: [-40, 20],
+            zoom: 1,
+         })
+      }
    }
 
    useEffect(() => {
       if (props.publicView) {
-         startPublicMap()
+         setPublicView(true)
+         defaultView()
+         getTags()
          return
       }
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
       let startMem = null
       if (props.gotoMemory >= 0) {
          startMem = props.memories.find((e) => e.id === props.gotoMemory)
-      } else if (props.memories.length) {
-         startMem = props.memories[props.memories.length - 1]
+         setShowMem(startMem)
+         if (startMem) gotoMemory(startMem)
+      } else {
+         // if we're not supposed to go to a specific memory, then reset.
+         defaultView()
       }
-      setShowMem(startMem)
-      if (startMem) gotoMemory(startMem)
+      
    }, [props.memories, props.gotoMemory, props.publicView, mapHandle])
 
    const gotoMemory = (memory) => {
