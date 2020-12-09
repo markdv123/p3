@@ -49,16 +49,12 @@ function Map(props) {
 
    // get the handle for the map so we can flyTo the right memory.
    const getMap = (map, event) => {
-      console.log('getMap', mapHandle)
-      console.log ('map', map)
-      console.log ('showMem', showMem)
       setMapHandle(map)
       if ( showMem )
          gotoMemory(showMem)
    }
 
    const startPublicMap = () => {
-      console.log('startPublicMap')
       setPublicView(true)
       setShowMem({ location: { long: -90, lat: 40 } })
       setZoomDefault(3)
@@ -68,7 +64,6 @@ function Map(props) {
 
    useEffect(() => {
       if (props.publicView) {
-         console.log('useEffect.publicView')
          startPublicMap()
          return
       }
@@ -84,8 +79,6 @@ function Map(props) {
    }, [props.memories, props.gotoMemory, props.publicView, mapHandle])
 
    const gotoMemory = (memory) => {
-      console.log ( 'gotoMemory.memory', memory)
-      console.log ('gotoMemory.mapHandle', mapHandle)
       if (mapHandle)
          mapHandle.flyTo({
             center: [memory.location.long, memory.location.lat],
