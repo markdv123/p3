@@ -3,6 +3,45 @@ import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { __GetAllTags } from '../services/TagService'
 
+const mapStyles = [
+   {
+      name: 'Streets',
+      url: 'mapbox://styles/markdv/ckihsflpg6fv919p9p388gawa'
+   },
+   {
+      name: 'Outdoors',
+      url: 'mapbox://styles/markdv/ckihshgfc114p19nw7fic3zns'
+   },
+   {
+      name: 'Satellite',
+      url: 'mapbox://styles/markdv/ckihs41et24kh1bp7bd2y9w6r'
+   },
+   {
+      name: 'Dark',
+      url: 'mapbox://styles/markdv/ckihsv6426m6d19t0wkajeq0l'
+   },
+   {
+      name: 'Midnight',
+      url: 'mapbox://styles/markdv/ckihswznz6gc119p977yjes0i'
+   },
+   {
+      name: 'Bubblegum',
+      url: 'mapbox://styles/markdv/ckiagvwfa0o8u19qgxqkrjyr2'
+   },
+   {
+      name: 'Sky',
+      url: 'mapbox://styles/markdv/ckiht9iuj0w2g19o9uvtw46dt'
+   },
+   {
+      name: 'Golden',
+      url: 'mapbox://styles/markdv/ckihtc3t525q91bp7278ol5ps'
+   },
+   {
+      name: 'Light',
+      url: 'mapbox://styles/markdv/ckihto26512f719rg77ktky5s'
+   }
+]
+
 const MapView = ReactMapBoxGl({
    accessToken:
       'pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw',
@@ -15,8 +54,8 @@ function Map(props) {
    const [mapHandle, setMapHandle] = useState(null)
    const [showMem, setShowMem] = useState(null)
    const [publicView, setPublicView] = useState(false)
-   const [zoomDefault, setZoomDefault] = useState(13)
    const [allTags, setAllTags] = useState([])
+   const [style, setStyle] = useState(mapStyles[1].url)
 
    const styles = {
       width: '90%',
@@ -88,7 +127,7 @@ function Map(props) {
             center: [memory.location.long, memory.location.lat],
             speed: 1.5,
             curve: 1.3,
-            zoom: [zoomDefault],
+            zoom: [13],
          })
    }
 
@@ -142,7 +181,7 @@ function Map(props) {
    return (
       <div id="map">
          <MapView
-            style="mapbox://styles/mapbox/dark-v10"
+            style={style}
             containerStyle={styles}
             onClick={handleMapClick}
             onStyleLoad={getMap}
@@ -150,7 +189,7 @@ function Map(props) {
             <Layer
                type="symbol"
                id="marker"
-               layout={{ 'icon-image': 'marker-15' }}
+               layout={{ 'icon-image': 'custom-marker-2' }}
             >
                {props.memories.map((e) => (
                   <Feature
