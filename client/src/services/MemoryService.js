@@ -119,9 +119,10 @@ export const __GetPublicMemories = async () => {
    }
 }
 
-export const __AddImage = async (memoryId, url) => {
+export const __AddImage = async (memoryId, form) => {
    try {
-      const res = await ApiClient.post(`/memory/image/${memoryId}`, {url})
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+      const res = await ApiClient.post(`/memory/image/${memoryId}`, form, config)
       return res.data
    } catch (error) {
       throw error
