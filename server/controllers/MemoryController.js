@@ -245,11 +245,8 @@ const AddImage = async (req, res) => {
          }
       }))
       console.log(uploadedImages)
-      // const image = await Image.create({
-      //    memory_id: memoryId,
-      //    url: req.body.url
-      // })
-      // res.send(image)
+      await Image.bulkCreate(uploadedImages)
+      res.send('images uploaded')
    } catch (error) {
       throw error
    }
