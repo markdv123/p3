@@ -100,7 +100,7 @@ const Memory = (props) => {
                   <Button
                      style={{ margin: '5px' }}
                      variant="contained"
-                     color="primary"
+                     style={{backgroundColor: '#9a9a9a', color:'white'}}
                      onClick={() => {
                         setMode('edit')
                      }}
@@ -111,7 +111,7 @@ const Memory = (props) => {
                   <Button
                      style={{ margin: '5px' }}
                      variant="contained"
-                     color="primary"
+                     style={{backgroundColor: '#9a9a9a', color:'white'}}
                      onClick={handleConfirmOpen}
                      endIcon={<Icon>delete</Icon>}
                   >
@@ -130,12 +130,12 @@ const Memory = (props) => {
                         </DialogContentText>
                      </DialogContent>
                      <DialogActions>
-                        <Button onClick={handleConfirmClose} color="primary">
+                        <Button onClick={handleConfirmClose} style={{backgroundColor: '#9a9a9a', color:'white'}}>
                            No
                         </Button>
                         <Button
                            onClick={handleConfirmDelete}
-                           color="primary"
+                           style={{backgroundColor: '#9a9a9a', color:'white'}}
                            autoFocus
                         >
                            Yes!
