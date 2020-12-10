@@ -15,7 +15,6 @@ function Profile(props) {
 
    useEffect(() => {
       getMems()
-      
    }, [])
 
 
@@ -40,10 +39,8 @@ function Profile(props) {
 
    const setGotoMem = (mem) => {
        setGoto(mem)
-   }
-
-   const clearGoto = () => {
-      setGoto(-1)
+       setViewMem(mem)
+       setMode('view')
    }
 
    const resetMode = () => {

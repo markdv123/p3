@@ -12,7 +12,6 @@ import {
    Grid,
    TextField,
 } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import TextInput from '../components/TextInput'
 import Icon from '@material-ui/core/Icon'
@@ -20,9 +19,7 @@ import { withRouter } from 'react-router-dom'
 import { __UpdateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
-
-
-const useStyles = makeStyles((theme) => ({
+const useEditStyles = makeStyles((theme) => ({
    root: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -70,9 +67,8 @@ function getStyles(tag, tags, theme) {
 }
 
 const EditMemory = (props) => {
-   const classes = useStyles()
+   const editClasses = useEditStyles()
    const theme = useTheme()
-   const [memoryId, setMemoryId] = useState(props.mem.id)
    const [name, setName] = useState(props.mem.name)
    const [date, setDate] = useState(props.mem.date)
    const [description, setDesc] = useState(props.mem.description)
@@ -102,7 +98,7 @@ const EditMemory = (props) => {
 
    const handleSubmit = async () => {
       try {
-         await __UpdateMemory(memoryId, {
+         await __UpdateMemory(props.mem.id, {
             name: name,
             date: date,
             description: description,
@@ -115,170 +111,158 @@ const EditMemory = (props) => {
       }
    }
 
-   const makeStyles  = makeStyles((theme) => ({
-      root: {
-         display: 'flex',
-         flexWrap: 'wrap',
-         '& > *': {
-            margin: theme.spacing(1),
-            width: theme.spacing(16),
-            height: theme.spacing(16),
-         },
-      },
-   }));
-   
-   
-
-      return (
-         <div style={{ height: '80vh', display: 'grid' }}>
-
-                  <Grid container justify="center" alignItems="center">
-                     <FormControl
-                        className={classes.formcontrol}
+   return (
+      <div>
+         <Grid container justify="center" alignItems="center">
+            {/* <FormControl
+                        className={editClasses.formcontrol}
                         noValidate
                         autoComplete="off"
-                     >
-                        <TextInput
-                           id="standard-basic"
-                           className={classes.textField}
-                           placeholder="Name"
-                           name="name"
-                           value={name}
-                           onChange={handleName}
-                        />
-                     </FormControl>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <FormControl
-                        className={classes.formcontrol}
-                        noValidate
-                        autoComplete="off"
-                     >
-                        <TextField
-                           id="datetime-local"
-                           type="date"
-                           value={date}
-                           onChange={handleDate}
-                           className={classes.textField}
-                           InputLabelProps={{
-                              shrink: true,
-                           }}
-                        />
-                        <Button
-                           size="small"
-                           style={{ width: '100px', justifyContent: 'center' }}
-                           variant="contained"
-                           color="primary"
-                           className={classes.button}
-                           endIcon={<Icon>backspace</Icon>}
-                           onClick={clearDate}
-                        >
-                           Clear
+                     > */}
+            <TextInput
+               id="standard-basic"
+               className={editClasses.textField}
+               placeholder="Name"
+               name="name"
+               value={name}
+               onChange={handleName}
+            />
+            {/* </FormControl> */}
+         </Grid>
+         <Grid container justify="center" alignItems="center">
+            <FormControl
+               className={editClasses.formcontrol}
+               noValidate
+               autoComplete="off"
+            >
+               <TextField
+                  id="datetime-local"
+                  type="date"
+                  value={date.split('T')[0]}
+                  onChange={handleDate}
+                  className={editClasses.textField}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
+               <Button
+                  size="small"
+                  style={{ width: '100px', justifyContent: 'center' }}
+                  variant="contained"
+                  color="primary"
+                  className={editClasses.button}
+                  endIcon={<Icon>backspace</Icon>}
+                  onClick={clearDate}
+               >
+                  Clear
                </Button>
-                     </FormControl>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <FormControl
-                        className={classes.formcontrol}
-                        noValidate
-                        autoComplete="off"
-                     >
-                        <TextField
-                           style={{ width: '450px' }}
-                           multiline
-                           variant="outlined"
-                           id="outlined-textarea"
-                           className={classes.textField}
-                           placeholder="Description"
-                           name="description"
-                           value={description}
-                           onChange={handleDesc}
-                        />
-                     </FormControl>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <FormControl className={classes.formControl}>
-                        <ToggleButtonGroup
-                           value={isPublic}
-                           exclusive
-                           onChange={handlePublic}
-                           aria-label="Privacy"
-                        >
-                           <ToggleButton value={true} aria-label="Public">
-                              Public
+            </FormControl>
+         </Grid>
+         <Grid container justify="center" alignItems="center">
+            <FormControl
+               className={editClasses.formcontrol}
+               noValidate
+               autoComplete="off"
+            >
+               <TextField
+                  style={{ width: '450px' }}
+                  multiline
+                  variant="outlined"
+                  id="outlined-textarea"
+                  className={editClasses.textField}
+                  placeholder="Description"
+                  name="description"
+                  value={description}
+                  onChange={handleDesc}
+               />
+            </FormControl>
+         </Grid>
+         <Grid container justify="center" alignItems="center">
+            <FormControl className={editClasses.formControl}>
+               <ToggleButtonGroup
+                  value={isPublic}
+                  exclusive
+                  onChange={handlePublic}
+                  aria-label="Privacy"
+               >
+                  <ToggleButton value={true} aria-label="Public">
+                     Public
                   </ToggleButton>
-                           <ToggleButton value={false} aria-label="Private">
-                              Private
+                  <ToggleButton value={false} aria-label="Private">
+                     Private
                   </ToggleButton>
-                        </ToggleButtonGroup>
-                     </FormControl>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
-                        <Select
-                           labelId="demo-mutiple-chip-label"
-                           id="demo-mutiple-chip"
-                           multiple
-                           value={tags}
-                           onChange={handleTags}
-                           input={<Input id="select-multiple-chip" />}
-                           renderValue={(selected) => (
-                              <div className={classes.chips}>
-                                 {selected.map((value) => {
-                                    if (allTags.length)
-                                       return (
-                                          <Chip
-                                             key={value}
-                                             label={
-                                                allTags.find((e) => e.id === value).name
-                                             }
-                                             className={classes.chip}
-                                          />
-                                       )
-                                 })}
-                              </div>
-                           )}
-                           MenuProps={MenuProps}
-                        >
-                           {allTags.map((tag) => {
+               </ToggleButtonGroup>
+            </FormControl>
+         </Grid>
+         <Grid container justify="center" alignItems="center">
+            <FormControl className={editClasses.formControl}>
+               <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
+               <Select
+                  labelId="demo-mutiple-chip-label"
+                  id="demo-mutiple-chip"
+                  multiple
+                  value={tags}
+                  onChange={handleTags}
+                  input={<Input id="select-multiple-chip" />}
+                  renderValue={(selected) => (
+                     <div className={editClasses.chips}>
+                        {selected.map((value) => {
+                           if (allTags.length)
                               return (
-                                 <MenuItem
-                                    key={tag.id}
-                                    value={tag.id}
-                                    style={getStyles(tag, tags, theme)}
-                                 >
-                                    {tag.name}
-                                 </MenuItem>
+                                 <Chip
+                                    key={value}
+                                    label={
+                                       allTags.find((e) => e.id === value).name
+                                    }
+                                    className={editClasses.chip}
+                                 />
                               )
-                           })}
-                        </Select>
-                     </FormControl>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<Icon>arrow_forward_ios</Icon>}
-                        onClick={handleSubmit}
-                     >
-                        Submit
+                           return
+                        })}
+                     </div>
+                  )}
+                  MenuProps={MenuProps}
+               >
+                  {allTags.map((tag) => {
+                     return (
+                        <MenuItem
+                           key={tag.id}
+                           value={tag.id}
+                           style={getStyles(tag, tags, theme)}
+                        >
+                           {tag.name}
+                        </MenuItem>
+                     )
+                  })}
+               </Select>
+            </FormControl>
+         </Grid>
+         <Grid container justify="center" alignItems="center">
+            <Button
+               variant="contained"
+               color="primary"
+               className={editClasses.button}
+               endIcon={<Icon>arrow_forward_ios</Icon>}
+               onClick={handleSubmit}
+               style={{ margin: '5px' }}
+            >
+               Submit
             </Button>
-                  </Grid>
-                  <Grid container justify="center" alignItems="center">
-                     <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<Icon>arrow_back_ios</Icon>}
-                        onClick={() => { props.resetMode() }}
-                     >
-                        Cancel
-                     </Button>
-                  </Grid>
-         </div>
-      )
-   }
+            <Button
+               variant="contained"
+               color="primary"
+               className={editClasses.button}
+               endIcon={<Icon>arrow_back_ios</Icon>}
+               onClick={() => {
+                  props.resetMode()
+               }}
+               style={{ margin: '5px' }}
+            >
+               Cancel
+            </Button>
+         </Grid>
+      </div>
+   )
+}
 
-   export default withRouter(EditMemory)
+export default withRouter(EditMemory)
