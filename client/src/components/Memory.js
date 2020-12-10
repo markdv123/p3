@@ -33,7 +33,6 @@ const Memory = (props) => {
    const [confirmIsOpen, setConfirmIsOpen] = useState(false)
 
    useEffect(() => {
-      console.log ( 'memory.useEffect')
       setMode(props.mode)
       if ( props.viewMem ) {
          const index = props.memories.findIndex( e => e.id === props.viewMem )

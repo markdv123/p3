@@ -1,35 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { __GetAllTags } from '../services/TagService'
 
-const Viewmemory = ( { memory } ) => {
-   const [allTags, setAllTags] = useState([])
-   const [postTags, setPostTags] = useState([])
-
-   // const { memory } = props
-
-   useEffect(() => {
-      getTheTags()
-   }, [memory])
-
-   
-   const getTheTags = async () => {
-      let everyTag
-      if (!allTags.length) {
-         try {
-            everyTag = await __GetAllTags()
-            setAllTags(everyTag)
-         } catch (error) {
-            throw error
-         }
-      }
-      else 
-         everyTag = allTags
-
-      const theTags = everyTag.filter((tag) =>
-         memory.tags.find((e) => e === tag.id)
-      )
-      setPostTags(theTags)
-   }
+const ViewMemory = ( { memory } ) => {
 
    const convertDate = (d) => {
       return new Date(d).toLocaleString()
@@ -56,4 +28,4 @@ const Viewmemory = ( { memory } ) => {
    )
 }
 
-export default Viewmemory
+export default ViewMemory
