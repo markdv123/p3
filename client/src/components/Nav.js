@@ -24,16 +24,16 @@ const Nav = (props) => {
         setAnchorEl(null)
     }
     return props.authenticated && props.currentUser ? (
-        <div className='Nav'>
-            <AppBar position="absolute">
+        <div >
+            <AppBar  style={{backgroundColor: '#9a9a9a'}} position="absolute">
                 <Toolbar>
-                    <IconButton
+                    <IconButton 
                         onClick={() => props.history.push('/')}
                         edge="start"
-                        color="inherit"
                         aria-label="menu"
+                        style={{color:'white'}}
                     >
-                        <Icon>public</Icon>
+                        <Icon >public</Icon>
                     </IconButton>
                     <Typography variant="h6" style={{ flexGrow: 1 }}>
                         Gaiary
@@ -44,13 +44,13 @@ const Nav = (props) => {
                     </Typography>
 
                     <Button
-                        color="inherit"
+                        style={{color:'white'}}
                         onClick={() => props.history.push('/profile')}
                     >
                         Profile
                     </Button>
                     <Button
-                        color="inherit"
+                       style={{color:'white'}}
                         aria-controls="simple-menu"
                         aria-haspopup="true"
                         onClick={handleClick}
@@ -82,9 +82,9 @@ const Nav = (props) => {
                     </MenuItem>
                     </Menu>
                     <Button
-                        color="inherit"
                         href="/"
                         onClick={() => localStorage.clear()}
+                        style={{color:'white'}}
                     >
                         Logout
                </Button>
@@ -93,14 +93,13 @@ const Nav = (props) => {
         </div>
     ) : (
             <div>
-                <AppBar position="absolute">
+                <AppBar style={{backgroundColor: '#9a9a9a'}} position="absolute">
                     <Toolbar>
                         <IconButton
                             href="/"
                             edge="start"
-                            color="inherit"
                             aria-label="menu"
-                            startIcon={<Icon>public</Icon>}
+                            style={{color:'white'}}
                         >
                             <Icon>public</Icon>
                         </IconButton>

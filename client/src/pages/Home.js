@@ -48,18 +48,18 @@ const Home = (props) => {
                         <Button
                            href="/register"
                            variant="contained"
-                           color="primary"
+                        
                            endIcon={<Icon>person_add</Icon>}
-                           style={{ margin: '0px 20px' }}
+                           style={{ margin: '0px 20px', backgroundColor: '#9a9a9a', color:'white' }}
                         >
                            Get Started
                         </Button>
                         <Button
                            href="/login"
                            variant="contained"
-                           color="primary"
+                          
                            endIcon={<Icon>person</Icon>}
-                           style={{ margin: '0px 20px' }}
+                           style={{ margin: '0px 20px', backgroundColor: '#9a9a9a', color:'white' }}
                         >
                            Sign In
                         </Button>

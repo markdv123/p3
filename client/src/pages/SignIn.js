@@ -50,7 +50,7 @@ function SignIn(props) {
                         onChange={handlePassword}
                     />
                     <br />
-                    <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person</Icon>}>
+                    <Button onClick={handleSubmit} variant="contained" style={{backgroundColor: '#9a9a9a', color:'white'}} endIcon={<Icon>person</Icon>}>
                         Sign In
                     </Button>
                     {formError ? <p>Error While Logging In</p> : <p></p>}
