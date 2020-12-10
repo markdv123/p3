@@ -8,6 +8,7 @@ import Profile from './pages/Profile'
 import UpdateName from './pages/UpdateName'
 import UpdatePassword from './pages/UpdatePassword'
 import {__CheckSession} from './services/UserService'
+import './styles/App.css'
 
 function App(props) {
   const [pageLoading, updatePageLoading] = useState(true)
@@ -90,7 +91,7 @@ function App(props) {
             path="/login"
             component={()=> (
               <SignIn
-                {...props} 
+               
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>

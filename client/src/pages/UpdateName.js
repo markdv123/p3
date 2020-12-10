@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { FormControl, Button, Icon, Grid } from '@material-ui/core'
-
 import { __UpdateName } from '../services/UserService'
 import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
