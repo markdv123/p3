@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'memory_id',
             as: 'tags',
          })
+         Memory.hasMany(models.Image, {
+            foreignKey: 'memory_id',
+            as: 'images'
+         })
       }
    }
    Memory.init(

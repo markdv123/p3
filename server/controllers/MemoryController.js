@@ -1,5 +1,5 @@
 const { response } = require('express')
-const { Memory, TagMemory, Location, Tag, User, sequelize } = require('../models')
+const { Memory, TagMemory, Location, Tag, User, sequelize, Image } = require('../models')
 
 /* 
    create memory takes a user_id param and a req.body of 
@@ -168,6 +168,11 @@ const GetMemories = async (req, resp) => {
                attributes: ['id', 'name'],
                through: { attributes: [] },
             },
+            {
+               model: Image,
+               as: 'images',
+               attributes: ['id', 'url']
+            }
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
          order: [ ['created_at', 'DESC']]
@@ -184,7 +189,8 @@ const GetMemories = async (req, resp) => {
             location: e.dataValues.location.dataValues,
             date: e.dataValues.date,
             tags: tags.map((tag) => tag.dataValues.id),
-            public: e.dataValues.public
+            public: e.dataValues.public,
+            images: e.dataValues.images
          }
       })
 
@@ -246,6 +252,19 @@ const GetPublicMemories = async (req, resp) => {
    }
 }
 
+const AddImage = async (req, res) => {
+   try {
+      const memoryId = parseInt(req.params.memory_id)
+      const image = await Image.create({
+         memory_id: memoryId,
+         url: req.body.url
+      })
+      res.send(image)
+   } catch (error) {
+      throw error
+   }
+}
+
 
 module.exports = {
    CreateMemory,
@@ -253,5 +272,6 @@ module.exports = {
    UpdateTags,
    DeleteMemory,
    GetMemories,
-   GetPublicMemories
+   GetPublicMemories,
+   AddImage
 }
