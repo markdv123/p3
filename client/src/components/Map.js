@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { makeStyles, FormControl, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
+import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
+import Geocoder from 'react-mapbox-gl-geocoder'
 import { __GetAllTags } from '../services/TagService'
 
 const mapStyles = [
@@ -59,6 +60,10 @@ const MapView = ReactMapBoxGl({
 })
 
 function Map(props) {
+   const [viewport, setViewport] = useState({
+      center: [-40, 20],
+      zoom: [1],
+   })
    const [hoverFlag, setHover] = useState(false)
    const [hasPopup, setPopup] = useState(false)
    const [popupLoc, setPopupLoc] = useState([0, 0])
@@ -68,6 +73,7 @@ function Map(props) {
    const [allTags, setAllTags] = useState([])
    const [style, setStyle] = useState(mapStyles[0].url)
    const classes = (useStyles)
+   const mapRef = useRef()
 
    const styles = {
       width: '90%',
@@ -116,7 +122,7 @@ function Map(props) {
    useEffect(() => {
       if (props.publicView) {
          setPublicView(true)
-         defaultView()
+         // defaultView()
          getTags()
          return
       }
@@ -194,6 +200,20 @@ function Map(props) {
       setStyle(target.value)
    }
 
+   const handleViewportChange = useCallback(
+      (newViewport) => {setViewport(newViewport)},
+      []
+    )
+
+    const onSelected = (viewport, item) => {
+       console.log(viewport)
+       console.log(item)
+       setViewport({
+          center: item.center,
+          zoom: [14]
+       })
+    }
+
    return (
       <div id="map">
          <Grid container justify="start" alignItems="center">
@@ -209,20 +229,28 @@ function Map(props) {
                      <MenuItem value={style.url}>{style.name}</MenuItem>
                   ))}
                </Select>
-            </FormControl>
+            </FormControl>  
+            <Geocoder 
+               mapboxApiAccessToken='pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw'
+               onSelected={onSelected}
+               hideOnSelect={true}
+            />
          </Grid>
          <MapView
             style={style}
             containerStyle={styles}
             onClick={handleMapClick}
             onStyleLoad={getMap}
+            {...viewport}
+            onViewportChange={handleViewportChange}
          >
-
+            
             <Layer
                type="symbol"
                id="marker"
                layout={{ 'icon-image': 'custom-marker-2' }}
             >
+               
                {props.memories.map((e) => (
                   <Feature
                      key={e.id}
