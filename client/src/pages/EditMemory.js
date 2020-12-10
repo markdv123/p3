@@ -177,7 +177,7 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
                   size="small"
                   style={{ width: '100px', justifyContent: 'center' }}
                   variant="contained"
-                  color="primary"
+                  style={{backgroundColor: '#9a9a9a', color:'white'}}
                   className={editClasses.button}
                   endIcon={<Icon>backspace</Icon>}
                   onClick={clearDate}
@@ -275,7 +275,7 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
          <Grid container justify="center" alignItems="center">
             <Button
                variant="contained"
-               color="primary"
+               style={{backgroundColor: '#9a9a9a', color:'white'}}
                className={editClasses.button}
                endIcon={<Icon>arrow_forward_ios</Icon>}
                onClick={handleSubmit}
@@ -285,7 +285,7 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
             </Button>
             <Button
                variant="contained"
-               color="primary"
+               style={{backgroundColor: '#9a9a9a', color:'white'}}
                className={editClasses.button}
                endIcon={<Icon>arrow_back_ios</Icon>}
                onClick={props.resetMode}
