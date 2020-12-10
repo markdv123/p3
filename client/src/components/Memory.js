@@ -83,6 +83,10 @@ const Memory = (props) => {
       props.deleteMem(props.viewMem)
    }
 
+   const resetToView = () => {
+      setMode ( 'view' )
+   }
+
    let content = ''
    switch (mode) {
       case 'view':
@@ -90,7 +94,7 @@ const Memory = (props) => {
             content = (
                <div>
                   <ViewMemory
-                     mem={props.memories.find((e) => e.id === props.viewMem)}
+                     memory={props.memories.find((e) => e.id === props.viewMem)}
                   />
                   <Button
                      style={{ margin: '5px' }}
@@ -159,7 +163,7 @@ const Memory = (props) => {
          if (props.memories.find((e) => e.id === props.viewMem)) {
             content = (
                <EditMemory
-                  resetMode={props.resetMode}
+                  resetMode={resetToView}
                   mem={props.memories.find((e) => e.id === props.viewMem)}
                />
             )

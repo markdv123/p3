@@ -24,6 +24,7 @@ const Login = async (req, resp, next) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            mapStyle: user.mapStyle
          }
          resp.locals.payload = payload
          return next()

@@ -11,12 +11,14 @@ import {
    Button,
    Grid,
    TextField,
+   Card, CardContent
 } from '@material-ui/core'
+import Dropzone from 'react-dropzone'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import TextInput from '../components/TextInput'
 import Icon from '@material-ui/core/Icon'
 import { withRouter } from 'react-router-dom'
-import { __CreateMemory } from '../services/MemoryService'
+import { __AddImage, __CreateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
 const useStyles = makeStyles((theme) => ({
@@ -75,6 +77,7 @@ const CreateMemory = (props) => {
    const [isPublic, setPublic] = useState(false)
    const [tags, setTags] = useState([])
    const [allTags, setAllTags] = useState([])
+   const [files, setFiles] = useState([])
 
    useEffect(() => {
       getTheTags()
@@ -91,14 +94,14 @@ const CreateMemory = (props) => {
 
    const handleName = ({ target }) => setName(target.value)
    const handleDesc = ({ target }) => setDesc(target.value)
-   const handlePublic = ( e, newVal ) => setPublic ( newVal )
+   const handlePublic = (e, newVal) => setPublic(newVal)
    const handleTags = ({ target }) => setTags(target.value)
    const handleDate = ({ target }) => setDate(target.value)
    const clearDate = () => setDate('')
 
    const handleSubmit = async () => {
       try {
-         await __CreateMemory(props.currentUser.id, {
+         const newMemory = await __CreateMemory(props.currentUser.id, {
             name: name,
             date: date,
             description: description,
@@ -109,6 +112,13 @@ const CreateMemory = (props) => {
             },
             tags: tags,
          })
+         if(files.length) {
+            const formData = new FormData()
+            files.forEach((file)=> {
+               formData.append('images', file)
+            })
+            await __AddImage(newMemory.id, formData)
+         }
          props.history.push('/profile')
       } catch (error) {
          throw error
@@ -199,6 +209,20 @@ const CreateMemory = (props) => {
             </FormControl>
          </Grid>
          <Grid container justify="center" alignItems="center">
+            <Dropzone onDrop={acceptedFiles => setFiles([...files, ...acceptedFiles])}>
+               {({ getRootProps, getInputProps }) => (
+                  <Card>
+                     <CardContent>
+                        <div {...getRootProps()}>
+                           <input {...getInputProps()} />
+                           <p>Drag 'n' drop some files here, or click to select files</p>
+                        </div>
+                     </CardContent>
+                  </Card>
+               )}
+            </Dropzone>
+         </Grid>
+         <Grid container justify="center" alignItems="center">
             <FormControl className={classes.formControl}>
                <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
                <Select
@@ -251,7 +275,7 @@ const CreateMemory = (props) => {
                color="primary"
                className={classes.button}
                endIcon={<Icon>arrow_back_ios</Icon>}
-               onClick={() => {props.resetMode()}}
+               onClick={() => { props.resetMode() }}
                style={{ margin: '5px' }}
             >
                Cancel

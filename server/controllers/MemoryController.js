@@ -176,26 +176,11 @@ const GetMemories = async (req, resp) => {
             }
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
-         order: [ ['created_at', 'DESC']]
+         order: [ ['created_at', 'DESC'], 
+         [ { model: Tag, as: 'tags' }, 'name', 'ASC'] ]
       })
 
-      // clean up the tags in memories
-      const finalMemories = memories.map((e) => {
-         const tags = [...e.dataValues.tags]
-         tags.sort((a, b) => (a.dataValues.name < b.dataValues.name ? -1 : 1))
-         return {
-            id: e.dataValues.id,
-            name: e.dataValues.name,
-            description: e.dataValues.description,
-            location: e.dataValues.location.dataValues,
-            date: e.dataValues.date,
-            tags: tags.map((tag) => tag.dataValues.id),
-            public: e.dataValues.public,
-            images: e.dataValues.images
-         }
-      })
-
-      resp.send(finalMemories)
+      return resp.send(memories)
    } catch (err) {
       console.log('Error in MemoryController.GetMemories', err)
       throw err
@@ -224,28 +209,19 @@ const GetPublicMemories = async (req, resp) => {
                model: User,
                as: 'user',
                attributes: [ 'name' ]
+            },
+            {
+               model: Image,
+               as: 'images',
+               attributes: ['id', 'url']
             }
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
+         order: [ ['created_at', 'DESC'], 
+         [ { model: Tag, as: 'tags' }, 'name', 'ASC'] ]
       })
 
-      // clean up the tags in memories
-      const finalMemories = memories.map((e) => {
-         const tags = [...e.dataValues.tags]
-         tags.sort((a, b) => (a.dataValues.name < b.dataValues.name ? -1 : 1))
-         return {
-            id: e.dataValues.id,
-            name: e.dataValues.name,
-            description: e.dataValues.description,
-            location: e.dataValues.location.dataValues,
-            date: e.dataValues.date,
-            tags: tags.map((tag) => tag.dataValues.id),
-            public: e.dataValues.public,
-            user: e.dataValues.user.name
-         }
-      })
-
-      resp.send(finalMemories)
+      return resp.send(memories)
    }
    catch ( err) {
       console.log ( 'Error in MemoryController.GetPublicMemories', err)
@@ -269,11 +245,8 @@ const AddImage = async (req, res) => {
          }
       }))
       console.log(uploadedImages)
-      // const image = await Image.create({
-      //    memory_id: memoryId,
-      //    url: req.body.url
-      // })
-      // res.send(image)
+      await Image.bulkCreate(uploadedImages)
+      res.send('images uploaded')
    } catch (error) {
       throw error
    }
