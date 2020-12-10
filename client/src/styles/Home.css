@@ -1,5 +1,10 @@
+
+
 .description {
     max-width: 820px;
     margin: 0 auto;
-    font-size: ;
+    
+}
+body {
+    padding-top: 90px;
 }

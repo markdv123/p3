@@ -8,8 +8,12 @@ import Geocoder from 'react-mapbox-gl-geocoder'
 import '../Map.css'
 import { __UpdateMapStyle } from '../services/UserService'
 import { __GetAllTags } from '../services/TagService'
+<<<<<<< HEAD
+import '../styles/Map.css'
+=======
 import Pop from './Pop'
 
+>>>>>>> c8411b9881724dba80bea7d1685d984e0487fc2a
 const MAP_KEY = process.env.REACT_APP_MAP_KEY
 
 const mapStyles = [
@@ -83,10 +87,10 @@ function Map(props) {
    const classes = (useStyles)
 
    const styles = {
-      width: '90%',
+      width: '100%',
       height: 'calc(80vh - 80px)',
       position: 'relative',
-      padding: '10px',
+      padding: '0px',
       margin: '0 auto',
       top: 'auto',
       bottom: 'auto',
@@ -220,13 +224,15 @@ function Map(props) {
                      <MenuItem value={style.url}>{style.name}</MenuItem>
                   ))}
                </Select>
-            </FormControl>  
+            </FormControl>     
+                <p className='search'>Search:</p>
             <Geocoder 
-               mapboxApiAccessToken='pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw'
-               onSelected={onSelected}
-               hideOnSelect={true}
-               placeholder="Search"
-            />
+                className='search_bar'
+                mapboxApiAccessToken='pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw'
+                onSelected={onSelected}
+                hideOnSelect={true}
+                placeholder="Search"
+               />
          </Grid>
          <MapView
             style={style}

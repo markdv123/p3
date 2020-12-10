@@ -67,7 +67,6 @@ function Profile(props) {
          <Container style={{ display: 'flex' }}>
             <Grid xs={12} sm={6}>
                <div className="map center">
-                  <h1>Hello {props.currentUser.name}</h1>
                   <Map
                      {...props}
                      memories={memories}

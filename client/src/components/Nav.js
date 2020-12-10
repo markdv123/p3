@@ -1,121 +1,121 @@
 import React, { useState } from 'react'
 import {
-   AppBar,
-   Toolbar,
-   IconButton,
-   Typography,
-   Button,
-   Icon,
-   Menu,
-   MenuItem,
+    AppBar,
+    Toolbar,
+    IconButton,
+    Typography,
+    Button,
+    Icon,
+    Menu,
+    MenuItem,
 } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
 import '../styles/Nav.css'
- 
+
 
 const Nav = (props) => {
-   const [anchorEl, setAnchorEl] = useState('')
+    const [anchorEl, setAnchorEl] = useState('')
 
-   const handleClick = (event) => {
-      setAnchorEl(event.currentTarget)
-   }
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget)
+    }
 
-   const handleClose = () => {
-      setAnchorEl(null)
-   }
-   return props.authenticated && props.currentUser ? (
-      <div className='Nav'>
-         <AppBar position="static">
-            <Toolbar>
-               <IconButton
-                  onClick={() => props.history.push('/')}
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-               >
-                  <Icon>public</Icon>
-               </IconButton>
-               <Typography variant="h6" style={{ flexGrow: 1 }}>
-                  Gaiary
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+    return props.authenticated && props.currentUser ? (
+        <div className='Nav'>
+            <AppBar position="absolute">
+                <Toolbar>
+                    <IconButton
+                        onClick={() => props.history.push('/')}
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                    >
+                        <Icon>public</Icon>
+                    </IconButton>
+                    <Typography variant="h6" style={{ flexGrow: 1 }}>
+                        Gaiary
+                    </Typography>
+
+                    <Typography className='hello_user' variant="h6" style={{ flexGrow: 0.7 }}>
+                        Hello, {props.currentUser.name}
+                    </Typography>
+
+                    <Button
+                        color="inherit"
+                        onClick={() => props.history.push('/profile')}
+                    >
+                        Profile
+                    </Button>
+                    <Button
+                        color="inherit"
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        Settings
+                    </Button>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem
+                            onClick={() => {
+                                handleClose()
+                                props.history.push('/updatename')
+                            }}
+                        >
+                            Change Name
+                    </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                handleClose()
+                                props.history.push('/updatepassword')
+                            }}
+                        >
+                            Change Password
+                    </MenuItem>
+                    </Menu>
+                    <Button
+                        color="inherit"
+                        href="/"
+                        onClick={() => localStorage.clear()}
+                    >
+                        Logout
+               </Button>
+                </Toolbar>
+            </AppBar>
+        </div>
+    ) : (
+            <div>
+                <AppBar position="absolute">
+                    <Toolbar>
+                        <IconButton
+                            href="/"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            startIcon={<Icon>public</Icon>}
+                        >
+                            <Icon>public</Icon>
+                        </IconButton>
+                        <Typography variant="h6" style={{ flexGrow: 1 }}>
+                            Gaiary
                </Typography>
-
-               <Typography variant="h6" style={{ flexGrow: 1 }}>
-                  
-               </Typography>
-
-               <Button
-                  color="inherit"
-                  onClick={() => props.history.push('/profile')}
-               >
-                     {props.currentUser.name}'s Profile
+                        <Button color="inherit" href="/login">
+                            Sign In
                </Button>
-               <Button
-                  color="inherit"
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-               >
-                  Settings
+                        <Button color="inherit" href="/register">
+                            Sign Up
                </Button>
-               <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-               >
-                  <MenuItem
-                     onClick={() => {
-                        handleClose()
-                        props.history.push('/updatename')
-                     }}
-                  >
-                     Change Name
-                  </MenuItem>
-                  <MenuItem
-                     onClick={() => {
-                        handleClose()
-                        props.history.push('/updatepassword')
-                     }}
-                  >
-                     Change Password
-                  </MenuItem>
-               </Menu>
-               <Button
-                  color="inherit"
-                  href="/"
-                  onClick={() => localStorage.clear()}
-               >
-                  Logout
-               </Button>
-            </Toolbar>
-         </AppBar>
-      </div>
-   ) : (
-      <div>
-         <AppBar position="static">
-            <Toolbar>
-               <IconButton
-                  href="/"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  startIcon={<Icon>public</Icon>}
-               >
-                  <Icon>public</Icon>
-               </IconButton>
-               <Typography variant="h6" style={{ flexGrow: 1 }}>
-                  Gaiary
-               </Typography>
-               <Button color="inherit" href="/login">
-                  Sign In
-               </Button>
-               <Button color="inherit" href="/register">
-                  Sign Up
-               </Button>
-            </Toolbar>
-         </AppBar>
-      </div>
-   )
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
 }
 export default withRouter(Nav)
