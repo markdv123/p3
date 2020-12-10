@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             },
          },
          name: DataTypes.STRING,
-         description: DataTypes.STRING,
+         description: DataTypes.TEXT,
          public: DataTypes.BOOLEAN,
          date: DataTypes.DATE
       },
