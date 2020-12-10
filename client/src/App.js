@@ -90,7 +90,7 @@ function App(props) {
             path="/login"
             component={()=> (
               <SignIn
-                {...props} 
+               
                 toggleAuthenticated={toggleAuthenticated}
                 currentUser={currentUser}
                 authenticated={authenticated}/>
