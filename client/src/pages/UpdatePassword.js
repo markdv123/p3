@@ -35,7 +35,11 @@ function UpdatePassword(props) {
    }
    return (
       <div className="signup flex-col center">
-         <Nav />
+         <Nav 
+            authenticated={props.authenticated}
+            {...props}
+            currentUser={props.currentUser}
+         />
          <Grid container justify="center" style={{ margin: '20px' }}>
             <FormControl className="flex-col" onSubmit={handleSubmit}>
                <TextInput
