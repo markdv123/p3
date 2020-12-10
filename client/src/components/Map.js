@@ -1,12 +1,15 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react'
-import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
+import React, { useState, useEffect, useCallback } from 'react'
+import ReactMapBoxGl, { Layer, Feature } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import '../Map.css'
 import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
 import Geocoder from 'react-mapbox-gl-geocoder'
-import Pop from './Pop'
+
+import '../Map.css'
+import { __UpdateMapStyle } from '../services/UserService'
 import { __GetAllTags } from '../services/TagService'
+import Pop from './Pop'
+
 const MAP_KEY = process.env.REACT_APP_MAP_KEY
 
 const mapStyles = [
@@ -76,8 +79,7 @@ function Map(props) {
    const [mapHandle, setMapHandle] = useState(null)
    const [showMem, setShowMem] = useState(null)
    const [publicView, setPublicView] = useState(false)
-   const [allTags, setAllTags] = useState([])
-   const [style, setStyle] = useState(mapStyles[0].url)
+   const [style, setStyle] = useState( props.authenticated ? mapStyles.find(e => e.name === props.currentUser.mapStyle).url :  mapStyles[0].url)
    const classes = (useStyles)
 
    const styles = {
@@ -88,15 +90,6 @@ function Map(props) {
       margin: '0 auto',
       top: 'auto',
       bottom: 'auto',
-   }
-
-   const getTags = async () => {
-      try {
-         const res = await __GetAllTags()
-         setAllTags(res)
-      } catch (err) {
-         throw err
-      }
    }
 
    // get the handle for the map so we can flyTo the right memory.
@@ -117,8 +110,6 @@ function Map(props) {
    useEffect(() => {
       if (props.publicView) {
          setPublicView(true)
-         // defaultView()
-         getTags()
          return
       }
       // we want to start at the loc of the last memory, unless props.gotoMemory is !== -1, in which case we go to that memoryId
@@ -191,8 +182,13 @@ function Map(props) {
       setPopup(true)
    }
 
-   const handleStyle = ({ target }) => {
+   const handleStyle = async ({ target }) => {
       setStyle(target.value)
+      if ( props.authenticated ) {
+         const myStyle = mapStyles.find( e => e.url === target.value )
+         const userData = await __UpdateMapStyle ( props.currentUser.email, myStyle.name )
+         props.toggleAuthenticated(true, userData.user)
+      }
    }
 
    const handleViewportChange = useCallback(
@@ -262,7 +258,6 @@ function Map(props) {
                <Pop 
                   publicView={publicView}
                   showMem={showMem}
-                  allTags={allTags}
                   popupLoc={popupLoc}
                   createMemory={createMemory}
                   />

@@ -54,7 +54,9 @@ function App(props) {
             component={()=> (
               <Home 
                 currentUser={currentUser}
-                authenticated={authenticated}/>
+                authenticated={authenticated}
+                toggleAuthenticated={toggleAuthenticated}
+                />
             )}
           />
           <Route
