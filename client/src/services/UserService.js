@@ -81,6 +81,17 @@ export const __UpdateName = async ( email, name ) => {
 }
 
 
+export const __UpdateMapStyle = async ( email, mapStyle ) => {
+   try {
+      const res = await ApiClient.put('/user/map/', { email, mapStyle } )
+      return res.data
+   }
+   catch (err) {
+      throw err
+   }
+}
+
+
 // check that we have a valid token and refresh it
 export const __CheckSession = async () => {
    try {

@@ -1,63 +1,57 @@
 import React, { useState, useEffect } from 'react'
-import {Button, Icon} from '@material-ui/core'
 import { __GetAllTags } from '../services/TagService'
 
 const ViewMemory = (props) => {
-    const [allTags, setAllTags] = useState([])
-    const [postTags, setPostTags] = useState([])
+   const [allTags, setAllTags] = useState([])
+   const [postTags, setPostTags] = useState([])
 
-    useEffect(() => {
-        getTheTags()
-    }, [])
+   useEffect(() => {
+      getTheTags()
+   }, [props.mem])
 
-    // const getTheTags = async () => {
-    //     try {
-    //         const everyTag = await __GetAllTags()
-    //         setAllTags(everyTag)
-    //         setTags()
-    //     } catch (error) {
-    //         throw error
-    //     }
-    // }
-    const getTheTags = async () => {
-        try {
-            const everyTag = await __GetAllTags()
-            const theTags = everyTag.filter((tag) => props.mem.tags.find(e => e === tag.id))
-            setPostTags(theTags)
-        } catch (error) {
+   
+   const getTheTags = async () => {
+      let everyTag
+      if (!allTags.length) {
+         try {
+            everyTag = await __GetAllTags()
+            setAllTags(everyTag)
+         } catch (error) {
             throw error
-        }
-    }
+         }
+      }
+      else 
+         everyTag = allTags
 
-    const convertDate = (d) => {
-        return new Date(d).toLocaleString()
-    }
+      const theTags = everyTag.filter((tag) =>
+         props.mem.tags.find((e) => e === tag.id)
+      )
+      setPostTags(theTags)
+   }
 
-    // const setTags = () => {
-    //     const tags = props.mem.tags
-    //     const thePostTags = []
-    //     tags.map((tag) => {
-    //         thePostTags.push(allTags.find(e => e.id === tag))
-    //         console.log(allTags.find(e => e.id === tag))
-    //     })
-    //     console.log(thePostTags)
-    //     setPostTags(thePostTags)
-    //     console.log(postTags)
-    // }
+   const convertDate = (d) => {
+      return new Date(d).toLocaleString()
+   }
 
-    return (
-        <div>
-            <h2>{props.mem.name}</h2>
-            <h3>{convertDate(props.mem.date)}</h3>
-            <p>{props.mem.description}</p>
-            <p>Tags:</p>
-            <ul>
-                {postTags.length ? postTags.map((tag) => (<li key={tag.id}>{tag.name}</li>)) : null}
-            </ul>
-            {props.mem.public === true ? (<h4>This is a public memory.</h4>) : (<h4>This is a private memory.</h4>)}
-            <Button style={{ margin: '5px' }} variant="contained" color="primary" onClick={() => { props.resetMode() }} endIcon={<Icon>arrow_back_ios</Icon>}>Return to List</Button>
-        </div>
-    )
+   return (
+      <div>
+         <h2>{props.mem.name}</h2>
+
+         <h3>{props.mem.date ? convertDate(props.mem.date) : null}</h3>
+         <p>{props.mem.description}</p>
+         <p>Tags:</p>
+         <ul>
+            {postTags.length
+               ? postTags.map((tag) => <li key={tag.id}>{tag.name}</li>)
+               : null}
+         </ul>
+         {props.mem.public === true ? (
+            <h4>This is a public memory.</h4>
+         ) : (
+            <h4>This is a private memory.</h4>
+         )}
+      </div>
+   )
 }
 
 export default ViewMemory

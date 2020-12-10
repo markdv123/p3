@@ -69,7 +69,6 @@ function getStyles(tag, tags, theme) {
 const CreateMemory = (props) => {
    const classes = useStyles()
    const theme = useTheme()
-   const [userId, setUserId] = useState(props.currentUser.id)
    const [name, setName] = useState('')
    const [date, setDate] = useState('')
    const [description, setDesc] = useState('')
@@ -99,7 +98,7 @@ const CreateMemory = (props) => {
 
    const handleSubmit = async () => {
       try {
-         const res = await __CreateMemory(userId, {
+         await __CreateMemory(props.currentUser.id, {
             name: name,
             date: date,
             description: description,
@@ -117,7 +116,7 @@ const CreateMemory = (props) => {
    }
 
    return (
-      <div style={{ height: '80vh', display: 'grid' }}>
+      <div>
          <Grid container justify="center" alignItems="center">
             <FormControl
                className={classes.formcontrol}
@@ -243,17 +242,17 @@ const CreateMemory = (props) => {
                className={classes.button}
                endIcon={<Icon>arrow_forward_ios</Icon>}
                onClick={handleSubmit}
+               style={{ margin: '5px' }}
             >
                Submit
             </Button>
-         </Grid>
-         <Grid container justify="center" alignItems="center">
             <Button
                variant="contained"
                color="primary"
                className={classes.button}
                endIcon={<Icon>arrow_back_ios</Icon>}
                onClick={() => {props.resetMode()}}
+               style={{ margin: '5px' }}
             >
                Cancel
             </Button>

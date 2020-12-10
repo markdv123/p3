@@ -9,6 +9,8 @@ function SignUp(props) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [passwordsMatch, setPasswordsMatch] = useState(true)
     const [formError, setError] = useState(false)
 
     useEffect((props) => {
@@ -26,8 +28,17 @@ function SignUp(props) {
         setPassword(target.value)
     }
 
+    const handleConfirmPassword = ( { target} ) => {
+       setConfirmPassword(target.value)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if ( password !== confirmPassword ) {
+           setPasswordsMatch(false)
+           return
+        }
+        setPasswordsMatch(true)
         try {
             const register = await __RegisterUser(name, email, password)
             console.log(register)
@@ -64,7 +75,15 @@ function SignUp(props) {
                         value={password}
                         onChange={handlePassword}
                     />
+                    <TextInput
+                        placeholder="Confirm Password"
+                        type="password"
+                        name="confirmPassword"
+                        value={confirmPassword}
+                        onChange={handleConfirmPassword}
+                    />
                     <br />
+                    { passwordsMatch ? <p></p> : <p>Passwords must match</p> }
                     <Button onClick={handleSubmit} variant="contained" color="primary" endIcon={<Icon>person_add</Icon>}>
                         Sign Up
                 </Button>
