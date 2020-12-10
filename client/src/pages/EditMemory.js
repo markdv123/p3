@@ -138,7 +138,7 @@ const EditMemory = (props) => {
                <TextField
                   id="datetime-local"
                   type="date"
-                  value={date.split('T')[0]}
+                  value={ date ? date.split('T')[0] : null }
                   onChange={handleDate}
                   className={editClasses.textField}
                   InputLabelProps={{
