@@ -2,3 +2,16 @@
     font-family: 'Inter', sans-serif;
 }
 
+.thumbs-wrapper {
+    display: none;
+}
+
+.carousel-root {
+    margin-top: 10px;
+    width: 350px;
+    height: 300px;
+}
+
+.carousel-root img {
+    object-fit: scale-down;
+}

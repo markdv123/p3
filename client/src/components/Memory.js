@@ -12,6 +12,7 @@ import { Pagination } from '@material-ui/lab'
 import ViewMemory from '../pages/ViewMemory'
 import CreateMemory from '../pages/CreateMemory'
 import EditMemory from '../pages/EditMemory'
+import MyCarousel from './MyCarousel'
 
 const useMemoryStyles = makeStyles((theme) => ({
    root: {
@@ -116,6 +117,7 @@ const Memory = (props) => {
                   >
                      Delete Memory
                   </Button>
+                  {props.memories.find((e) => e.id === props.viewMem) ? (<MyCarousel images={props.memories.find((e) => e.id === props.viewMem).images}/>) : (null)}
                   <Dialog
                      open={confirmIsOpen}
                      onClose={handleConfirmClose}
