@@ -44,7 +44,7 @@ const Home = (props) => {
                      memories from your life!
                   </p>
                   {!props.authenticated ? (
-                     <div>
+                     <div style={{margin: '10px'}}>
                         <Button
                            href="/register"
                            variant="contained"

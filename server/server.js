@@ -2,7 +2,7 @@ const AppRouter = require('./routes/AppRouter');
 const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
-
+const AWSservice = require('./middleware/AWSservice')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.send({ msg: 'Server Working' }));
 app.use('/api', AppRouter);
 app.listen(PORT, async () => {
     try {
+        AWSservice.init()
         console.log(`App listening on port: ${PORT}`);
     } catch (error) {
         throw new Error('Connection Error');
