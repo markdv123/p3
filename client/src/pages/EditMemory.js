@@ -9,11 +9,14 @@ import {
    Button,
    Grid,
    TextField,
-   Icon
+   Icon,
+   Card,
+   CardContent,
 } from '@material-ui/core'
-import { ToggleButton, ToggleButtonGroup, Autocomplete} from '@material-ui/lab'
+import Dropzone from 'react-dropzone'
+import { ToggleButton, ToggleButtonGroup, Autocomplete } from '@material-ui/lab'
 
-import { __UpdateMemory } from '../services/MemoryService'
+import { __UpdateMemory, __CreateMemory, __AddImage } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
 
 const useEditStyles = makeStyles((theme) => ({
@@ -63,16 +66,16 @@ function getStyles(tag, tags, theme) {
    }
 }
 
-const EditMemory = (props) => {
+const EditMemory = ({ memory, currentUser, ...props }) => {
    const editClasses = useEditStyles()
    const theme = useTheme()
-   const [name, setName] = useState(props.mem.name)
-   const [date, setDate] = useState(props.mem.date)
-   const [description, setDesc] = useState(props.mem.description)
-   const [isPublic, setPublic] = useState(props.mem.public)
-   const [tags, setTags] = useState(props.mem.tags)
+   const [name, setName] = useState(memory.name)
+   const [date, setDate] = useState(memory.date)
+   const [description, setDesc] = useState(memory.description)
+   const [isPublic, setPublic] = useState(memory.public)
+   const [tags, setTags] = useState(memory.tags)
    const [allTags, setAllTags] = useState([])
-   const [tagValue, setTagValue] = useState(null)
+   const [files, setFiles] = useState([])
 
    const getTheTags = async () => {
       try {
@@ -85,7 +88,7 @@ const EditMemory = (props) => {
 
    useEffect(() => {
       getTheTags()
-   }, [props.mem])
+   }, [memory])
 
    const handleName = ({ target }) => setName(target.value)
    const handleDesc = ({ target }) => setDesc(target.value)
@@ -95,31 +98,53 @@ const EditMemory = (props) => {
 
    const handleSubmit = async () => {
       try {
-         await __UpdateMemory(props.mem.id, {
-            name: name,
-            date: date,
-            description: description,
-            public: isPublic,
-            tags: tags,
-         })
+         if (memory.id === -1) {
+            // this is a create
+            const newMemory = await __CreateMemory(currentUser.id, {
+               name: name,
+               date: date,
+               description: description,
+               public: isPublic,
+               tags: tags,
+               location: memory.location,
+            })
+            if(files.length) {
+               const formData = new FormData()
+               files.forEach((file)=> {
+                  formData.append('images', file)
+               })
+               await __AddImage(newMemory.id, formData)
+            }
+         } else {
+            await __UpdateMemory(memory.id, {
+               name: name,
+               date: date,
+               description: description,
+               public: isPublic,
+               tags: tags,
+            })
+            if(files.length) {
+               const formData = new FormData()
+               files.forEach((file)=> {
+                  formData.append('images', file)
+               })
+               await __AddImage(memory.id, formData)
+            }
+         }
          props.history.push('/profile')
       } catch (error) {
          throw error
       }
    }
 
-
-   const handleTagChange = ( e, values) => {
-      const newTags = values.map ( e => {
-         const findTag = allTags.find( tag => tag.name === e )
-         if ( findTag ) 
-            return findTag
+   const handleTagChange = (e, values) => {
+      const newTags = values.map((e) => {
+         const findTag = allTags.find((tag) => tag.name === e)
+         if (findTag) return findTag
          return { id: -1, name: e }
       })
-      console.log ( newTags )
-      setTags ( newTags )
+      setTags(newTags)
    }
-
 
    return (
       <div>
@@ -198,6 +223,28 @@ const EditMemory = (props) => {
             </FormControl>
          </Grid>
          <Grid container justify="center" alignItems="center">
+            <Dropzone
+               onDrop={(acceptedFiles) =>
+                  setFiles([...files, ...acceptedFiles])
+               }
+            >
+               {({ getRootProps, getInputProps }) => (
+                  <Card>
+                     <CardContent>
+                        <div {...getRootProps()}>
+                           <input {...getInputProps()} />
+                           <p>
+                              Drag 'n' drop some files here, or click to select
+                              files
+                           </p>
+                        </div>
+                     </CardContent>
+                  </Card>
+               )}
+            </Dropzone>
+         </Grid>
+
+         <Grid container justify="center" alignItems="center">
             <Autocomplete
                multiple
                id="tag-list"
@@ -219,7 +266,7 @@ const EditMemory = (props) => {
                      placeholder="Tags"
                   />
                )}
-               defaultValue={tags.map(e => e.name)}
+               defaultValue={tags.map((e) => e.name)}
                style={{ width: 300 }}
                freeSolo
                onChange={handleTagChange}

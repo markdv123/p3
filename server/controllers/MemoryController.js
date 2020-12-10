@@ -265,7 +265,6 @@ const AddImage = async (req, res) => {
             url: location
          }
       }))
-      console.log(uploadedImages)
       await Image.bulkCreate(uploadedImages)
       res.send('images uploaded')
    } catch (error) {

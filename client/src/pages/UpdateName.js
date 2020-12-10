@@ -9,10 +9,6 @@ import Nav from '../components/Nav'
 function UpdateName(props) {
    const [name, updateName] = useState('')
 
-   useEffect(() => {
-      console.log(props)
-   }, [])
-
    const handleName = ({ target }) => {
       updateName(target.value)
    }
@@ -21,11 +17,10 @@ function UpdateName(props) {
       e.preventDefault()
       try {
          const update = await __UpdateName(props.currentUser.email, name)
-         console.log(props.currentUser.name)
          props.toggleAuthenticated(true, update.user)
          props.history.push('/profile')
       } catch (error) {
-         console.log(error)
+         throw error
       }
    }
    return (
