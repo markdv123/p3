@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Image.belongsTo( models.Memory, {
-         foreignKey: 'memory_id'
+         foreignKey: 'memory_id'         
       })
    }
   };

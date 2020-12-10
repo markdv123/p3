@@ -12,12 +12,18 @@ import {
    Grid,
    TextField,
 } from '@material-ui/core'
+
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import TextInput from '../components/TextInput'
+import Autocomplete, {
+   createFilterOptions,
+} from '@material-ui/lab/Autocomplete'
+
 import Icon from '@material-ui/core/Icon'
 import { withRouter } from 'react-router-dom'
 import { __UpdateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
+
+const filter = createFilterOptions()
 
 const useEditStyles = makeStyles((theme) => ({
    root: {
@@ -75,6 +81,7 @@ const EditMemory = (props) => {
    const [isPublic, setPublic] = useState(props.mem.public)
    const [tags, setTags] = useState(props.mem.tags)
    const [allTags, setAllTags] = useState([])
+   const [tagValue, setTagValue] = useState(null)
 
    const getTheTags = async () => {
       try {
@@ -114,20 +121,13 @@ const EditMemory = (props) => {
    return (
       <div>
          <Grid container justify="center" alignItems="center">
-            {/* <FormControl
-                        className={editClasses.formcontrol}
-                        noValidate
-                        autoComplete="off"
-                     > */}
-            <TextInput
-               id="standard-basic"
-               className={editClasses.textField}
-               placeholder="Name"
+            <TextField
                name="name"
                value={name}
                onChange={handleName}
+               placeholder="Name"
+               className={editClasses.textField}
             />
-            {/* </FormControl> */}
          </Grid>
          <Grid container justify="center" alignItems="center">
             <FormControl
@@ -138,7 +138,7 @@ const EditMemory = (props) => {
                <TextField
                   id="datetime-local"
                   type="date"
-                  value={ date ? date.split('T')[0] : null }
+                  value={date ? date.split('T')[0] : null}
                   onChange={handleDate}
                   className={editClasses.textField}
                   InputLabelProps={{
@@ -195,47 +195,31 @@ const EditMemory = (props) => {
             </FormControl>
          </Grid>
          <Grid container justify="center" alignItems="center">
-            <FormControl className={editClasses.formControl}>
-               <InputLabel id="demo-mutiple-chip-label">Select Tags</InputLabel>
-               <Select
-                  labelId="demo-mutiple-chip-label"
-                  id="demo-mutiple-chip"
-                  multiple
-                  value={tags}
-                  onChange={handleTags}
-                  input={<Input id="select-multiple-chip" />}
-                  renderValue={(selected) => (
-                     <div className={editClasses.chips}>
-                        {selected.map((value) => {
-                           if (allTags.length)
-                              return (
-                                 <Chip
-                                    key={value}
-                                    label={
-                                       allTags.find((e) => e.id === value).name
-                                    }
-                                    className={editClasses.chip}
-                                 />
-                              )
-                           return
-                        })}
-                     </div>
-                  )}
-                  MenuProps={MenuProps}
-               >
-                  {allTags.map((tag) => {
-                     return (
-                        <MenuItem
-                           key={tag.id}
-                           value={tag.id}
-                           style={getStyles(tag, tags, theme)}
-                        >
-                           {tag.name}
-                        </MenuItem>
-                     )
-                  })}
-               </Select>
-            </FormControl>
+            <Autocomplete
+               multiple
+               id="tag-list"
+               options={allTags.map((e) => e.name)}
+               renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                     <Chip
+                        variant="outlined"
+                        label={option}
+                        {...getTagProps({ index })}
+                     />
+                  ))
+               }
+               renderInput={(params) => (
+                  <TextField
+                     {...params}
+                     variant="standard"
+                     label="Select Tags"
+                     placeholder="Tags"
+                  />
+               )}
+               defaultValue={tags.map(e => e.name)}
+               style={{ width: 300 }}
+               freeSolo
+            />
          </Grid>
          <Grid container justify="center" alignItems="center">
             <Button
@@ -253,9 +237,7 @@ const EditMemory = (props) => {
                color="primary"
                className={editClasses.button}
                endIcon={<Icon>arrow_back_ios</Icon>}
-               onClick={() => {
-                  props.resetMode()
-               }}
+               onClick={props.resetMode}
                style={{ margin: '5px' }}
             >
                Cancel
