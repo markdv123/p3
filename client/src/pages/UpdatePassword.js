@@ -21,16 +21,14 @@ function UpdatePassword(props) {
    const handleSubmit = async (e) => {
       e.preventDefault()
       try {
-         console.log(props.currentUser)
          const update = await __UpdatePasword(
             props.currentUser.email,
             oldPassword,
             newPassword
          )
-         console.log(update)
          props.history.push('/profile')
       } catch (error) {
-         console.log(error)
+         throw error
       }
    }
    return (

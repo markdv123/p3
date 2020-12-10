@@ -13,9 +13,6 @@ function SignUp(props) {
     const [passwordsMatch, setPasswordsMatch] = useState(true)
     const [formError, setError] = useState(false)
 
-    useEffect((props) => {
-        console.log(props)
-    }, [])
     const handleName = ({ target }) => {
         setName(target.value)
     }
@@ -41,7 +38,6 @@ function SignUp(props) {
         setPasswordsMatch(true)
         try {
             const register = await __RegisterUser(name, email, password)
-            console.log(register)
             props.toggleAuthenticated(true, register.user)
             props.history.push('/profile')    
         } catch (error) {

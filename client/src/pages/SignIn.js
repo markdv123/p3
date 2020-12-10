@@ -24,7 +24,6 @@ function SignIn(props) {
         e.preventDefault()
         try {
             const loginData = await __LoginUser(email, password)
-            console.log(loginData)
             props.toggleAuthenticated(true, loginData.user)
             props.history.push('/profile')
         } catch (error) {
