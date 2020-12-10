@@ -1,10 +1,13 @@
+
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import '../Map.css'
 import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
 import Geocoder from 'react-mapbox-gl-geocoder'
 import Pop from './Pop'
 import { __GetAllTags } from '../services/TagService'
+const MAP_KEY = process.env.REACT_APP_MAP_KEY
 
 const mapStyles = [
    {
@@ -55,9 +58,11 @@ const useStyles = makeStyles((theme) => ({
    },
 }))
 
+
+
 const MapView = ReactMapBoxGl({
    accessToken:
-      'pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw',
+      MAP_KEY
 })
 
 function Map(props) {
@@ -74,7 +79,6 @@ function Map(props) {
    const [allTags, setAllTags] = useState([])
    const [style, setStyle] = useState(mapStyles[0].url)
    const classes = (useStyles)
-   const mapRef = useRef()
 
    const styles = {
       width: '90%',
@@ -225,6 +229,7 @@ function Map(props) {
                mapboxApiAccessToken='pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw'
                onSelected={onSelected}
                hideOnSelect={true}
+               placeholder="Search"
             />
          </Grid>
          <MapView

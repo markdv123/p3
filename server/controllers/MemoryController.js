@@ -1,5 +1,6 @@
 const { response } = require('express')
 const { Memory, TagMemory, Location, Tag, User, sequelize, Image } = require('../models')
+const AWSservice = require('../middleware/AWSservice')
 
 /* 
    create memory takes a user_id param and a req.body of 
@@ -255,11 +256,24 @@ const GetPublicMemories = async (req, resp) => {
 const AddImage = async (req, res) => {
    try {
       const memoryId = parseInt(req.params.memory_id)
-      const image = await Image.create({
-         memory_id: memoryId,
-         url: req.body.url
-      })
-      res.send(image)
+      let images = req.files.map((file)=> ({
+         Body: file.buffer,
+         Key: `${memoryId}/${file.originalname}`,
+         ContentType: file.mimetype
+      }))
+      const uploadedImages = await Promise.all(images.map(async (image) => {
+         let location = await AWSservice.upload(image)
+         return {
+            memoryId,
+            url: location
+         }
+      }))
+      console.log(uploadedImages)
+      // const image = await Image.create({
+      //    memory_id: memoryId,
+      //    url: req.body.url
+      // })
+      // res.send(image)
    } catch (error) {
       throw error
    }

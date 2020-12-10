@@ -118,3 +118,12 @@ export const __GetPublicMemories = async () => {
       throw err
    }
 }
+
+export const __AddImage = async (memoryId, url) => {
+   try {
+      const res = await ApiClient.post(`/memory/image/${memoryId}`, {url})
+      return res.data
+   } catch (error) {
+      throw error
+   }
+}

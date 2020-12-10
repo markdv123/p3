@@ -1,0 +1,11 @@
+.react-geocoder {
+    color: black;
+}
+
+.react-geocoder-results {
+    font-size: 15px;
+}
+
+.react-geocoder-item {
+    font: 1em sans-serif;
+}
