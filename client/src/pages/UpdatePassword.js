@@ -61,7 +61,7 @@ function UpdatePassword(props) {
                <Button
                   onClick={handleSubmit}
                   variant="contained"
-                  color="primary"
+                  style={{backgroundColor: '#9a9a9a', color:'white'}}
                   endIcon={<Icon>person</Icon>}
                >
                   Submit
