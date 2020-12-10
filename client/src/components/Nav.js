@@ -38,11 +38,15 @@ const Nav = (props) => {
                   Gaiary
                </Typography>
 
+               <Typography variant="h6" style={{ flexGrow: 1 }}>
+                  Hello, {props.currentUser.name}
+               </Typography>
+
                <Button
                   color="inherit"
                   onClick={() => props.history.push('/profile')}
                >
-                     {props.currentUser.name}'s Profile
+                     Profile
                </Button>
                <Button
                   color="inherit"

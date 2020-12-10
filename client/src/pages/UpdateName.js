@@ -6,10 +6,8 @@ import TextInput from '../components/TextInput'
 import Nav from '../components/Nav'
 
 
-
 function UpdateName(props) {
    const [name, updateName] = useState('')
-   const [email, updateEmail] = useState('')
 
    useEffect(() => {
       console.log(props)
