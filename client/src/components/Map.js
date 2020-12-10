@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { makeStyles, FormControl, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
+import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
+import Geocoder from 'react-mapbox-gl-geocoder'
 import { __GetAllTags } from '../services/TagService'
 
 const mapStyles = [
@@ -19,27 +20,27 @@ const mapStyles = [
    },
    {
       name: 'Dark',
-      url: 'mapbox://styles/markdv/ckihsv6426m6d19t0wkajeq0l'
+      url: 'mapbox://styles/markdv/ckihxtc20038u19r3k38x61ce'
    },
    {
       name: 'Midnight',
-      url: 'mapbox://styles/markdv/ckihswznz6gc119p977yjes0i'
+      url: 'mapbox://styles/markdv/ckihxujca2agd19oij6g7y48n'
    },
    {
       name: 'Bubblegum',
-      url: 'mapbox://styles/markdv/ckiagvwfa0o8u19qgxqkrjyr2'
+      url: 'mapbox://styles/markdv/ckihxvr9i2a4119sa12a7y2xk'
    },
    {
       name: 'Sky',
-      url: 'mapbox://styles/markdv/ckiht9iuj0w2g19o9uvtw46dt'
+      url: 'mapbox://styles/markdv/ckihxwue410xo19szzmaxchz0'
    },
    {
       name: 'Golden',
-      url: 'mapbox://styles/markdv/ckihtc3t525q91bp7278ol5ps'
+      url: 'mapbox://styles/markdv/ckihxy1zf10yt19szc7f8icz7'
    },
    {
       name: 'Light',
-      url: 'mapbox://styles/markdv/ckihto26512f719rg77ktky5s'
+      url: 'mapbox://styles/markdv/ckihxz9um16hv19nwrph95mcn'
    }
 ]
 
@@ -59,6 +60,10 @@ const MapView = ReactMapBoxGl({
 })
 
 function Map(props) {
+   const [viewport, setViewport] = useState({
+      center: [-40, 20],
+      zoom: [1],
+   })
    const [hoverFlag, setHover] = useState(false)
    const [hasPopup, setPopup] = useState(false)
    const [popupLoc, setPopupLoc] = useState([0, 0])
@@ -66,8 +71,9 @@ function Map(props) {
    const [showMem, setShowMem] = useState(null)
    const [publicView, setPublicView] = useState(false)
    const [allTags, setAllTags] = useState([])
-   const [style, setStyle] = useState(mapStyles[1].url)
+   const [style, setStyle] = useState(mapStyles[0].url)
    const classes = (useStyles)
+   const mapRef = useRef()
 
    const styles = {
       width: '90%',
@@ -116,7 +122,7 @@ function Map(props) {
    useEffect(() => {
       if (props.publicView) {
          setPublicView(true)
-         defaultView()
+         // defaultView()
          getTags()
          return
       }
@@ -194,6 +200,20 @@ function Map(props) {
       setStyle(target.value)
    }
 
+   const handleViewportChange = useCallback(
+      (newViewport) => {setViewport(newViewport)},
+      []
+    )
+
+    const onSelected = (viewport, item) => {
+       console.log(viewport)
+       console.log(item)
+       setViewport({
+          center: item.center,
+          zoom: [14]
+       })
+    }
+
    return (
       <div id="map">
          <Grid container justify="start" alignItems="center">
@@ -209,20 +229,28 @@ function Map(props) {
                      <MenuItem value={style.url}>{style.name}</MenuItem>
                   ))}
                </Select>
-            </FormControl>
+            </FormControl>  
+            <Geocoder 
+               mapboxApiAccessToken='pk.eyJ1IjoibWFya2R2IiwiYSI6ImNraWFubmhzbjAxb3IyeWsyODQ2cXBvbmUifQ.huPMP5ZK_GUqsbjHTgXRcw'
+               onSelected={onSelected}
+               hideOnSelect={true}
+            />
          </Grid>
          <MapView
             style={style}
             containerStyle={styles}
             onClick={handleMapClick}
             onStyleLoad={getMap}
+            {...viewport}
+            onViewportChange={handleViewportChange}
          >
-
+            
             <Layer
                type="symbol"
                id="marker"
                layout={{ 'icon-image': 'custom-marker-2' }}
             >
+               
                {props.memories.map((e) => (
                   <Feature
                      key={e.id}
