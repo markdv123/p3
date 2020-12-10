@@ -4,16 +4,11 @@ import ReactMapBoxGl, { Layer, Feature } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
 import Geocoder from 'react-mapbox-gl-geocoder'
-
-import '../Map.css'
 import { __UpdateMapStyle } from '../services/UserService'
 import { __GetAllTags } from '../services/TagService'
-<<<<<<< HEAD
 import '../styles/Map.css'
-=======
 import Pop from './Pop'
 
->>>>>>> c8411b9881724dba80bea7d1685d984e0487fc2a
 const MAP_KEY = process.env.REACT_APP_MAP_KEY
 
 const mapStyles = [
