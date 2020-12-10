@@ -170,6 +170,7 @@ const GetMemories = async (req, resp) => {
             },
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
+         order: [ ['created_at', 'DESC']]
       })
 
       // clean up the tags in memories
