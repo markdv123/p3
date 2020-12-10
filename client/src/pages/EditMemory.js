@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+
 import {
    makeStyles,
    FormControl,
-   InputLabel,
-   Select,
    Chip,
-   MenuItem,
-   Input,
    useTheme,
    Button,
    Grid,
    TextField,
+   Icon
 } from '@material-ui/core'
+import { ToggleButton, ToggleButtonGroup, Autocomplete} from '@material-ui/lab'
 
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import Autocomplete, {
-   createFilterOptions,
-} from '@material-ui/lab/Autocomplete'
-
-import Icon from '@material-ui/core/Icon'
-import { withRouter } from 'react-router-dom'
 import { __UpdateMemory } from '../services/MemoryService'
 import { __GetAllTags } from '../services/TagService'
-
-const filter = createFilterOptions()
 
 const useEditStyles = makeStyles((theme) => ({
    root: {
@@ -99,7 +90,6 @@ const EditMemory = (props) => {
    const handleName = ({ target }) => setName(target.value)
    const handleDesc = ({ target }) => setDesc(target.value)
    const handlePublic = (e, newVal) => setPublic(newVal)
-   const handleTags = ({ target }) => setTags(target.value)
    const handleDate = ({ target }) => setDate(target.value)
    const clearDate = () => setDate('')
 
@@ -117,6 +107,19 @@ const EditMemory = (props) => {
          throw error
       }
    }
+
+
+   const handleTagChange = ( e, values) => {
+      const newTags = values.map ( e => {
+         const findTag = allTags.find( tag => tag.name === e )
+         if ( findTag ) 
+            return findTag
+         return { id: -1, name: e }
+      })
+      console.log ( newTags )
+      setTags ( newTags )
+   }
+
 
    return (
       <div>
@@ -219,6 +222,7 @@ const EditMemory = (props) => {
                defaultValue={tags.map(e => e.name)}
                style={{ width: 300 }}
                freeSolo
+               onChange={handleTagChange}
             />
          </Grid>
          <Grid container justify="center" alignItems="center">

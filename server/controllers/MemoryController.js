@@ -14,6 +14,18 @@ const AWSservice = require('../middleware/AWSservice')
    }
 */
 
+const manageTags = async ( tags ) => {
+   return await Promise.all( tags.map ( async (tag) => {
+      if ( tag.id === -1 ) {
+         const newTag = await Tag.create( { name: tag.name })
+         return { id: newTag.id, name: tag.name }
+      }
+      else
+         return { id: tag.id, name: tag.name }
+   }) )
+}
+
+
 const CreateMemory = async (req, resp) => {
    try {
       const result = await sequelize.transaction(async (t) => {
@@ -26,17 +38,20 @@ const CreateMemory = async (req, resp) => {
             date: req.body.date ? req.body.date : null
          })
 
-         const tagList = []
-         const newTags = req.body.tags
-         newTags.forEach(async (e, i) => {
-            const tag = await TagMemory.create({
-               memoryId: memory.id,
-               tagId: e,
-            })
-            tagList.push(tag.tagId)
-         })
+         let newTags = [...req.body.tags]
+         // see if we have any new tags
+         if ( req.body.tags.find(e => e.id === -1) ) {
+            newTags = await manageTags ( oldMemory.tags )
+         }
 
-         const location = await Location.create({
+         await TagMemory.bulkCreate(
+            newTags.map((e) => ({
+               memoryId: memory.id,
+               tagId: e.id,
+            }))
+         )
+
+         await Location.create({
             memoryId: memory.id,
             long: req.body.location.long,
             lat: req.body.location.lat,
@@ -75,13 +90,19 @@ const UpdateMemory = async (req, resp) => {
             }
          )
 
+         let newTags = [...oldMemory.tags]
+         // see if we have any new tags
+         if ( oldMemory.tags.find(e => e.id === -1) ) {
+            newTags = await manageTags ( oldMemory.tags )
+         }
+
          // first delete the tags for this memory
          await TagMemory.destroy({ where: { memory_id: memoryId } })
 
          await TagMemory.bulkCreate(
-            oldMemory.tags.map((e) => ({
+            newTags.map((e) => ({
                memoryId: memoryId,
-               tagId: e,
+               tagId: e.id,
             }))
          )
       })
