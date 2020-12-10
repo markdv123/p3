@@ -62,7 +62,7 @@ const Memory = (props) => {
                      props.setGotoMem(props.memories[i].id)
                   }}
                   variant="outlined"
-                  color={props.memories[i].public ? 'tertiary' : 'primary'}
+                  color={props.memories[i].public ? 'default' : 'primary'}
                />
             )
          }
@@ -149,11 +149,23 @@ const Memory = (props) => {
          break
 
       case 'create':
+         const newMemory = {
+            id: -1,
+            name: '',
+            date: null,
+            description: '',
+            isPublic: false,
+            tags: [],
+            images: [],
+            location: {
+               long: props.newLoc.lng,
+               lat: props.newLoc.lat
+            }
+         }
          content = (
-            <CreateMemory
+            <EditMemory 
                resetMode={props.resetMode}
-               newLoc={props.newLoc}
-               authenticated={props.authenticated}
+               memory={newMemory}
                currentUser={props.currentUser}
             />
          )
@@ -164,7 +176,7 @@ const Memory = (props) => {
             content = (
                <EditMemory
                   resetMode={resetToView}
-                  mem={props.memories.find((e) => e.id === props.viewMem)}
+                  memory={props.memories.find((e) => e.id === props.viewMem)}
                />
             )
          } else {
