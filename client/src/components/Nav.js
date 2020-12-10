@@ -10,6 +10,7 @@ import {
    MenuItem,
 } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
+import '../styles/Nav.css'
  
 
 const Nav = (props) => {
@@ -23,7 +24,7 @@ const Nav = (props) => {
       setAnchorEl(null)
    }
    return props.authenticated && props.currentUser ? (
-      <div>
+      <div className='Nav'>
          <AppBar position="static">
             <Toolbar>
                <IconButton
@@ -39,14 +40,14 @@ const Nav = (props) => {
                </Typography>
 
                <Typography variant="h6" style={{ flexGrow: 1 }}>
-                  Hello, {props.currentUser.name}
+                  
                </Typography>
 
                <Button
                   color="inherit"
                   onClick={() => props.history.push('/profile')}
                >
-                     Profile
+                     {props.currentUser.name}'s Profile
                </Button>
                <Button
                   color="inherit"

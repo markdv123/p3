@@ -3,7 +3,7 @@ import { Button, Icon, Grid } from '@material-ui/core'
 import Nav from '../components/Nav'
 import Map from '../components/Map'
 import { __GetPublicMemories } from '../services/MemoryService'
-
+import '../styles/Home.css'
 const Home = (props) => {
    const [memories, setMemories] = useState([])
 
@@ -35,7 +35,7 @@ const Home = (props) => {
                <Grid item xs={6}>
                   <h1>Welcome to Gaiary</h1>
                   <h2>Your Diary of the Earth</h2>
-                  <p style={{ maxWidth: '820px', margin: '0 auto' }}>
+                  <p className="description">
                      Gaiary is a wonderful new app designed to help users
                      visually keep track of precious memories on a global map!
                      In your profile page, a personal interactive map will

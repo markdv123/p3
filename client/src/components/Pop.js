@@ -1,5 +1,6 @@
 import React from 'react'
 import {Popup} from 'react-mapbox-gl'
+import '../styles/Pop.css'
 
 const Pop = (props) => {
 
@@ -14,12 +15,12 @@ const Pop = (props) => {
    }
 
    return (
-       <div>
+       <div >
            {props.publicView ? (
                   <Popup
-                     coordinates={[props.showMem.location.long, props.showMem.location.lat]}
+                  coordinates={[props.showMem.location.long, props.showMem.location.lat]}
                   >
-                     <div>
+                     <div className="pop">
                         <h3>{`${props.showMem.user}'s Memory!`}</h3>
                         <h4>{props.showMem.name}</h4>
                         <p>{props.showMem.description}</p>
