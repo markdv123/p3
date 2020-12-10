@@ -3,6 +3,7 @@ import ReactMapBoxGl, { Layer, Feature, Popup } from 'react-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { makeStyles, FormControl, MenuItem, Select, Grid } from '@material-ui/core'
 import Geocoder from 'react-mapbox-gl-geocoder'
+import Pop from './Pop'
 import { __GetAllTags } from '../services/TagService'
 
 const mapStyles = [
@@ -83,16 +84,6 @@ function Map(props) {
       margin: '0 auto',
       top: 'auto',
       bottom: 'auto',
-   }
-
-   const tagName = (tagId) => allTags.find((e) => e.id === tagId).name
-
-   const tagString = (tags) => {
-      let tmp = ''
-      tags.forEach((e, i) =>
-         i === 0 ? (tmp += tagName(e)) : (tmp += ` - ${tagName(e)}`)
-      )
-      return tmp
    }
 
    const getTags = async () => {
@@ -263,25 +254,13 @@ function Map(props) {
                ))}
             </Layer>
             {hasPopup ? (
-               publicView ? (
-                  <Popup
-                     coordinates={[showMem.location.long, showMem.location.lat]}
-                  >
-                     <div>
-                        <h3>{`${showMem.user}'s Memory!`}</h3>
-                        <h4>{showMem.name}</h4>
-                        <p>{showMem.description}</p>
-                        <p>{tagString(showMem.tags)}</p>
-                     </div>
-                  </Popup>
-               ) : (
-                     <Popup coordinates={popupLoc}>
-                        <div>
-                           <div>Do you want to create a new Memory?</div>
-                           <button onClick={createMemory}>Yes!</button>
-                        </div>
-                     </Popup>
-                  )
+               <Pop 
+                  publicView={publicView}
+                  showMem={showMem}
+                  allTags={allTags}
+                  popupLoc={popupLoc}
+                  createMemory={createMemory}
+                  />
             ) : null}
          </MapView>
       </div>
