@@ -82,13 +82,14 @@ function Map(props) {
    const classes = (useStyles)
 
    const styles = {
-      width: '100%',
+      width: '90%',
       height: 'calc(80vh - 80px)',
       position: 'relative',
       padding: '0px',
       margin: '0 auto',
       top: 'auto',
       bottom: 'auto',
+      marginLeft: '30px'
    }
 
    // get the handle for the map so we can flyTo the right memory.
@@ -205,8 +206,8 @@ function Map(props) {
     }
 
    return (
-      <div id="map" style={{margin: 'auto 0'}}>
-         <Grid container justify="start" alignItems="center">
+          <div  id="map" style={{margin: 'auto 0'}}>
+       <Grid container justify="start" alignItems="center" className='mapStyles'>
             <p>Map Style:</p>
             <FormControl className={classes.formControl} style={{margin: '5px'}}>
                <Select
@@ -229,7 +230,8 @@ function Map(props) {
                 placeholder="Search"
                />
          </Grid>
-         <MapView
+         <MapView 
+            className='maps'
             style={style}
             containerStyle={styles}
             onClick={handleMapClick}
