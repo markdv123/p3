@@ -8,8 +8,8 @@
 
 .carousel-root {
     margin-top: 10px;
-    width: 350px;
-    height: 300px;
+    width: 40vw;
+    max-height: 50vh;
 }
 
 .carousel-root img {

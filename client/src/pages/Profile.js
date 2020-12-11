@@ -64,8 +64,8 @@ function Profile(props) {
             {...props}
             currentUser={props.currentUser}
          />
-         <Container style={{ display: 'flex' }}>
-            <Grid xs={12} sm={6}>
+         <div style={{ display: 'flex', margin: '0px 30px' }} justify='space-around'>
+            <Grid xs={12} sm={6} style={{marginRight: '15px'}} justify='space-around'>
                <div className="map center">
                   <Map
                      {...props}
@@ -76,7 +76,7 @@ function Profile(props) {
                   />
                </div>
             </Grid>
-            <Grid xs={12} sm={6}>
+            <Grid xs={12} sm={6} style={{marginLeft: '15px'}} justify='space-around'>
                <Memory
                   memories={memories}
                   authenticated={props.authenticated}
@@ -89,7 +89,7 @@ function Profile(props) {
                   resetMode={resetMode}
                />
             </Grid>
-         </Container>
+         </div>
       </div>
    )
 }
