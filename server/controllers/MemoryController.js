@@ -1,5 +1,13 @@
 const { response } = require('express')
-const { Memory, TagMemory, Location, Tag, User, sequelize, Image } = require('../models')
+const {
+   Memory,
+   TagMemory,
+   Location,
+   Tag,
+   User,
+   sequelize,
+   Image,
+} = require('../models')
 const AWSservice = require('../middleware/AWSservice')
 
 /* 
@@ -14,18 +22,6 @@ const AWSservice = require('../middleware/AWSservice')
    }
 */
 
-const manageTags = async ( tags ) => {
-   return await Promise.all( tags.map ( async (tag) => {
-      if ( tag.id === -1 ) {
-         const newTag = await Tag.create( { name: tag.name })
-         return { id: newTag.id, name: tag.name }
-      }
-      else
-         return { id: tag.id, name: tag.name }
-   }) )
-}
-
-
 const CreateMemory = async (req, resp) => {
    try {
       const result = await sequelize.transaction(async (t) => {
@@ -35,13 +31,20 @@ const CreateMemory = async (req, resp) => {
             name: req.body.name,
             description: req.body.description,
             public: req.body.public ? req.body.public : false,
-            date: req.body.date ? req.body.date : null
+            date: req.body.date ? req.body.date : null,
          })
 
          let newTags = [...req.body.tags]
          // see if we have any new tags
-         if ( req.body.tags.find(e => e.id === -1) ) {
-            newTags = await manageTags ( oldMemory.tags )
+         if (req.body.tags.find((e) => e.id === -1)) {
+            newTags = await Promise.all(
+               req.body.tags.map(async (tag) => {
+                  if (tag.id === -1) {
+                     const newTag = await Tag.create({ name: tag.name })
+                     return { id: newTag.id, name: tag.name }
+                  } else return { id: tag.id, name: tag.name }
+               })
+            )
          }
 
          await TagMemory.bulkCreate(
@@ -75,7 +78,7 @@ const CreateMemory = async (req, resp) => {
 const UpdateMemory = async (req, resp) => {
    try {
       const oldMemory = req.body.memory
-      
+
       const memoryId = parseInt(req.params.memory_id)
       const result = await sequelize.transaction(async (t) => {
          const memory = await Memory.update(
@@ -83,7 +86,7 @@ const UpdateMemory = async (req, resp) => {
                name: oldMemory.name,
                description: oldMemory.description,
                public: oldMemory.public,
-               date: oldMemory.date
+               date: oldMemory.date,
             },
             {
                where: { id: memoryId },
@@ -92,8 +95,15 @@ const UpdateMemory = async (req, resp) => {
 
          let newTags = [...oldMemory.tags]
          // see if we have any new tags
-         if ( oldMemory.tags.find(e => e.id === -1) ) {
-            newTags = await manageTags ( oldMemory.tags )
+         if (oldMemory.tags.find((e) => e.id === -1)) {
+            newTags = await Promise.all(
+               oldMemory.tags.map(async (tag) => {
+                  if (tag.id === -1) {
+                     const newTag = await Tag.create({ name: tag.name })
+                     return { id: newTag.id, name: tag.name }
+                  } else return { id: tag.id, name: tag.name }
+               })
+            )
          }
 
          // first delete the tags for this memory
@@ -193,12 +203,14 @@ const GetMemories = async (req, resp) => {
             {
                model: Image,
                as: 'images',
-               attributes: ['id', 'url']
-            }
+               attributes: ['id', 'url'],
+            },
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
-         order: [ ['created_at', 'DESC'], 
-         [ { model: Tag, as: 'tags' }, 'name', 'ASC'] ]
+         order: [
+            ['created_at', 'DESC'],
+            [{ model: Tag, as: 'tags' }, 'name', 'ASC'],
+         ],
       })
 
       return resp.send(memories)
@@ -207,7 +219,6 @@ const GetMemories = async (req, resp) => {
       throw err
    }
 }
-
 
 const GetPublicMemories = async (req, resp) => {
    try {
@@ -229,23 +240,24 @@ const GetPublicMemories = async (req, resp) => {
             {
                model: User,
                as: 'user',
-               attributes: [ 'name' ]
+               attributes: ['name'],
             },
             {
                model: Image,
                as: 'images',
-               attributes: ['id', 'url']
-            }
+               attributes: ['id', 'url'],
+            },
          ],
          attributes: ['id', 'name', 'description', 'public', 'date'],
-         order: [ ['created_at', 'DESC'], 
-         [ { model: Tag, as: 'tags' }, 'name', 'ASC'] ]
+         order: [
+            ['created_at', 'DESC'],
+            [{ model: Tag, as: 'tags' }, 'name', 'ASC'],
+         ],
       })
 
       return resp.send(memories)
-   }
-   catch ( err) {
-      console.log ( 'Error in MemoryController.GetPublicMemories', err)
+   } catch (err) {
+      console.log('Error in MemoryController.GetPublicMemories', err)
       throw err
    }
 }
@@ -253,25 +265,26 @@ const GetPublicMemories = async (req, resp) => {
 const AddImage = async (req, res) => {
    try {
       const memoryId = parseInt(req.params.memory_id)
-      let images = req.files.map((file)=> ({
+      let images = req.files.map((file) => ({
          Body: file.buffer,
          Key: `${memoryId}/${file.originalname}`,
-         ContentType: file.mimetype
+         ContentType: file.mimetype,
       }))
-      const uploadedImages = await Promise.all(images.map(async (image) => {
-         let location = await AWSservice.upload(image)
-         return {
-            memoryId,
-            url: location
-         }
-      }))
+      const uploadedImages = await Promise.all(
+         images.map(async (image) => {
+            let location = await AWSservice.upload(image)
+            return {
+               memoryId,
+               url: location,
+            }
+         })
+      )
       await Image.bulkCreate(uploadedImages)
       res.send('images uploaded')
    } catch (error) {
       throw error
    }
 }
-
 
 module.exports = {
    CreateMemory,
@@ -280,5 +293,5 @@ module.exports = {
    DeleteMemory,
    GetMemories,
    GetPublicMemories,
-   AddImage
+   AddImage,
 }
