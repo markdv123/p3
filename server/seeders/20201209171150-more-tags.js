@@ -2,19 +2,19 @@
 const {Op} = require('sequelize')
 
 const tags = [
-  { name: 'Cryptid Sighting', description: 'Cryptid Sighting' },
-  { name: 'Family Event', description: 'Family Event' },
-  { name: 'Bar/Club', description: 'Bar/Club' },
-  { name: 'Spa/Resort', description: 'Spa/Resort' },
-  { name: 'Museum', description: 'Museum' },
-  { name: 'Zoo/Aquarium', description: 'Zoo/Aquarium' },
-  { name: 'Park', description: 'Park' },
-  { name: 'Swimming', description: 'Swimming' },
-  { name: 'Gym', description: 'Gym' },
-  { name: 'Library', description: 'Library' },
-  { name: 'Event', description: 'Event' },
-  { name: 'Hometown', description: 'Hometown' },
-  { name: 'Medical', description: 'Medical' },
+  { name: 'Cryptid Sighting'},
+  { name: 'Family Event'},
+  { name: 'Bar/Club'},
+  { name: 'Spa/Resort'},
+  { name: 'Museum'},
+  { name: 'Zoo/Aquarium'},
+  { name: 'Park'},
+  { name: 'Swimming'},
+  { name: 'Gym'},
+  { name: 'Library'},
+  { name: 'Event'},
+  { name: 'Hometown'},
+  { name: 'Medical'},
 ]
 
 module.exports = {
