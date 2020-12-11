@@ -10,7 +10,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Pagination } from '@material-ui/lab'
 import ViewMemory from '../pages/ViewMemory'
-import CreateMemory from '../pages/CreateMemory'
 import EditMemory from '../pages/EditMemory'
 import MyCarousel from './MyCarousel'
 
@@ -23,7 +22,21 @@ const useMemoryStyles = makeStyles((theme) => ({
          margin: theme.spacing(0.5),
       },
    },
+   grid: {
+      padding: '0'
+   }
 }))
+
+const chipStyles = [
+   {
+      color: 'black',
+      borderColor: 'black'
+   },
+   {
+      color: 'grey',
+      borderColor: 'grey'
+   }
+]
 
 const Memory = (props) => {
    const memoryClasses = useMemoryStyles()
@@ -63,7 +76,7 @@ const Memory = (props) => {
                      props.setGotoMem(props.memories[i].id)
                   }}
                   variant="outlined"
-                  color={props.memories[i].public ? 'default' : 'primary'}
+                  style={props.memories[i].public ? (chipStyles[0]) : (chipStyles[1])}
                />
             )
          }
@@ -93,14 +106,14 @@ const Memory = (props) => {
       case 'view':
          if (props.memories.find((e) => e.id === props.viewMem)) {
             content = (
-               <div>
+               <div style={{textAlign: 'center'}}>
                   <ViewMemory
                      memory={props.memories.find((e) => e.id === props.viewMem)}
                   />
                   <Button
                      style={{ margin: '5px' }}
                      variant="contained"
-                     style={{backgroundColor: '#9a9a9a', color:'white'}}
+                     style={{backgroundColor: '#9a9a9a', color:'white', margin: '5px'}}
                      onClick={() => {
                         setMode('edit')
                      }}
@@ -111,7 +124,7 @@ const Memory = (props) => {
                   <Button
                      style={{ margin: '5px' }}
                      variant="contained"
-                     style={{backgroundColor: '#9a9a9a', color:'white'}}
+                     style={{backgroundColor: '#9a9a9a', color:'white', margin: '5px'}}
                      onClick={handleConfirmOpen}
                      endIcon={<Icon>delete</Icon>}
                   >
@@ -192,13 +205,14 @@ const Memory = (props) => {
    return (
       <div>
          <Grid
+            className={memoryClasses.grid}
             container
             direction="column"
-            spacing={10}
+            spacing={2}
             justify="center"
             alignItems="center"
          >
-            <Grid item>
+            <Grid item className={memoryClasses.grid} style={{margin: '10px'}}>
                <div className={memoryClasses.root}>
                   <h3>My Memories</h3>
                </div>
@@ -218,7 +232,7 @@ const Memory = (props) => {
                   </div>
                </div>
             </Grid>
-            <Grid item>
+            <Grid item className={memoryClasses.grid}>
                {content}
             </Grid>
          </Grid>

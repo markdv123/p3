@@ -1,5 +1,4 @@
 import React from 'react'
-import MyCarousel from '../components/MyCarousel'
 import { __GetAllTags } from '../services/TagService'
 
 const ViewMemory = ({ memory }) => {
@@ -14,7 +13,7 @@ const ViewMemory = ({ memory }) => {
          <h3>{memory.date ? convertDate(memory.date) : null}</h3>
          <p>{memory.description}</p>
          <p>Tags:</p>
-         <ul>
+         <ul style={{listStyleType: 'none'}}>
             {memory.tags.length
                ? memory.tags.map((tag) => <li key={tag.id}>{tag.name}</li>)
                : null}

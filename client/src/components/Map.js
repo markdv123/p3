@@ -205,7 +205,7 @@ function Map(props) {
     }
 
    return (
-      <div id="map">
+      <div id="map" style={{margin: 'auto 0'}}>
          <Grid container justify="start" alignItems="center">
             <p>Map Style:</p>
             <FormControl className={classes.formControl} style={{margin: '5px'}}>
