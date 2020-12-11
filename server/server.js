@@ -22,7 +22,9 @@ app.use(helmet({ contentSecurityPolicy: false }))
 
 
 // Initialize Middleware
-app.get('/', (req, res) => res.send({ msg: 'Server Working' }));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+)
 app.use('/api', AppRouter);
 app.listen(PORT, async () => {
     try {
@@ -33,6 +35,3 @@ app.listen(PORT, async () => {
     }
 });
 
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-)
