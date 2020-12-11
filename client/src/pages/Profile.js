@@ -15,7 +15,8 @@ function Profile(props) {
 
    useEffect(() => {
       getMems()
-   }, [])
+      console.log ('in profile.useEffect', props.match.params)
+   }, [props])
 
 
    const getMems = async () => {
@@ -56,6 +57,7 @@ function Profile(props) {
            throw error
        }
    }
+
 
    return (
       <div>
