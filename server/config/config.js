@@ -1,4 +1,5 @@
-{
+require('dotenv').config()
+module.exports = {
   "development": {
     "database": "map_dev",
     "host": "127.0.0.1",
