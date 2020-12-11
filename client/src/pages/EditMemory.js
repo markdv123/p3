@@ -38,6 +38,11 @@ const useEditStyles = makeStyles((theme) => ({
       minWidth: 200,
       maxWidth: 300,
    },
+   formControl2: {
+      margin: theme.spacing(1),
+      minWidth: 200,
+      maxWidth: 400,
+   },
    chips: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -47,6 +52,19 @@ const useEditStyles = makeStyles((theme) => ({
    },
    noLabel: {
       marginTop: theme.spacing(3),
+   },
+   button: {
+      backgroundColor: '#9a9a9a',
+      color: 'white',
+      margin: '10px',
+   },
+   buttonLong: {
+      backgroundColor: '#9a9a9a',
+      color: 'white',
+      margin: '10px auto',
+      display: 'flex',
+      justifyContent: 'center',
+      width: '80%',
    },
 }))
 
@@ -75,7 +93,7 @@ const thumbsContainer = {
    flexDirection: 'row',
    flexWrap: 'wrap',
    marginTop: 16,
-   justifyContent: 'center'
+   justifyContent: 'center',
 }
 
 const thumb = {
@@ -105,6 +123,7 @@ const img = {
 
 const EditMemory = ({ memory, currentUser, ...props }) => {
    const editClasses = useEditStyles()
+
    const theme = useTheme()
    const [name, setName] = useState(memory.name)
    const [date, setDate] = useState(memory.date)
@@ -181,14 +200,19 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
 
    const removeFile = (e) => {
       const newFiles = [...files]
-      newFiles.splice( parseInt(e.target.name.split('_')[1]),1)
+      newFiles.splice(parseInt(e.target.name.split('_')[1]), 1)
       setFiles(newFiles)
    }
 
-   const thumbs = files.map((file,i) => (
+   const thumbs = files.map((file, i) => (
       <div style={thumb} key={file.name}>
          <div style={thumbInner}>
-            <img src={file.preview} style={img} onClick={removeFile} name={`thumb_${i}`}/>
+            <img
+               src={file.preview}
+               style={img}
+               onClick={removeFile}
+               name={`thumb_${i}`}
+            />
          </div>
       </div>
    ))
@@ -231,10 +255,8 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
                />
                <Button
                   size="small"
-                  style={{ width: '100px', justifyContent: 'center' }}
                   variant="contained"
-                  style={{ backgroundColor: '#9a9a9a', color: 'white' }}
-                  className={editClasses.button}
+                  className={editClasses.buttonLong}
                   endIcon={<Icon>backspace</Icon>}
                   onClick={clearDate}
                >
@@ -279,42 +301,45 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
             </FormControl>
          </Grid>
          <Grid container justify="center" alignItems="center">
-            <Dropzone
-               onDrop={(acceptedFiles) => {
-                  if (files.length < 3) {
-                     setFiles([
-                        ...files,
-                        ...acceptedFiles.map((file) =>
-                           Object.assign(file, {
-                              preview: URL.createObjectURL(file),
-                           })
-                        ),
-                     ])
-                  }
-               }}
-            >
-               {({ getRootProps, getInputProps }) => (
-                  <Card>
-                     <CardContent>
-                        <div
-                           {...getRootProps()}
-                           style={{
-                              display: 'flex',
-                              justifyContent: 'center',
-                              margin: '0px 10%',
-                           }}
-                        >
-                           <input {...getInputProps()} />
-                           <h3 style={{textAlign: 'center'}}>
-                              Drag 'n' drop some files here, or click to select
-                              files. Only 3 files can be uploaded at a time.
-                           </h3>
-                        </div>
-                        <aside style={thumbsContainer}>{thumbs}</aside>
-                     </CardContent>
-                  </Card>
-               )}
-            </Dropzone>
+            <FormControl className={editClasses.formControl2}>
+               <Dropzone
+                  onDrop={(acceptedFiles) => {
+                     if (files.length < 3) {
+                        setFiles([
+                           ...files,
+                           ...acceptedFiles.map((file) =>
+                              Object.assign(file, {
+                                 preview: URL.createObjectURL(file),
+                              })
+                           ),
+                        ])
+                     }
+                  }}
+               >
+                  {({ getRootProps, getInputProps }) => (
+                     <Card>
+                        <CardContent>
+                           <div
+                              {...getRootProps()}
+                              style={{
+                                 display: 'flex',
+                                 justifyContent: 'center',
+                                 margin: '0px 10%',
+                              }}
+                           >
+                              <input {...getInputProps()} />
+                              <h4 style={{ textAlign: 'center' }}>
+                                 Drag 'n' drop some files here, or click to
+                                 select files. Only 3 files can be uploaded at a
+                                 time.
+                              </h4>
+                           </div>
+                           <aside style={thumbsContainer}>{thumbs}</aside>
+                        </CardContent>
+                     </Card>
+                  )}
+               </Dropzone>
+            </FormControl>
          </Grid>
 
          <Grid container justify="center" alignItems="center">
@@ -348,21 +373,17 @@ const EditMemory = ({ memory, currentUser, ...props }) => {
          <Grid container justify="center" alignItems="center">
             <Button
                variant="contained"
-               style={{ backgroundColor: '#9a9a9a', color: 'white' }}
                className={editClasses.button}
                endIcon={<Icon>arrow_forward_ios</Icon>}
                onClick={handleSubmit}
-               style={{ margin: '5px' }}
             >
                Submit
             </Button>
             <Button
                variant="contained"
-               style={{ backgroundColor: '#9a9a9a', color: 'white' }}
                className={editClasses.button}
                endIcon={<Icon>arrow_back_ios</Icon>}
                onClick={props.resetMode}
-               style={{ margin: '5px' }}
             >
                Cancel
             </Button>
