@@ -3,8 +3,14 @@
 .description {
     max-width: 820px;
     margin: 0 auto;
+    padding-left: 30px;
+    margin-right: 30px;
     
 }
+.map {
+    margin-left: 30px;
+}
+
 body {
     padding-top: 90px;
     background-color: #DEE1DD;

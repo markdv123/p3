@@ -30,7 +30,7 @@ const Home = (props) => {
          <div style={{ textAlign: 'center' }}>
             <Grid container justify="center" style={{ margin: '5px' }}>
                <Grid item xs={6}>
-                  <Map {...props} memories={memories} publicView={true} />
+                  <Map  className="map" {...props} memories={memories} publicView={true} />
                </Grid>
                <Grid item xs={6}>
                   <h1>Welcome to Gaiary</h1>

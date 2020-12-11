@@ -5,6 +5,12 @@
 .search_bar {
     padding-left: 5px;
 }
+.mapStyles{
+    margin-left: 30px;
+}
+.maps {
+    margin-left: 30px;
+}
 
 .react-geocoder {
     color: black;
