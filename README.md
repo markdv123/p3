@@ -1,4 +1,4 @@
-# p3
+# Gaiary
 
 ## December 4, 2020
 
@@ -12,9 +12,9 @@ Mark DeVito: [Github](https://github.com/markdv123) | [LinkedIn](https://www.lin
 
 ***
 
-### :earth_americas: Title Here lol :earth_asia:
+### :earth_americas: Gaiary :earth_asia:
 
-[Name Redacted] is a global application for storing and sharing your precious memories on an interactive map. Users will be able to click on their map to create pins which will keep track of their chosen memories. When a pin is clicked on, a user will be routed to a ViewMemory page, with all of the details they shared.
+Gaiary is a global application for storing and sharing your precious memories on an interactive map. Users will be able to click on their map to create pins which will keep track of their chosen memories. A global map holds all of the public memories of every user on the home page.
 
 [Trello](https://trello.com/b/QEtAsDHy/project3-the-unnamed)
 ***
@@ -22,6 +22,7 @@ Mark DeVito: [Github](https://github.com/markdv123) | [LinkedIn](https://www.lin
 ### :computer: Technologies Used :computer:
 
 * HTML/CSS/JavaScript
+* Sequelize
 * Postgres
 * React
 * Express
@@ -29,24 +30,19 @@ Mark DeVito: [Github](https://github.com/markdv123) | [LinkedIn](https://www.lin
 * MapBox API
 ***
 
-### ERD
-![erd](./assets/p3-erd.png)
-***
-
-### Component Diagram
-![Component Diagram](./assets/p3-cd.png)
-***
-
 ### :memo: Planned Improvements :memo:
-- [ ] Custom styles for maps
-- [ ] Global/Public map
+- [x] Custom styles for maps
+- [x] Global/Public map
 - [ ] Different pin styles for categories of memories
-- [ ] Add images to memory pages with cloudinary or AWS
+- [x] Add images to memory pages with cloudinary or AWS
 - [ ] Create a memory from current location
 ***
 
 ### :movie_camera: Credits :movie_camera:
-* materialize or bootstrap probably
-* cloudinary or aws probably
+* material-ui
+* AWS S3
 * Heroku
 * MapBox API
+* React Mapbox Geocoder
+* React Dropzone
+* React Responsive Carousel
