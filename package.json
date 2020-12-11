@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd server && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all  && cd ../client && rm -rf build && npm install && npm run build"
+    "build": "cd server && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all  && cd ../client && rm -rf build && npm install && npm run build"
   },
   "repository": {
     "type": "git",
